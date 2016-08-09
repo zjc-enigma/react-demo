@@ -1,0 +1,23 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Use minimum-scale=1 to enable GPU rasterization -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1" >
+    <link rel="stylesheet" href={{ url_for('static', filename="css/react-grid-layout-style.css") }}>
+    <link rel="stylesheet" href={{ url_for('static', filename="css/react-resizable-style.css") }}>
+  </head>
+
+<body>
+  <div id="demo1" key="a"></div>
+  <div id="demo2" key="b"></div>
+  <div id="demo3" key="c"></div>
+
+  <!-- Attach React components -->
+  <script type="text/javascript" src="{{ url_for('static', filename='bundle.js') }}"></script>
+</body>
+</html>
