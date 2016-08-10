@@ -1,29 +1,55 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import ReactGridLayout from 'react-grid-layout'
-import DarkButton from './button'
-import DarkHintTextField from './textfield'
+import ReactGridLayout from 'react-grid-layout';
+import DarkButton from './button';
+import DarkHintTextField from './textfield';
 
 
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
 
 class MyGrid extends Component{
 
-  
-  render(){
+
+  render() {
     // layout is an array of objects, see the demo for more complete usage
-    var aa = <DarkButton name="hi"/>
-      var layout = [
-        {i: 'a', x: 0, y: 0, w: 1, h: 2, static: true},
-        {i: 'b', x: 1, y: 0, w: 3, h: 2, minW: 2, maxW: 4},
-        {i: 'c', x: 4, y: 0, w: 1, h: 2}
-      ];
-      return (
-          <ReactGridLayout className="layout" layout={layout} cols={12} rowHeight={30} width={1200}>
-          <div key={'a'}>{aa}</div>
-          <div key={'b'}>{aa}</div>
-          <div key={'c'}>{aa}</div>
-          </ReactGridLayout>
-      );
+    const results = [
+      { k: '12345', v: 'abcde' },
+      { k: '23451', v: 'eabcd' },
+      { k: '34512', v: 'cdeab' },
+      { k: '12453', v: 'abde3' },
+      { k: '34521', v: 'cdeba' },
+    ];
+
+    //var aa = <DarkButton name="hi"/>;
+    let layout = [];
+    let index = 0;
+    { for (let r in results) {
+      let item = { i: results[r].k,
+                   x: index,
+                   y: 0,
+                   w: getRandomInt(1, 10),
+                   h: getRandomInt(2, 5) };
+      layout.push(item);
+      index++;
+    } }
+
+    return (<ReactGridLayout
+            className="layout"
+            layout={layout}
+            cols={12}
+            rowHeight={30}
+            width={1200}>
+
+            {results.map(
+              function(rt){
+                return(<div key={rt.k}>{rt.v}</div>)}
+            )}
+            </ReactGridLayout>
+           );
   }
 }
 
@@ -44,4 +70,4 @@ ReactDOM.render(
 ReactDOM.render(
     <MyGrid />,
   document.getElementById('demo3')
-)
+);
