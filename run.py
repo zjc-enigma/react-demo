@@ -14,6 +14,14 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/restful")
+def restful():
+    aa = {"a": 123,
+          "b": "big"}
+
+    return json.dumps(aa)
+
+
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
 

@@ -22,8 +22,10 @@
     "react-dom": "^15.3.0",
     "react-draggable": "^2.2.0",
     "react-grid-layout": "^0.13.0",
+    "react-redux": "^4.4.5",
     "react-resizable": "^1.4.2",
     "react-tap-event-plugin": "^1.0.0",
+    "redux": "^3.5.2",
     "webpack": "^1.13.1"
   }
 }
