@@ -8,7 +8,6 @@ import ReactDOM from 'react-dom';
 import ReactGridLayout from 'react-grid-layout';
 import DarkButton from './button';
 import DarkHintTextField from './textfield';
-import { connect } from 'react-redux';
 
 
 function getRandomInt(min, max) {
@@ -17,6 +16,8 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
+
+
 const results = [
   { k: '12345', v: 'abcde' },
   { k: '23451', v: 'eabcd' },
@@ -24,6 +25,7 @@ const results = [
   { k: '12453', v: 'abde3' },
   { k: '34521', v: 'cdeba' },
 ];
+
 
 class MyGrid extends Component{
 
