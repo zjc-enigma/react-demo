@@ -78,6 +78,6 @@ ReactDOM.render(
 
 
 ReactDOM.render(
-    <MyGrid results={results}/>,
+    <MyGrid res={results}/>,
   document.getElementById('demo3')
 );
