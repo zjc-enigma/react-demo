@@ -8,8 +8,56 @@ import ReactDOM from 'react-dom';
 import ReactGridLayout from 'react-grid-layout';
 import DarkButton from './button';
 import DarkHintTextField from './textfield';
+import { Provider, connect } from 'react-redux';
+import { createStore, combineReducers } from 'redux';
+//import { reducer } from './reducer';
 
 
+
+
+const showReducer = (state = [], action) => {
+  switch (action.type){
+  case 'SHOW': 
+    return {
+      res : action.data
+    }
+  default:
+    return state
+  }
+}
+
+
+
+const showAction = () => {
+
+  const results = [
+    { k: '12345', v: 'abcde' },
+    { k: '23451', v: 'eabcd' },
+    { k: '34512', v: 'cdeab' },
+    { k: '12453', v: 'abde3' },
+    { k: '34521', v: 'cdeba' },
+  ];
+
+  return {
+    type: "SHOW",
+    data: results,
+  }
+}
+
+
+
+var reducer = combineReducers({
+  show: showReducer,
+})
+
+let store = createStore(reducer);
+//console.log("default store state"+ store.getState().toString())
+console.dir(store.getState())
+
+
+store.dispatch(showAction());
+//console.log("after action dispatched store state"+ store.getState().toString() )
+console.dir(store.getState())
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -18,14 +66,6 @@ function getRandomInt(min, max) {
 
 
 
-const results = [
-  { k: '12345', v: 'abcde' },
-  { k: '23451', v: 'eabcd' },
-  { k: '34512', v: 'cdeab' },
-  { k: '12453', v: 'abde3' },
-  { k: '34521', v: 'cdeba' },
-];
-
 
 class MyGrid extends Component{
 
@@ -33,7 +73,7 @@ class MyGrid extends Component{
   render() {
     const { res } = this.props;
     // layout is an array of objects, see the demo for more complete usage
-
+    console.dir(res);
     //var aa = <DarkButton name="hi"/>;
     let layout = [];
     let index = 0;
@@ -64,6 +104,11 @@ class MyGrid extends Component{
 }
 
 
+function mapStateToProps(state) {
+  return { res: state.show.res };
+}
+
+MyGrid = connect(mapStateToProps)(MyGrid);
 
 ReactDOM.render(
   <DarkHintTextField name="input your secrets" />,
@@ -76,8 +121,11 @@ ReactDOM.render(
   document.getElementById('demo2')
 );
 
-
+//<Provider store={store}>
+//</Provider>,
 ReactDOM.render(
-    <MyGrid res={results}/>,
+    <Provider store={store}>
+    <MyGrid />
+    </Provider>,
   document.getElementById('demo3')
 );
