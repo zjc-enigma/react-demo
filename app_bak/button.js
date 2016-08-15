@@ -26,7 +26,8 @@ let createHandlers = function(dispatch) {
 
   let onClick = function(event) {
     dispatch(showAction(data));
-    console.dir(data);
+    //console.log("onclick");
+    //console.dir(data);
   };
 
   return onClick;
@@ -38,17 +39,16 @@ let createHandlers = function(dispatch) {
 
 class DarkButton extends Component {
 
-  constructor(props) {
-    super(props);
-    this.handlers = createHandlers(this.props.dispatch);
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.handlers = createHandlers(this.props.dispatch);
+  // }
 
   render() {
     return (<MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
             <RaisedButton
-            label={this.props.name}
-            onClick={this.handlers} />
-
+            label="search"
+            onClick={this.props.show()} />
             </MuiThemeProvider>);
   }
 }
@@ -57,4 +57,29 @@ function mapStateToProps(state) {
   return { res: state.data };
 }
 
-export default connect()(DarkButton);
+
+var ButtonState = function(state){
+  return {
+    data: state.data
+  }
+}
+
+var ButtonDispatch = function(dispatch){
+
+  return {
+    show: function(){
+      
+      dispatch({
+        type: "SHOW",
+        data:  [
+          { k: '12345', v: 'abcde' },
+          { k: '23451', v: 'eabcd' },
+          { k: '34512', v: 'cdeab' },
+          { k: '12453', v: 'abde3' },
+          { k: '34521', v: 'cdeba' },
+        ],
+      })
+    }
+  }
+}
+export default connect(ButtonState, ButtonDispatch)(DarkButton);
