@@ -1,43 +1,60 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-
+import { Provider, connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
+const showAction = (data) => {
+  //alert("show action dispatched");
+  return {
+    type: "SHOW",
+    data: data,
+  }
+}
+
+let createHandlers = function(dispatch) {
+
+  const data = [
+    { k: '12345', v: 'abcde' },
+    { k: '23451', v: 'eabcd' },
+    { k: '34512', v: 'cdeab' },
+    { k: '12453', v: 'abde3' },
+    { k: '34521', v: 'cdeba' },
+  ];
+
+  let onClick = function(event) {
+    dispatch(showAction(data));
+    console.dir(data);
+  };
+
+  return onClick;
+    // other handlers
+
+}
+
+
+
 class DarkButton extends Component {
 
-  getInitialState (){
-    return {data: []};
-  }
-  handleClick(event){
-    //this.setState({value: event.target.value});
-    //this.setState({value: })
-    $.ajax({
-      url: "http://127.0.0.1:5000/restful",
-      dataType: 'json',
-      cache: false,
-      success: function(data){
-        this.setState({data:data});
-        //alert(data.toString());
-      }.bind(this),
-      error: function(xhr, status, err){
-        console.error("http://127.0.0.1:5000/restful", status, err.toString());
-      }.bind(this),
-    });
-
-    //alert("clicked");
+  constructor(props) {
+    super(props);
+    this.handlers = createHandlers(this.props.dispatch);
   }
 
   render() {
     return (<MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
             <RaisedButton
             label={this.props.name}
-            onClick={this.handleClick} />
+            onClick={this.handlers} />
 
             </MuiThemeProvider>);
   }
 }
 
-export default DarkButton;
+function mapStateToProps(state) {
+  return { res: state.data };
+}
+
+export default connect()(DarkButton);

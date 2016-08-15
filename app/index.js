@@ -27,22 +27,13 @@ const showReducer = (state = [], action) => {
 }
 
 
+// const showAction = (results) => {
 
-const showAction = () => {
-
-  const results = [
-    { k: '12345', v: 'abcde' },
-    { k: '23451', v: 'eabcd' },
-    { k: '34512', v: 'cdeab' },
-    { k: '12453', v: 'abde3' },
-    { k: '34521', v: 'cdeba' },
-  ];
-
-  return {
-    type: "SHOW",
-    data: results,
-  }
-}
+//   return {
+//     type: "SHOW",
+//     data: results,
+//   }
+// }
 
 
 
@@ -52,12 +43,12 @@ var reducer = combineReducers({
 
 let store = createStore(reducer);
 //console.log("default store state"+ store.getState().toString())
-console.dir(store.getState())
+//console.dir(store.getState())
 
 
-store.dispatch(showAction());
+//store.dispatch(showAction(data));
 //console.log("after action dispatched store state"+ store.getState().toString() )
-console.dir(store.getState())
+//console.dir(store.getState())
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -73,7 +64,7 @@ class MyGrid extends Component{
   render() {
     const { res } = this.props;
     // layout is an array of objects, see the demo for more complete usage
-    console.dir(res);
+    //console.dir(res);
     //var aa = <DarkButton name="hi"/>;
     let layout = [];
     let index = 0;
@@ -117,7 +108,9 @@ ReactDOM.render(
 
 
 ReactDOM.render(
-    <DarkButton name="search" />,
+    <Provider store={store}>
+    <DarkButton name="search" />
+    </Provider>,
   document.getElementById('demo2')
 );
 
