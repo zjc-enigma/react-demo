@@ -17,10 +17,8 @@ import fillGrid from './action';
 import { Provider, connect } from 'react-redux';
 
 var store = createStore(reducer);
-
 // let makeButton = () => {
 // }
-
 // class Provider extends Component {
 //   getChildContext() {
 //     return {
@@ -31,7 +29,6 @@ var store = createStore(reducer);
 //     return this.props.children;
 //   }
 // }
-
 // Provider.childContextTypes = {
 //   store: React.PropTypes.object
 // }
@@ -41,16 +38,20 @@ class BaseGrid extends Component{
   constructor(props, context){
     super(props, context);
   }
-
   getChildContext(){
-    console.log('base grid [getChildContext]');
-    console.dir(this.props);
-    console.log(this.props.name);
     return {
       name: this.props.name,
+      changeName: this.props.changeName,
     }
   }
   render() {
+    console.log('base grid');
+    console.dir(this.props);
+
+    let action = () =>{this.props.dispatch({
+      type:"TEST",
+      name: "abc"
+    })};
 
     let layout = [];
     let searchButtonItem = {
@@ -59,8 +60,8 @@ class BaseGrid extends Component{
       y: 0,
       w: 5,
       h: 5 };
-
     layout.push(searchButtonItem);
+
     return (
         <ReactGridLayout
       className="layout"
@@ -69,15 +70,16 @@ class BaseGrid extends Component{
       rowHeight = {5}
       width={1200}>
         <div key="search">
-            <SearchButton />
+        <SearchButton />
         </div>
         </ReactGridLayout>
-           );
+    );
   }
 }
 
 BaseGrid.childContextTypes = {
   name: React.PropTypes.any,
+  changeName: React.PropTypes.any,
 };
 
 
@@ -86,28 +88,41 @@ function mapStateToProps(state) {
 }
 
 let select = state => {return state};
-connect(select)(BaseGrid);
+function mapDispatchToProps(dispatch) {
+  return {
+    changeName: function() {
+      dispatch({
+        type: "TEST",
+        data: "change name"
+      });
+    }
+  };
+}
+
+BaseGrid = connect(select, mapDispatchToProps)(BaseGrid);
 
 class SearchButton extends Component {
   constructor(props, context){
     super(props, context);
   }
   render() {
-    //console.dir(this.context);
 
     return (<MuiThemeProvider>
             <RaisedButton
             label={this.context.name}
-            onClick={()=>{}} />
+            onClick={this.context.changeName} />
             </MuiThemeProvider>);
   }
 }
+
 SearchButton.contextTypes = {
   name: React.PropTypes.any,
+  changeName: React.PropTypes.any,
 };
+
+
 //store.dispatch(fillBaseGrid(searchButton));
 store.dispatch(testBaseGrid());
-
 //store.dispatch(fillGrid());
 
 ReactDOM.render(
