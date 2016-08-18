@@ -1,3 +1,4 @@
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { connect } from 'react-redux';
 import {Responsive, WidthProvider} from 'react-grid-layout';
 import React, { Component } from 'react';
@@ -5,7 +6,7 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 //import ReactGridLayout from 'react-grid-layout';
 import RaisedButton from 'material-ui/RaisedButton';
 import Rename from './actions';
-
+import 'whatwg-fetch';
 
 class SearchBar extends Component{
 
@@ -33,6 +34,7 @@ class SearchBar extends Component{
 
 
     return (
+        <MuiThemeProvider>
         <ResponsiveReactGridLayout
       className="layout"
       layouts={layouts}
@@ -40,10 +42,10 @@ class SearchBar extends Component{
       cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}>
 
         <div key={'search'} >
-        <RaisedButton label="hehehehe" />
+        <RaisedButton label={'hehehehe'} />
         </div>
-
-      </ResponsiveReactGridLayout>
+        </ResponsiveReactGridLayout>
+        </MuiThemeProvider>
     );
   }
 }
