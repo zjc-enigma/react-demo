@@ -17,3 +17,4 @@ ReactDOM.render(
   document.getElementById('demo1')
 );
 
+store.dispatch({type:"RENAME", data:"hehehehehe"});
