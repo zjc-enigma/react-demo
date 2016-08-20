@@ -29456,7 +29456,6 @@
 	  _createClass(SearchGrid, [{
 	    key: 'render',
 	    value: function render() {
-
 	      return _react2.default.createElement(
 	        ResponsiveReactGridLayout,
 	        {
@@ -29485,8 +29484,6 @@
 	    value: function render() {
 	      var _this3 = this;
 
-	      console.dir(this.context);
-
 	      return _react2.default.createElement(_RaisedButton2.default, {
 	        label: this.context.name,
 	        onClick: function onClick() {
@@ -29500,17 +29497,41 @@
 
 	SearchBtn.contextTypes = {
 	  name: _react2.default.PropTypes.any,
-	  rename: _react2.default.PropTypes.any
+	  rename: _react2.default.PropTypes.any,
+	  text: _react2.default.PropTypes.any
 	};
 
-	//   <div key={'searchText'} data-grid={{ x: 0, y: 2, w: 2, h: 1, static: true }}>
-	//   <TextField
-	// hintText="Input your secret"
-	// fullWidth={true}/>
-	//   </div>
+	var SearchTextField = function (_Component3) {
+	  _inherits(SearchTextField, _Component3);
 
-	var SearchBar = function (_Component3) {
-	  _inherits(SearchBar, _Component3);
+	  function SearchTextField(props, context) {
+	    _classCallCheck(this, SearchTextField);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(SearchTextField).call(this, props, context));
+	  }
+
+	  _createClass(SearchTextField, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(_TextField2.default, {
+	        hintText: 'Input your secret',
+	        value: this.context.text,
+	        onChange: this.context.textInput,
+	        ref: 'testField',
+	        fullWidth: true });
+	    }
+	  }]);
+
+	  return SearchTextField;
+	}(_react.Component);
+
+	SearchTextField.contextTypes = {
+	  text: _react2.default.PropTypes.any,
+	  textInput: _react2.default.PropTypes.any
+	};
+
+	var SearchBar = function (_Component4) {
+	  _inherits(SearchBar, _Component4);
 
 	  function SearchBar(props, context) {
 	    _classCallCheck(this, SearchBar);
@@ -29523,13 +29544,11 @@
 	    value: function getChildContext() {
 	      return {
 	        name: this.props.name,
-	        rename: this.props.rename
+	        rename: this.props.rename,
+	        text: this.props.text,
+	        textInput: this.props.textInput
 	      };
 	    }
-	    //
-	    //
-	    //<div key={'searchBtn'} data-grid={{ x: 2, y: 2, w: 1, h: 1, static: true }}></div>
-
 	  }, {
 	    key: 'render',
 	    value: function render() {
@@ -29543,6 +29562,11 @@
 	            'div',
 	            { key: 'searchBtn', 'data-grid': { x: 2, y: 2, w: 1, h: 1, static: true } },
 	            _react2.default.createElement(SearchBtn, null)
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { key: 'searchText', 'data-grid': { x: 0, y: 2, w: 2, h: 1, static: true } },
+	            _react2.default.createElement(SearchTextField, null)
 	          )
 	        )
 	      );
@@ -29554,7 +29578,9 @@
 
 	SearchBar.childContextTypes = {
 	  name: _react2.default.PropTypes.any,
-	  rename: _react2.default.PropTypes.any
+	  rename: _react2.default.PropTypes.any,
+	  text: _react2.default.PropTypes.any,
+	  textInput: _react2.default.PropTypes.any
 	};
 
 	var select = function select(state) {
@@ -29562,12 +29588,37 @@
 	};
 
 	function mapDispatchToProps(dispatch) {
+
+	  var parseJson = function parseJson(response) {
+	    return response.json();
+	  };
+
+	  var showClick = function showClick(json) {
+	    dispatch({
+	      type: "RENAME",
+	      data: json.b
+	    });
+	  };
+	  var changeText = function changeText(text) {
+	    dispatch({
+	      type: "CHANGETEXT",
+	      data: text
+	    });
+	  };
+
 	  return {
-	    rename: function rename() {
-	      dispatch({
-	        type: "RENAME",
-	        data: "呵呵哒"
-	      });
+	    rename: function rename(readtext) {
+	      alert(readtext);
+	      // fetch("/restful",
+	      //       {method: 'GET',
+	      //        headers:{'Accept': 'application/json',
+	      //                 'Content-Type': 'application/json'}})
+	      //   .then(parseJson)
+	      //   .then(showClick)
+	      //   .catch(function(e){console.log('parsing failed', e)})
+	    },
+	    textInput: function textInput(event) {
+	      changeText(event.target.value);
 	    }
 	  };
 	}
@@ -39105,6 +39156,10 @@
 	    case 'RENAME':
 	      return {
 	        name: action.data
+	      };
+	    case 'CHANGETEXT':
+	      return {
+	        text: action.data
 	      };
 	    default:
 	      return state;

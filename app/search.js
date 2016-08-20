@@ -16,7 +16,6 @@ class SearchGrid extends Component{
   }
 
   render() {
-
     return (
         <ResponsiveReactGridLayout
       className="layout"
@@ -24,7 +23,6 @@ class SearchGrid extends Component{
       cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}>
         {this.props.children}
         </ResponsiveReactGridLayout>
-
     );
   }
 }
@@ -36,9 +34,7 @@ class SearchBtn extends Component {
     super(props, context);
   }
 
-
   render() {
-    console.dir(this.context);
 
     return (
         <RaisedButton
@@ -52,17 +48,37 @@ class SearchBtn extends Component {
 SearchBtn.contextTypes = {
   name: React.PropTypes.any,
   rename: React.PropTypes.any,
+  text: React.PropTypes.any,
 };
 
 
 
-//   <div key={'searchText'} data-grid={{ x: 0, y: 2, w: 2, h: 1, static: true }}>
-//   <TextField
-// hintText="Input your secret"
-// fullWidth={true}/>
-//   </div>
+
+class SearchTextField extends Component {
+
+  constructor(props, context){
+    super(props, context);
+  }
+  render() {
+    return (
+        <TextField
+      hintText="Input your secret"
+      value={this.context.text}
+      onChange={this.context.textInput}
+      ref="testField"
+      fullWidth={true}/>
+    )
+  }
+}
+
+SearchTextField.contextTypes = {
+  text: React.PropTypes.any,
+  textInput: React.PropTypes.any,
+};
+
 
 class SearchBar extends Component {
+
   constructor(props, context){
     super(props, context);
   }
@@ -70,17 +86,19 @@ class SearchBar extends Component {
     return {
       name: this.props.name,
       rename: this.props.rename,
+      text: this.props.text,
+      textInput: this.props.textInput
     }
   }
-  //
-  //
-  //<div key={'searchBtn'} data-grid={{ x: 2, y: 2, w: 1, h: 1, static: true }}></div>
+
   render() {
     return (
         <MuiThemeProvider>
         <SearchGrid>
         <div key={'searchBtn'} data-grid={{ x: 2, y: 2, w: 1, h: 1, static: true }}>
         <SearchBtn /></div>
+
+        <div key={'searchText'} data-grid={{ x: 0, y: 2, w: 2, h: 1, static: true }}><SearchTextField /></div>
         </SearchGrid>
         </MuiThemeProvider>
     )
@@ -90,19 +108,47 @@ class SearchBar extends Component {
 SearchBar.childContextTypes = {
   name: React.PropTypes.any,
   rename: React.PropTypes.any,
+  text: React.PropTypes.any,
+  textInput: React.PropTypes.any,
 };
 
 
 let select = state => {return state};
 
 function mapDispatchToProps(dispatch) {
+
+  let parseJson = function(response){
+    return response.json()
+  };
+
+  let showClick = function(json) {
+    dispatch({
+      type: "RENAME",
+      data: json.b
+    });
+
+  };
+  let changeText = function(text){
+    dispatch({
+      type: "CHANGETEXT",
+      data: text
+    });
+  }
+
   return {
-    rename: function(){
-      dispatch({
-        type: "RENAME",
-        data: "呵呵哒"
-      });
+    rename: function(readtext){
+      alert(readtext);
+      // fetch("/restful",
+      //       {method: 'GET',
+      //        headers:{'Accept': 'application/json',
+      //                 'Content-Type': 'application/json'}})
+      //   .then(parseJson)
+      //   .then(showClick)
+      //   .catch(function(e){console.log('parsing failed', e)})
     },
+    textInput: function(event){
+      changeText(event.target.value);
+    }
   };
 }
 

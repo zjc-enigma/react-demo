@@ -8,6 +8,10 @@ export default function reducer(state = [], action) {
     return {
       name: action.data,
     }
+  case 'CHANGETEXT':
+    return {
+      text: action.data,
+    }
   default:
     return state;
   }
