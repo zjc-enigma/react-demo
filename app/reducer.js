@@ -8,11 +8,9 @@ export default function reducer(state = [], action) {
     }
 
   case 'CHANGETEXT':
-    return  [
-      ...state,
-      {
+    return  Object.assign({}, state, {
         text: action.data,
-      }]
+      })
 
   default:
     return state;
