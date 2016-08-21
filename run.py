@@ -10,6 +10,11 @@ import re
 from flask import make_response
 from functools import wraps, update_wrapper
 from datetime import datetime
+from wtforms import Form, BooleanField, StringField, PasswordField, validators, IntegerField, FloatField
+
+class RegistrationForm(Form):
+    pid = StringField('pid', [validators.DataRequired(), ])
+
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
@@ -39,6 +44,18 @@ def restful():
           "b": "big"}
 
     return json.dumps(aa)
+
+
+@app.route("/post", methods=['POST', 'GET'])
+def poste():
+    form = RegistrationForm(request.form)
+    if request.method == 'POST':
+        pid = form.pid.data
+        #print ":" + str(pid)
+        return "form encoded :" +pid
+
+    return '{}'
+
 
 
 if __name__ == "__main__":

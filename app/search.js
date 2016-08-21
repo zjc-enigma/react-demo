@@ -145,14 +145,14 @@ function mapDispatchToProps(dispatch) {
 
   return {
     rename: function(readtext){
-      alert(readtext);
-      // fetch("/restful",
-      //       {method: 'GET',
-      //        headers:{'Accept': 'application/json',
-      //                 'Content-Type': 'application/json'}})
-      //   .then(parseJson)
-      //   .then(showClick)
-      //   .catch(function(e){console.log('parsing failed', e)})
+      // alert(readtext);
+      fetch("/restful",
+            {method: 'POST',
+             headers:{'Accept': 'application/json',
+                      'Content-Type': 'application/json'}})
+        .then(parseJson)
+        .then(showClick)
+        .catch(function(e){console.log('parsing failed', e)})
     },
     textInput: function(event){
       changeText(event.target.value);
