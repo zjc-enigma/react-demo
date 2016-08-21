@@ -35,11 +35,11 @@ class SearchBtn extends Component {
   }
 
   render() {
-
+    //() => this.context.rename(this.context.text)
     return (
         <RaisedButton
       label={this.context.name}
-      onClick={() => this.context.rename()} />
+      onClick={() => alert(this.context.text)} />
 
     )
 
@@ -59,13 +59,17 @@ class SearchTextField extends Component {
   constructor(props, context){
     super(props, context);
   }
+  inputHandler(event){
+    this.context.text = event.target.value;
+  }
+  //      onChange={this.inputHandler.bind(this)}
+  //      ref="testField"
   render() {
     return (
         <TextField
       hintText="Input your secret"
       value={this.context.text}
       onChange={this.context.textInput}
-      ref="testField"
       fullWidth={true}/>
     )
   }
@@ -115,9 +119,11 @@ SearchBar.childContextTypes = {
 
 let select = state => {return state};
 
+
 function mapDispatchToProps(dispatch) {
 
   let parseJson = function(response){
+
     return response.json()
   };
 
@@ -129,6 +135,8 @@ function mapDispatchToProps(dispatch) {
 
   };
   let changeText = function(text){
+
+    console.log("change text");
     dispatch({
       type: "CHANGETEXT",
       data: text
