@@ -4,6 +4,7 @@ import {Responsive, WidthProvider} from 'react-grid-layout';
 import React, { Component } from 'react';
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 //import ReactGridLayout from 'react-grid-layout';
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import renameBtn from './actions';
@@ -36,19 +37,19 @@ class SearchBtn extends Component {
 
   render() {
     //() => this.context.rename(this.context.text)
+    //
     return (
         <RaisedButton
       label={this.context.name}
-      onClick={() => this.context.rename(this.context.text)} />
-
+      onClick={() => this.context.rename(this.context.showRes)} />
     )
-
   }
 }
 SearchBtn.contextTypes = {
   name: React.PropTypes.any,
   rename: React.PropTypes.any,
   text: React.PropTypes.any,
+  showRes: React.PropTypes.any
 };
 
 
@@ -78,7 +79,31 @@ class SearchTextField extends Component {
 SearchTextField.contextTypes = {
   text: React.PropTypes.any,
   textInput: React.PropTypes.any,
+  
 };
+
+
+class SearchResTable extends Component {
+
+
+  render() {
+    return (
+        <Table>
+        <TableHeader>
+        <TableRow>
+        <TableHeaderColumn>类别</TableHeaderColumn>
+        <TableHeaderColumn>来源</TableHeaderColumn>
+        <TableHeaderColumn>内容</TableHeaderColumn>
+        </TableRow>
+        </TableHeader>
+        <TableBody>
+        <TableRow>
+        </TableRow>
+        </TableBody>
+        </Table>
+    )
+  }
+}
 
 
 class SearchBar extends Component {
@@ -91,7 +116,8 @@ class SearchBar extends Component {
       name: this.props.name,
       rename: this.props.rename,
       text: this.props.text,
-      textInput: this.props.textInput
+      textInput: this.props.textInput,
+      showRes: this.props.showRes
     }
   }
 
@@ -103,6 +129,8 @@ class SearchBar extends Component {
         <SearchBtn /></div>
 
         <div key={'searchText'} data-grid={{ x: 0, y: 2, w: 2, h: 1, static: true }}><SearchTextField /></div>
+
+        <div key={'searchResTable'} className={this.props.showRes ? 'hidden' : ''} data-grid={{ x: 0, y: 3, w: 6, h: 1, static: true }}><SearchResTable /></div> 
         </SearchGrid>
         </MuiThemeProvider>
     )
@@ -114,6 +142,7 @@ SearchBar.childContextTypes = {
   rename: React.PropTypes.any,
   text: React.PropTypes.any,
   textInput: React.PropTypes.any,
+  showRes: React.PropTypes.any
 };
 
 
@@ -149,17 +178,21 @@ function mapDispatchToProps(dispatch) {
   //        .then(parseJson)
   
   return {
-    rename: function(readtext){
+    rename: function(isShow){
       // alert(readtext);
-      fetch("/tt",
-            {method: 'PUT',
-             headers:{
-               'Accept': 'application/json',
-               'Content-Type': 'application/json'},
-             body: JSON.stringify({'hehe':readtext})
-            })
-        .then(showClick)
-        .catch(function(e){console.log('parsing failed', e)})
+      dispatch({
+        type:"SHOW",
+        data:!isShow
+      })
+      // fetch("/tt",
+      //       {method: 'PUT',
+      //        headers:{
+      //          'Accept': 'application/json',
+      //          'Content-Type': 'application/json'},
+      //        body: JSON.stringify({'hehe':readtext})
+      //       })
+      //   .then(showClick)
+      //   .catch(function(e){console.log('parsing failed', e)})
     },
     textInput: function(event){
       changeText(event.target.value);

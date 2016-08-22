@@ -18,3 +18,4 @@ ReactDOM.render(
 );
 
 store.dispatch({type:"RENAME", data:"hehehehehe"});
+//store.dispatch({type:"SHOW", data:true });
