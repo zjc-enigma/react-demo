@@ -85,8 +85,25 @@ SearchTextField.contextTypes = {
 
 class SearchResTable extends Component {
 
-
+  
   render() {
+    let aa = [{a:123, b:231, c:980},
+              {a:13, b:21, c:90},
+              {a:23, b:31, c:80},
+              {a:3, b:1, c:0}];
+
+    var rows = [];
+    for (var index in aa){
+      rows.push(
+          <TableRow>
+          <TableRowColumn>{aa[index].a}</TableRowColumn>
+          <TableRowColumn>{aa[index].b}</TableRowColumn>
+          <TableRowColumn>{aa[index].c}</TableRowColumn>
+          </TableRow>
+      )
+    }
+
+
     return (
         <Table>
         <TableHeader>
@@ -97,11 +114,10 @@ class SearchResTable extends Component {
         </TableRow>
         </TableHeader>
         <TableBody>
-        <TableRow>
-        </TableRow>
+        {rows}
         </TableBody>
         </Table>
-    )
+    );
   }
 }
 
