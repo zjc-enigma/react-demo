@@ -11,12 +11,30 @@ from flask import make_response
 from functools import wraps, update_wrapper
 from datetime import datetime
 from wtforms import Form, BooleanField, StringField, PasswordField, validators, IntegerField, FloatField
+from flask.ext.restful import Resource, Api, fields, marshal_with
 
 class RegistrationForm(Form):
     pid = StringField('pid', [validators.DataRequired(), ])
 
 
+
+
 app = Flask(__name__, static_folder="static", template_folder="templates")
+api = Api(app)
+
+state = {}
+
+class HelloRestful(Resource):
+    def get(self, hi):
+        return {hi: "world"}
+
+    def put(self, hi):
+
+        state[hi] = request.json['hehe']
+        #request.form['hehe']
+        return state
+
+api.add_resource(HelloRestful, '/<string:hi>')
 
 
 def nocache(view):
@@ -48,7 +66,8 @@ def restful():
 
 @app.route("/post", methods=['POST', 'GET'])
 def poste():
-    form = RegistrationForm(request.form)
+    #form = RegistrationForm(request.form)
+    #form = RegistrationForm.fro
     if request.method == 'POST':
         pid = form.pid.data
         #print ":" + str(pid)

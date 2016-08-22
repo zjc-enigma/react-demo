@@ -39,7 +39,7 @@ class SearchBtn extends Component {
     return (
         <RaisedButton
       label={this.context.name}
-      onClick={() => alert(this.context.text)} />
+      onClick={() => this.context.rename(this.context.text)} />
 
     )
 
@@ -128,10 +128,14 @@ function mapDispatchToProps(dispatch) {
   };
 
   let showClick = function(json) {
-    dispatch({
-      type: "RENAME",
-      data: json.b
-    });
+    // alert('onclick');
+    //console.log(json.tt);
+    //console.dir(json.json())
+    //json.json().then(function(j){console.log(j.tt)});
+    // dispatch({
+    //   type: "RENAME",
+    //   data: json.b
+    // });
 
   };
   let changeText = function(text){
@@ -142,15 +146,18 @@ function mapDispatchToProps(dispatch) {
       data: text
     });
   }
-
+  //        .then(parseJson)
+  
   return {
     rename: function(readtext){
       // alert(readtext);
-      fetch("/restful",
-            {method: 'POST',
-             headers:{'Accept': 'application/json',
-                      'Content-Type': 'application/json'}})
-        .then(parseJson)
+      fetch("/tt",
+            {method: 'PUT',
+             headers:{
+               'Accept': 'application/json',
+               'Content-Type': 'application/json'},
+             body: JSON.stringify({'hehe':readtext})
+            })
         .then(showClick)
         .catch(function(e){console.log('parsing failed', e)})
     },
