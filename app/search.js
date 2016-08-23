@@ -106,7 +106,7 @@ SearchTextField.contextTypes = {
 class SearchResTable extends Component {
   constructor(props, context){
     super(props, context);
-    this.context.resTableSelection = [];
+    this.context.updateSelection([]);
   }
   isSelected (Res) {
 
@@ -120,11 +120,10 @@ class SearchResTable extends Component {
     
     for (var index in this.context.resTableSelection){
       if (this.context.resTableSelection[index].content === Res.content){
-        return false;
+        return true;
       }
     }
-
-    return true;
+    return false;
   }
 
   render() {
@@ -144,19 +143,19 @@ class SearchResTable extends Component {
 
     const handleRowSelected = (slices) => {
 
-      // console.dir(this.context.resTableSelection);
-      // if (slices === 'all') {
+      console.dir(this.context.resTableSelection);
+      if (slices === 'all') {
+        this.context.updateSelection(searchRes);
+      } else if  (slices === 'none') {
+        this.context.updateSelection([]);
 
-      // } else if  (slices === 'none') {
-      //   this.context.resTableSelection = [];
+      } else {
+        let selectedItems = slices.map(slice => {
+          return searchRes[slice];
+        })
+        this.context.updateSelection(selectedItems);
+      }
 
-      // } else {
-      // }
-
-      let selectedItems = slices.map(slice => {
-        return searchRes[slice];
-      })
-      this.context.updateSelection(selectedItems);
 
     }
 
