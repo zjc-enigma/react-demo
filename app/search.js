@@ -25,10 +25,12 @@ class SearchGrid extends Component{
                      {i:"searchText", x: 5, y: 2, w: 4, h: 1, static:true},
                      {i:"searchBtn", x: 9, y: 2, w: 1, h: 1, static:true},
                      {i:"searchResTable", x: 3, y: 3, w: 6, h: 1, static:true }],
+
                    sm:[
                      {i:"searchText", x: 2, y: 2, w: 2, h: 1, static:true},
                      {i:"searchBtn", x: 4, y: 2, w: 1, h: 1, static:true},
                      {i:"searchResTable", x: 2, y: 3, w: 6, h: 1, static:true }],
+
                    xs:[
                      {i:"searchText", x: 0, y: 2, w: 1, h: 1, static:true},
                      {i:"searchBtn", x: 1, y: 2, w: 1, h: 1, static:true},
@@ -121,7 +123,7 @@ class SearchResTable extends Component {
       let selectedItems = slices.map(slice => {
         return searchRes[slice];
       })
-      console.dir(selectedItems);
+      this.context.updateSelection(selectedItems);
 
     }
 
@@ -147,7 +149,8 @@ class SearchResTable extends Component {
 
 SearchResTable.contextTypes = {
   searchRes: React.PropTypes.any,
-
+  updateSelection: React.PropTypes.any,
+  resTableSelection: React.PropTypes.any,
 };
 
 
@@ -164,7 +167,10 @@ class SearchBar extends Component {
       text: this.props.text,
       textInput: this.props.textInput,
       showRes: this.props.showRes,
-      searchRes: this.props.searchRes
+      searchRes: this.props.searchRes,
+      resTableSelection: this.props.resTableSelection,
+      updateSelection: this.props.updateSelection,
+
     }
   }
 
@@ -193,6 +199,8 @@ SearchBar.childContextTypes = {
   textInput: React.PropTypes.any,
   showRes: React.PropTypes.any,
   searchRes: React.PropTypes.any,
+  resTableSelection: React.PropTypes.any,
+  updateSelection: React.PropTypes.any,
 };
 
 
@@ -249,6 +257,14 @@ function mapDispatchToProps(dispatch) {
     },
     textInput: function(event){
       changeText(event.target.value);
+    },
+    updateSelection: function(selectionItems){
+      //console.log("updateselection");
+      // console.dir(selectionItems);
+      dispatch({
+        type: 'UPDATE_RES_SELECTION',
+        data: selectionItems
+      });
     }
   };
 }

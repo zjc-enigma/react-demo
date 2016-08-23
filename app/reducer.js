@@ -1,10 +1,16 @@
 export default function reducer(state = [], action) {
 
   switch(action.type){
-    
+
   case 'SHOW':
     return   Object.assign({}, state, {
       showRes: action.data,
+    })
+
+  case 'UPDATE_RES_SELECTION':
+
+    return   Object.assign({}, state, {
+      resTableSelection: action.data,
     })
 
   case 'SEARCHRES':
@@ -23,6 +29,8 @@ export default function reducer(state = [], action) {
       })
 
   default:
+    console.log("unknown action:" + action.type);
     return state;
+
   }
 }

@@ -22275,7 +22275,9 @@
 
 	      var layouts = { lg: [{ i: "searchText", x: 5, y: 2, w: 4, h: 0.2, static: true }, { i: "searchBtn", x: 9, y: 2, w: 1, h: 0.2, static: true }, { i: "searchResTable", x: 4, y: 2.3, w: 7, h: 0.5, static: true }],
 	        md: [{ i: "searchText", x: 5, y: 2, w: 4, h: 1, static: true }, { i: "searchBtn", x: 9, y: 2, w: 1, h: 1, static: true }, { i: "searchResTable", x: 3, y: 3, w: 6, h: 1, static: true }],
+
 	        sm: [{ i: "searchText", x: 2, y: 2, w: 2, h: 1, static: true }, { i: "searchBtn", x: 4, y: 2, w: 1, h: 1, static: true }, { i: "searchResTable", x: 2, y: 3, w: 6, h: 1, static: true }],
+
 	        xs: [{ i: "searchText", x: 0, y: 2, w: 1, h: 1, static: true }, { i: "searchBtn", x: 1, y: 2, w: 1, h: 1, static: true }, { i: "searchResTable", x: 0, y: 3, w: 6, h: 1, static: true }]
 	      };
 	      return _react2.default.createElement(
@@ -22376,6 +22378,7 @@
 	  _createClass(SearchResTable, [{
 	    key: 'render',
 	    value: function render() {
+	      var _this6 = this;
 
 	      var searchRes = this.context.searchRes;
 
@@ -22406,7 +22409,7 @@
 	        var selectedItems = slices.map(function (slice) {
 	          return searchRes[slice];
 	        });
-	        console.dir(selectedItems);
+	        _this6.context.updateSelection(selectedItems);
 	      };
 
 	      //console.dir(rows);
@@ -22453,8 +22456,9 @@
 	}(_react.Component);
 
 	SearchResTable.contextTypes = {
-	  searchRes: _react2.default.PropTypes.any
-
+	  searchRes: _react2.default.PropTypes.any,
+	  updateSelection: _react2.default.PropTypes.any,
+	  resTableSelection: _react2.default.PropTypes.any
 	};
 
 	var SearchBar = function (_Component5) {
@@ -22475,7 +22479,10 @@
 	        text: this.props.text,
 	        textInput: this.props.textInput,
 	        showRes: this.props.showRes,
-	        searchRes: this.props.searchRes
+	        searchRes: this.props.searchRes,
+	        resTableSelection: this.props.resTableSelection,
+	        updateSelection: this.props.updateSelection
+
 	      };
 	    }
 	  }, {
@@ -22517,7 +22524,9 @@
 	  text: _react2.default.PropTypes.any,
 	  textInput: _react2.default.PropTypes.any,
 	  showRes: _react2.default.PropTypes.any,
-	  searchRes: _react2.default.PropTypes.any
+	  searchRes: _react2.default.PropTypes.any,
+	  resTableSelection: _react2.default.PropTypes.any,
+	  updateSelection: _react2.default.PropTypes.any
 	};
 
 	var select = function select(state) {
@@ -22570,6 +22579,14 @@
 	    },
 	    textInput: function textInput(event) {
 	      changeText(event.target.value);
+	    },
+	    updateSelection: function updateSelection(selectionItems) {
+	      //console.log("updateselection");
+	      // console.dir(selectionItems);
+	      dispatch({
+	        type: 'UPDATE_RES_SELECTION',
+	        data: selectionItems
+	      });
 	    }
 	  };
 	}
@@ -44147,6 +44164,12 @@
 	        showRes: action.data
 	      });
 
+	    case 'UPDATE_RES_SELECTION':
+
+	      return Object.assign({}, state, {
+	        resTableSelection: action.data
+	      });
+
 	    case 'SEARCHRES':
 	      return Object.assign({}, state, {
 	        searchRes: action.data
@@ -44163,7 +44186,9 @@
 	      });
 
 	    default:
+	      console.log("unknown action:" + action.type);
 	      return state;
+
 	  }
 	}
 
