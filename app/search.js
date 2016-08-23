@@ -104,6 +104,28 @@ SearchTextField.contextTypes = {
 
 
 class SearchResTable extends Component {
+  constructor(props, context){
+    super(props, context);
+    this.context.resTableSelection = [];
+  }
+  isSelected (Res) {
+
+    // this.context.resTableSelection.forEach(selectedItem => {
+    //   if (selectedItem.content === Res.content)
+    //     return true;
+    // });
+    //
+    console.log('is selected');
+    console.dir(this.context.resTableSelection);
+    
+    for (var index in this.context.resTableSelection){
+      if (this.context.resTableSelection[index].content === Res.content){
+        return false;
+      }
+    }
+
+    return true;
+  }
 
   render() {
 
@@ -112,7 +134,7 @@ class SearchResTable extends Component {
     var rows = [];
     for (var index in searchRes){
         rows.push(
-            <TableRow>
+            <TableRow selected={this.isSelected(searchRes[index])}>
             <TableRowColumn>{searchRes[index].tag}</TableRowColumn>
             <TableRowColumn>头条</TableRowColumn>
             <TableRowColumn style={{width: '60%'}}>{searchRes[index].content}</TableRowColumn>
@@ -121,6 +143,16 @@ class SearchResTable extends Component {
     }
 
     const handleRowSelected = (slices) => {
+
+      // console.dir(this.context.resTableSelection);
+      // if (slices === 'all') {
+
+      // } else if  (slices === 'none') {
+      //   this.context.resTableSelection = [];
+
+      // } else {
+      // }
+
       let selectedItems = slices.map(slice => {
         return searchRes[slice];
       })
@@ -128,9 +160,9 @@ class SearchResTable extends Component {
 
     }
 
-    //console.dir(rows);
     return (
         <Table
+      selectable={true}
       multiSelectable={true}
       onRowSelection={(slices) => handleRowSelected(slices)}>
         <TableHeader>

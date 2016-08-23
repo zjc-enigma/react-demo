@@ -18,4 +18,4 @@ ReactDOM.render(
 );
 
 store.dispatch({type:"RENAME", data:"Search"});
-//store.dispatch({type:"SHOW", data:true });
+store.dispatch({type:"UPDATE_RES_SELECTION", data:[] });
