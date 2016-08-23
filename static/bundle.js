@@ -530,7 +530,7 @@
 	    _react2.default.createElement(_search2.default, null)
 	), document.getElementById('demo1'));
 
-	store.dispatch({ type: "RENAME", data: "hehehehehe" });
+	store.dispatch({ type: "RENAME", data: "Search" });
 	//store.dispatch({type:"SHOW", data:true });
 
 /***/ },
@@ -22312,6 +22312,8 @@
 	  value: true
 	});
 
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _MuiThemeProvider = __webpack_require__(184);
@@ -22365,10 +22367,19 @@
 	  _createClass(SearchGrid, [{
 	    key: 'render',
 	    value: function render() {
+
+	      var layouts = { lg: [{ i: "searchText", x: 5, y: 2, w: 4, h: 0.2, static: true }, { i: "searchBtn", x: 9, y: 2, w: 1, h: 0.2, static: true }, { i: "searchResTable", x: 4, y: 2.3, w: 7, h: 0.5, static: true }],
+	        md: [{ i: "searchText", x: 5, y: 2, w: 4, h: 1, static: true }, { i: "searchBtn", x: 9, y: 2, w: 1, h: 1, static: true }, { i: "searchResTable", x: 3, y: 3, w: 6, h: 1, static: true }],
+
+	        sm: [{ i: "searchText", x: 2, y: 2, w: 2, h: 1, static: true }, { i: "searchBtn", x: 4, y: 2, w: 1, h: 1, static: true }, { i: "searchResTable", x: 2, y: 3, w: 6, h: 1, static: true }],
+
+	        xs: [{ i: "searchText", x: 0, y: 2, w: 1, h: 1, static: true }, { i: "searchBtn", x: 1, y: 2, w: 1, h: 1, static: true }, { i: "searchResTable", x: 0, y: 3, w: 6, h: 1, static: true }]
+	      };
 	      return _react2.default.createElement(
 	        ResponsiveReactGridLayout,
 	        {
 	          className: 'layout',
+	          layouts: layouts,
 	          breakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
 	          cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 } },
 	        this.props.children
@@ -22398,7 +22409,7 @@
 	      return _react2.default.createElement(_RaisedButton2.default, {
 	        label: this.context.name,
 	        onClick: function onClick() {
-	          return _this3.context.rename(_this3.context.showRes);
+	          return _this3.context.rename();
 	        } });
 	    }
 	  }]);
@@ -22462,33 +22473,48 @@
 	  _createClass(SearchResTable, [{
 	    key: 'render',
 	    value: function render() {
-	      var res = this.context.searchRes;
+	      var _this6 = this;
+
+	      var searchRes = this.context.searchRes;
+
 	      var rows = [];
-	      for (var index in res) {
+	      for (var index in searchRes) {
 	        rows.push(_react2.default.createElement(
 	          _Table.TableRow,
 	          null,
 	          _react2.default.createElement(
 	            _Table.TableRowColumn,
 	            null,
-	            res[index].type
+	            searchRes[index].tag
 	          ),
 	          _react2.default.createElement(
 	            _Table.TableRowColumn,
 	            null,
-	            res[index].source
+	            '头条'
 	          ),
 	          _react2.default.createElement(
 	            _Table.TableRowColumn,
-	            null,
-	            res[index].content
+	            { style: { width: '60%' } },
+	            searchRes[index].content
 	          )
 	        ));
 	      }
 
+	      var handleRowSelected = function handleRowSelected(slices) {
+	        var selectedItems = slices.map(function (slice) {
+	          return searchRes[slice];
+	        });
+	        _this6.context.updateSelection(selectedItems);
+	      };
+
+	      //console.dir(rows);
 	      return _react2.default.createElement(
 	        _Table.Table,
-	        null,
+	        {
+	          multiSelectable: true,
+	          onRowSelection: function onRowSelection(slices) {
+	            return handleRowSelected(slices);
+	          } },
 	        _react2.default.createElement(
 	          _Table.TableHeader,
 	          null,
@@ -22507,7 +22533,7 @@
 	            ),
 	            _react2.default.createElement(
 	              _Table.TableHeaderColumn,
-	              null,
+	              { style: { width: '60%' } },
 	              '内容'
 	            )
 	          )
@@ -22525,7 +22551,9 @@
 	}(_react.Component);
 
 	SearchResTable.contextTypes = {
-	  searchRes: _react2.default.PropTypes.any
+	  searchRes: _react2.default.PropTypes.any,
+	  updateSelection: _react2.default.PropTypes.any,
+	  resTableSelection: _react2.default.PropTypes.any
 
 	};
 
@@ -22546,12 +22574,17 @@
 	        rename: this.props.rename,
 	        text: this.props.text,
 	        textInput: this.props.textInput,
-	        showRes: this.props.showRes
+	        showRes: this.props.showRes,
+	        searchRes: this.props.searchRes,
+	        resTableSelection: this.props.resTableSelection,
+	        updateSelection: this.props.updateSelection
+
 	      };
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      //className={this.props.showRes ? 'hidden' : ''}
 	      return _react2.default.createElement(
 	        _MuiThemeProvider2.default,
 	        null,
@@ -22560,17 +22593,17 @@
 	          null,
 	          _react2.default.createElement(
 	            'div',
-	            { key: 'searchBtn', 'data-grid': { x: 9, y: 2, w: 1, h: 1, static: true } },
-	            _react2.default.createElement(SearchBtn, null)
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { key: 'searchText', 'data-grid': { x: 3, y: 2, w: 5, h: 1, static: true } },
+	            { key: 'searchText' },
 	            _react2.default.createElement(SearchTextField, null)
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { key: 'searchResTable', className: this.props.showRes ? 'hidden' : '', 'data-grid': { x: 3, y: 3, w: 6, h: 1, static: true } },
+	            { key: 'searchBtn' },
+	            _react2.default.createElement(SearchBtn, null)
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { key: 'searchResTable' },
 	            _react2.default.createElement(SearchResTable, null)
 	          )
 	        )
@@ -22587,7 +22620,10 @@
 	  text: _react2.default.PropTypes.any,
 	  textInput: _react2.default.PropTypes.any,
 	  showRes: _react2.default.PropTypes.any,
-	  searchRes: _react2.default.PropTypes.any
+	  searchRes: _react2.default.PropTypes.any,
+	  resTableSelection: _react2.default.PropTypes.any,
+	  updateSelection: _react2.default.PropTypes.any
+
 	};
 
 	var select = function select(state) {
@@ -22597,7 +22633,7 @@
 	function mapDispatchToProps(dispatch) {
 
 	  var parseJson = function parseJson(response) {
-
+	    console.dir(response);
 	    return response.json();
 	  };
 
@@ -22606,11 +22642,13 @@
 	    //console.log(json.tt);
 	    //console.dir(json.json())
 	    //json.json().then(function(j){console.log(j.tt)});
-	    // dispatch({
-	    //   type: "RENAME",
-	    //   data: json.b
-	    // });
-
+	    console.log("showclick");
+	    console.log(typeof json === 'undefined' ? 'undefined' : _typeof(json));
+	    console.dir(json);
+	    dispatch({
+	      type: "SEARCHRES",
+	      data: json
+	    });
 	  };
 	  var changeText = function changeText(text) {
 
@@ -22620,27 +22658,32 @@
 	      data: text
 	    });
 	  };
-	  //        .then(parseJson)
 
 	  return {
-	    rename: function rename(isShow) {
-	      // alert(readtext);
+	    rename: function rename() {
+
 	      dispatch({
 	        type: "SHOW",
-	        data: !isShow
+	        data: true
 	      });
-	      // fetch("/tt",
-	      //       {method: 'PUT',
-	      //        headers:{
-	      //          'Accept': 'application/json',
-	      //          'Content-Type': 'application/json'},
-	      //        body: JSON.stringify({'hehe':readtext})
-	      //       })
-	      //   .then(showClick)
-	      //   .catch(function(e){console.log('parsing failed', e)})
+	      fetch("/rand_titles", { method: 'GET',
+	        headers: {
+	          'Accept': 'application/json',
+	          'Content-Type': 'application/json' }
+	      }).then(parseJson).then(showClick).catch(function (e) {
+	        console.log('parsing failed', e);
+	      });
 	    },
 	    textInput: function textInput(event) {
 	      changeText(event.target.value);
+	    },
+	    updateSelection: function updateSelection(selectionItems) {
+	      //console.log("updateselection");
+	      // console.dir(selectionItems);
+	      dispatch({
+	        type: 'UPDATE_RES_SELECTION',
+	        data: selectionItems
+	      });
 	    }
 	  };
 	}
@@ -41141,10 +41184,23 @@
 
 
 	  switch (action.type) {
+
 	    case 'SHOW':
 	      return Object.assign({}, state, {
 	        showRes: action.data
 	      });
+
+	    case 'UPDATE_RES_SELECTION':
+
+	      return Object.assign({}, state, {
+	        resTableSelection: action.data
+	      });
+
+	    case 'SEARCHRES':
+	      return Object.assign({}, state, {
+	        searchRes: action.data
+	      });
+
 	    case 'RENAME':
 	      return {
 	        name: action.data
@@ -41156,7 +41212,9 @@
 	      });
 
 	    default:
+	      console.log("unknown action:" + action.type);
 	      return state;
+
 	  }
 	}
 

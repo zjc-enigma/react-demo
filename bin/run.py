@@ -1,5 +1,7 @@
 #coding=utf-8
 import sys
+
+
 from os import path
 from flask import Flask
 from flask import jsonify
@@ -12,6 +14,9 @@ from functools import wraps, update_wrapper
 from datetime import datetime
 from wtforms import Form, BooleanField, StringField, PasswordField, validators, IntegerField, FloatField
 from flask.ext.restful import Resource, Api, fields, marshal_with
+sys.path.append('../lib')
+from data import random_select_titles
+from data import random_select_ad
 
 class RegistrationForm(Form):
     pid = StringField('pid', [validators.DataRequired(), ])
@@ -19,7 +24,7 @@ class RegistrationForm(Form):
 
 
 
-app = Flask(__name__, static_folder="static", template_folder="templates")
+app = Flask(__name__, static_folder="../static", template_folder="../templates")
 api = Api(app)
 
 state = {}
@@ -34,7 +39,24 @@ class HelloRestful(Resource):
         #request.form['hehe']
         return state
 
-api.add_resource(HelloRestful, '/<string:hi>')
+#api.add_resource(HelloRestful, '/<string:hi>')
+
+
+
+class Title(Resource):
+    #random_select_titles(num)
+    def get(self, num=10):
+        # fake_titles = {
+        # "body1":["123", "asdf", "njjjk"],
+        # "body2":["sadf", "ioij", "vcxv"],
+        # "body3":["123", "435", "909"]
+        # }
+        # fake_titles
+        return random_select_titles(10)
+
+
+
+api.add_resource(Title, '/rand_titles')
 
 
 def nocache(view):

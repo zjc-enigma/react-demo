@@ -17,9 +17,29 @@ class SearchGrid extends Component{
   }
 
   render() {
+
+    var layouts = {lg:[{i:"searchText", x: 5, y: 2, w: 4, h: 0.2, static:true},
+                       {i:"searchBtn", x: 9, y: 2, w: 1, h: 0.2, static:true},
+                       {i:"searchResTable", x: 4, y: 2.3, w: 7, h: 0.5, static:true }],
+                   md:[
+                     {i:"searchText", x: 5, y: 2, w: 4, h: 1, static:true},
+                     {i:"searchBtn", x: 9, y: 2, w: 1, h: 1, static:true},
+                     {i:"searchResTable", x: 3, y: 3, w: 6, h: 1, static:true }],
+
+                   sm:[
+                     {i:"searchText", x: 2, y: 2, w: 2, h: 1, static:true},
+                     {i:"searchBtn", x: 4, y: 2, w: 1, h: 1, static:true},
+                     {i:"searchResTable", x: 2, y: 3, w: 6, h: 1, static:true }],
+
+                   xs:[
+                     {i:"searchText", x: 0, y: 2, w: 1, h: 1, static:true},
+                     {i:"searchBtn", x: 1, y: 2, w: 1, h: 1, static:true},
+                     {i:"searchResTable", x: 0, y: 3, w: 6, h: 1, static:true }],
+                  }
     return (
         <ResponsiveReactGridLayout
       className="layout"
+      layouts={layouts}
       breakpoints={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}
       cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}>
         {this.props.children}
@@ -41,7 +61,7 @@ class SearchBtn extends Component {
     return (
         <RaisedButton
       label={this.context.name}
-      onClick={() => this.context.rename(this.context.showRes)} />
+      onClick={() => this.context.rename()} />
     )
   }
 }
@@ -79,33 +99,45 @@ class SearchTextField extends Component {
 SearchTextField.contextTypes = {
   text: React.PropTypes.any,
   textInput: React.PropTypes.any,
-  
+
 };
 
 
 class SearchResTable extends Component {
 
   render() {
-    let res = this.context.searchRes;
+
+    var searchRes = this.context.searchRes;
+
     var rows = [];
-    for (var index in res){
-      rows.push(
-          <TableRow>
-          <TableRowColumn>{res[index].type}</TableRowColumn>
-          <TableRowColumn>{res[index].source}</TableRowColumn>
-          <TableRowColumn>{res[index].content}</TableRowColumn>
-          </TableRow>
-      )
+    for (var index in searchRes){
+        rows.push(
+            <TableRow>
+            <TableRowColumn>{searchRes[index].tag}</TableRowColumn>
+            <TableRowColumn>头条</TableRowColumn>
+            <TableRowColumn style={{width: '60%'}}>{searchRes[index].content}</TableRowColumn>
+            </TableRow>)
+
     }
 
+    const handleRowSelected = (slices) => {
+      let selectedItems = slices.map(slice => {
+        return searchRes[slice];
+      })
+      this.context.updateSelection(selectedItems);
 
+    }
+
+    //console.dir(rows);
     return (
-        <Table>
+        <Table
+      multiSelectable={true}
+      onRowSelection={(slices) => handleRowSelected(slices)}>
         <TableHeader>
         <TableRow>
         <TableHeaderColumn>类别</TableHeaderColumn>
         <TableHeaderColumn>来源</TableHeaderColumn>
-        <TableHeaderColumn>内容</TableHeaderColumn>
+        <TableHeaderColumn style={{width: '60%'}}>内容</TableHeaderColumn>
         </TableRow>
         </TableHeader>
         <TableBody>
@@ -118,7 +150,9 @@ class SearchResTable extends Component {
 
 SearchResTable.contextTypes = {
   searchRes: React.PropTypes.any,
-  
+  updateSelection: React.PropTypes.any,
+  resTableSelection: React.PropTypes.any,
+
 };
 
 
@@ -127,26 +161,33 @@ class SearchBar extends Component {
   constructor(props, context){
     super(props, context);
   }
+
   getChildContext(){
     return {
       name: this.props.name,
       rename: this.props.rename,
       text: this.props.text,
       textInput: this.props.textInput,
-      showRes: this.props.showRes
+      showRes: this.props.showRes,
+      searchRes: this.props.searchRes,
+      resTableSelection: this.props.resTableSelection,
+      updateSelection: this.props.updateSelection,
+
     }
   }
 
   render() {
+    //className={this.props.showRes ? 'hidden' : ''}
     return (
         <MuiThemeProvider>
         <SearchGrid>
-        <div key={'searchBtn'} data-grid={{ x: 9, y: 2, w: 1, h: 1, static: true }}>
-        <SearchBtn /></div>
 
-        <div key={'searchText'} data-grid={{ x: 3, y: 2, w: 5, h: 1, static: true }}><SearchTextField /></div>
+        <div key={'searchText'} ><SearchTextField /></div>
 
-        <div key={'searchResTable'} className={this.props.showRes ? 'hidden' : ''} data-grid={{ x: 3, y: 3, w: 6, h: 1, static: true }}><SearchResTable /></div> 
+        <div key={'searchBtn'} ><SearchBtn /></div>
+
+        <div key={'searchResTable'} ><SearchResTable /></div>
+
         </SearchGrid>
         </MuiThemeProvider>
     )
@@ -160,6 +201,9 @@ SearchBar.childContextTypes = {
   textInput: React.PropTypes.any,
   showRes: React.PropTypes.any,
   searchRes: React.PropTypes.any,
+  resTableSelection: React.PropTypes.any,
+  updateSelection: React.PropTypes.any,
+
 };
 
 
@@ -169,7 +213,7 @@ let select = state => {return state};
 function mapDispatchToProps(dispatch) {
 
   let parseJson = function(response){
-
+    console.dir(response)
     return response.json()
   };
 
@@ -178,10 +222,13 @@ function mapDispatchToProps(dispatch) {
     //console.log(json.tt);
     //console.dir(json.json())
     //json.json().then(function(j){console.log(j.tt)});
-    // dispatch({
-    //   type: "RENAME",
-    //   data: json.b
-    // });
+    console.log("showclick");
+    console.log(typeof json);
+    console.dir(json);
+    dispatch({
+      type: "SEARCHRES",
+      data: json
+    });
 
   };
   let changeText = function(text){
@@ -192,27 +239,35 @@ function mapDispatchToProps(dispatch) {
       data: text
     });
   }
-  //        .then(parseJson)
   
+
   return {
-    rename: function(isShow){
-      // alert(readtext);
+    rename: function(){
+
       dispatch({
         type:"SHOW",
-        data:!isShow
+        data: true
       })
-      // fetch("/tt",
-      //       {method: 'PUT',
-      //        headers:{
-      //          'Accept': 'application/json',
-      //          'Content-Type': 'application/json'},
-      //        body: JSON.stringify({'hehe':readtext})
-      //       })
-      //   .then(showClick)
-      //   .catch(function(e){console.log('parsing failed', e)})
+      fetch("/rand_titles",
+            {method: 'GET',
+             headers:{
+               'Accept': 'application/json',
+               'Content-Type': 'application/json'},
+            })
+        .then(parseJson)
+        .then(showClick)
+        .catch(function(e){console.log('parsing failed', e)})
     },
     textInput: function(event){
       changeText(event.target.value);
+    },
+    updateSelection: function(selectionItems){
+      //console.log("updateselection");
+      // console.dir(selectionItems);
+      dispatch({
+        type: 'UPDATE_RES_SELECTION',
+        data: selectionItems
+      });
     }
   };
 }

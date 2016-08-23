@@ -1,0 +1,1727 @@
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 81, in <module>
+    click_refresh_btn()
+  File "crawl_ad.py", line 56, in click_refresh_btn
+    browser.find_element_by_css_selector('.refresh_btn.btn').click()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 437, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 752, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {"method":"css selector","selector":".refresh_btn.btn"}
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 81, in <module>
+    click_refresh_btn()
+  File "crawl_ad.py", line 56, in click_refresh_btn
+    browser.find_element_by_css_selector('.refresh_btn.btn').click()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 437, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 752, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 81, in <module>
+    click_refresh_btn()
+  File "crawl_ad.py", line 56, in click_refresh_btn
+    browser.find_element_by_css_selector('.refresh_btn.btn').click()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 437, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 752, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 81, in <module>
+    click_refresh_btn()
+  File "crawl_ad.py", line 56, in click_refresh_btn
+    browser.find_element_by_css_selector('.refresh_btn.btn').click()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 437, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 752, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 81, in <module>
+    click_refresh_btn()
+  File "crawl_ad.py", line 56, in click_refresh_btn
+    browser.find_element_by_css_selector('.refresh_btn.btn').click()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 437, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 752, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 81, in <module>
+    click_refresh_btn()
+  File "crawl_ad.py", line 56, in click_refresh_btn
+    browser.find_element_by_css_selector('.refresh_btn.btn').click()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 437, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 752, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 81, in <module>
+    click_refresh_btn()
+  File "crawl_ad.py", line 56, in click_refresh_btn
+    browser.find_element_by_css_selector('.refresh_btn.btn').click()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 437, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 752, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 81, in <module>
+    click_refresh_btn()
+  File "crawl_ad.py", line 56, in click_refresh_btn
+    browser.find_element_by_css_selector('.refresh_btn.btn').click()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 437, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 752, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 81, in <module>
+    click_refresh_btn()
+  File "crawl_ad.py", line 56, in click_refresh_btn
+    browser.find_element_by_css_selector('.refresh_btn.btn').click()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 437, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 752, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 81, in <module>
+    click_refresh_btn()
+  File "crawl_ad.py", line 56, in click_refresh_btn
+    browser.find_element_by_css_selector('.refresh_btn.btn').click()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 437, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 752, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 81, in <module>
+    click_refresh_btn()
+  File "crawl_ad.py", line 56, in click_refresh_btn
+    browser.find_element_by_css_selector('.refresh_btn.btn').click()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 437, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 752, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 81, in <module>
+    click_refresh_btn()
+  File "crawl_ad.py", line 56, in click_refresh_btn
+    browser.find_element_by_css_selector('.refresh_btn.btn').click()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 437, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 752, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 81, in <module>
+    click_refresh_btn()
+  File "crawl_ad.py", line 56, in click_refresh_btn
+    browser.find_element_by_css_selector('.refresh_btn.btn').click()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 437, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 752, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 81, in <module>
+    click_refresh_btn()
+  File "crawl_ad.py", line 56, in click_refresh_btn
+    browser.find_element_by_css_selector('.refresh_btn.btn').click()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 437, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 752, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 81, in <module>
+    click_refresh_btn()
+  File "crawl_ad.py", line 56, in click_refresh_btn
+    browser.find_element_by_css_selector('.refresh_btn.btn').click()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 437, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 752, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 81, in <module>
+    click_refresh_btn()
+  File "crawl_ad.py", line 56, in click_refresh_btn
+    browser.find_element_by_css_selector('.refresh_btn.btn').click()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 437, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 752, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 81, in <module>
+    click_refresh_btn()
+  File "crawl_ad.py", line 56, in click_refresh_btn
+    browser.find_element_by_css_selector('.refresh_btn.btn').click()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 437, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 752, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 81, in <module>
+    click_refresh_btn()
+  File "crawl_ad.py", line 56, in click_refresh_btn
+    browser.find_element_by_css_selector('.refresh_btn.btn').click()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 437, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 752, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 82, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 26, in <module>
+    browser.refresh()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 614, in refresh
+    self.execute(Command.REFRESH)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 26, in <module>
+    browser.refresh()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 614, in refresh
+    self.execute(Command.REFRESH)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 78, in <module>
+    get_ad_titles()
+  File "crawl_ad.py", line 36, in get_ad_titles
+    doc = pq(browser.page_source)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 501, in page_source
+    return self.execute(Command.GET_PAGE_SOURCE)['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 26, in <module>
+    browser.refresh()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 614, in refresh
+    self.execute(Command.REFRESH)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 26, in <module>
+    browser.refresh()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 614, in refresh
+    self.execute(Command.REFRESH)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 26, in <module>
+    browser.refresh()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 614, in refresh
+    self.execute(Command.REFRESH)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 25, in <module>
+    browser.get(base_url)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 248, in get
+    self.execute(Command.GET, {'url': url})
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 81, in <module>
+    click_refresh_btn()
+  File "crawl_ad.py", line 56, in click_refresh_btn
+    browser.find_element_by_css_selector('.refresh_btn.btn').click()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 437, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 752, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 81, in <module>
+    click_refresh_btn()
+  File "crawl_ad.py", line 56, in click_refresh_btn
+    browser.find_element_by_css_selector('.refresh_btn.btn').click()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 437, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 752, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 26, in <module>
+    browser.refresh()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 614, in refresh
+    self.execute(Command.REFRESH)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 26, in <module>
+    browser.refresh()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 614, in refresh
+    self.execute(Command.REFRESH)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 26, in <module>
+    browser.refresh()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 614, in refresh
+    self.execute(Command.REFRESH)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 26, in <module>
+    browser.refresh()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 614, in refresh
+    self.execute(Command.REFRESH)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 25, in <module>
+    browser.get(base_url)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 248, in get
+    self.execute(Command.GET, {'url': url})
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 26, in <module>
+    browser.refresh()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 614, in refresh
+    self.execute(Command.REFRESH)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 25, in <module>
+    browser.get(base_url)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 248, in get
+    self.execute(Command.GET, {'url': url})
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 25, in <module>
+    browser.get(base_url)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 248, in get
+    self.execute(Command.GET, {'url': url})
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 25, in <module>
+    browser.get(base_url)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 248, in get
+    self.execute(Command.GET, {'url': url})
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 26, in <module>
+    browser.refresh()
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 614, in refresh
+    self.execute(Command.REFRESH)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 25, in <module>
+    browser.get(base_url)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 248, in get
+    self.execute(Command.GET, {'url': url})
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 25, in <module>
+    browser.get(base_url)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 248, in get
+    self.execute(Command.GET, {'url': url})
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 25, in <module>
+    browser.get(base_url)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 248, in get
+    self.execute(Command.GET, {'url': url})
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 25, in <module>
+    browser.get(base_url)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 248, in get
+    self.execute(Command.GET, {'url': url})
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 25, in <module>
+    browser.get(base_url)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 248, in get
+    self.execute(Command.GET, {'url': url})
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 25, in <module>
+    browser.get(base_url)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 248, in get
+    self.execute(Command.GET, {'url': url})
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 24, in <module>
+    browser = webdriver.Chrome(chrome_options=options)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/chrome/webdriver.py", line 69, in __init__
+    desired_capabilities=desired_capabilities)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 90, in __init__
+    self.start_session(desired_capabilities, browser_profile)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 177, in start_session
+    response = self.execute(Command.NEW_SESSION, capabilities)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: session not created exception
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 24, in <module>
+    browser = webdriver.Chrome(chrome_options=options)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/chrome/webdriver.py", line 69, in __init__
+    desired_capabilities=desired_capabilities)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 90, in __init__
+    self.start_session(desired_capabilities, browser_profile)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 177, in start_session
+    response = self.execute(Command.NEW_SESSION, capabilities)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: session not created exception
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 24, in <module>
+    browser = webdriver.Chrome(chrome_options=options)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/chrome/webdriver.py", line 69, in __init__
+    desired_capabilities=desired_capabilities)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 90, in __init__
+    self.start_session(desired_capabilities, browser_profile)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 177, in start_session
+    response = self.execute(Command.NEW_SESSION, capabilities)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: session not created exception
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 24, in <module>
+    browser = webdriver.Chrome(chrome_options=options)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/chrome/webdriver.py", line 69, in __init__
+    desired_capabilities=desired_capabilities)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 90, in __init__
+    self.start_session(desired_capabilities, browser_profile)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 177, in start_session
+    response = self.execute(Command.NEW_SESSION, capabilities)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: session not created exception
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 24, in <module>
+    browser = webdriver.Chrome(chrome_options=options)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/chrome/webdriver.py", line 69, in __init__
+    desired_capabilities=desired_capabilities)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 90, in __init__
+    self.start_session(desired_capabilities, browser_profile)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 177, in start_session
+    response = self.execute(Command.NEW_SESSION, capabilities)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: session not created exception
+from timeout: Timed out receiving message from renderer: 600.000
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 24, in <module>
+    browser = webdriver.Chrome(chrome_options=options)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/chrome/webdriver.py", line 69, in __init__
+    desired_capabilities=desired_capabilities)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 90, in __init__
+    self.start_session(desired_capabilities, browser_profile)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 177, in start_session
+    response = self.execute(Command.NEW_SESSION, capabilities)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: session not created exception
+from timeout: Timed out receiving message from renderer: 600.000
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 25, in <module>
+    browser.get(base_url)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 248, in get
+    self.execute(Command.GET, {'url': url})
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash
+from unknown error: cannot determine loading status
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 24, in <module>
+    browser = webdriver.Chrome(chrome_options=options)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/chrome/webdriver.py", line 69, in __init__
+    desired_capabilities=desired_capabilities)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 90, in __init__
+    self.start_session(desired_capabilities, browser_profile)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 177, in start_session
+    response = self.execute(Command.NEW_SESSION, capabilities)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: session not created exception
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 24, in <module>
+    browser = webdriver.Chrome(chrome_options=options)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/chrome/webdriver.py", line 69, in __init__
+    desired_capabilities=desired_capabilities)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 90, in __init__
+    self.start_session(desired_capabilities, browser_profile)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 177, in start_session
+    response = self.execute(Command.NEW_SESSION, capabilities)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: session not created exception
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
+Traceback (most recent call last):
+  File "crawl_ad.py", line 24, in <module>
+    browser = webdriver.Chrome(chrome_options=options)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/chrome/webdriver.py", line 69, in __init__
+    desired_capabilities=desired_capabilities)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 90, in __init__
+    self.start_session(desired_capabilities, browser_profile)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 177, in start_session
+    response = self.execute(Command.NEW_SESSION, capabilities)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: session not created exception
+from tab crashed
+  (Session info: chrome=51.0.2704.79)
+  (Driver info: chromedriver=2.21,platform=Linux 4.4.0-22-generic x86_64)
+
