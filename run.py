@@ -70,7 +70,6 @@ def poste():
     #form = RegistrationForm.fro
     if request.method == 'POST':
         pid = form.pid.data
-        #print ":" + str(pid)
         return "form encoded :" +pid
 
     return '{}'

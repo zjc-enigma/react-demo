@@ -71,7 +71,7 @@ class SearchTextField extends Component {
       hintText="Input your secret"
       value={this.context.text}
       onChange={this.context.textInput}
-      fullWidth={true}/>
+      fullWidth={true} />
     )
   }
 }
@@ -85,20 +85,15 @@ SearchTextField.contextTypes = {
 
 class SearchResTable extends Component {
 
-  
   render() {
-    let aa = [{a:123, b:231, c:980},
-              {a:13, b:21, c:90},
-              {a:23, b:31, c:80},
-              {a:3, b:1, c:0}];
-
+    let res = this.context.searchRes;
     var rows = [];
-    for (var index in aa){
+    for (var index in res){
       rows.push(
           <TableRow>
-          <TableRowColumn>{aa[index].a}</TableRowColumn>
-          <TableRowColumn>{aa[index].b}</TableRowColumn>
-          <TableRowColumn>{aa[index].c}</TableRowColumn>
+          <TableRowColumn>{res[index].type}</TableRowColumn>
+          <TableRowColumn>{res[index].source}</TableRowColumn>
+          <TableRowColumn>{res[index].content}</TableRowColumn>
           </TableRow>
       )
     }
@@ -121,6 +116,11 @@ class SearchResTable extends Component {
   }
 }
 
+SearchResTable.contextTypes = {
+  searchRes: React.PropTypes.any,
+  
+};
+
 
 class SearchBar extends Component {
 
@@ -141,12 +141,12 @@ class SearchBar extends Component {
     return (
         <MuiThemeProvider>
         <SearchGrid>
-        <div key={'searchBtn'} data-grid={{ x: 2, y: 2, w: 1, h: 1, static: true }}>
+        <div key={'searchBtn'} data-grid={{ x: 9, y: 2, w: 1, h: 1, static: true }}>
         <SearchBtn /></div>
 
-        <div key={'searchText'} data-grid={{ x: 0, y: 2, w: 2, h: 1, static: true }}><SearchTextField /></div>
+        <div key={'searchText'} data-grid={{ x: 3, y: 2, w: 5, h: 1, static: true }}><SearchTextField /></div>
 
-        <div key={'searchResTable'} className={this.props.showRes ? 'hidden' : ''} data-grid={{ x: 0, y: 3, w: 6, h: 1, static: true }}><SearchResTable /></div> 
+        <div key={'searchResTable'} className={this.props.showRes ? 'hidden' : ''} data-grid={{ x: 3, y: 3, w: 6, h: 1, static: true }}><SearchResTable /></div> 
         </SearchGrid>
         </MuiThemeProvider>
     )
@@ -158,7 +158,8 @@ SearchBar.childContextTypes = {
   rename: React.PropTypes.any,
   text: React.PropTypes.any,
   textInput: React.PropTypes.any,
-  showRes: React.PropTypes.any
+  showRes: React.PropTypes.any,
+  searchRes: React.PropTypes.any,
 };
 
 
