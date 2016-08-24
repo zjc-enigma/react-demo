@@ -2,10 +2,10 @@ export default function reducer(state = [], action) {
 
   switch(action.type){
   case 'MULTISELECT':
-
-    return  Object.assign({}, state, {
-      selectedWords: action.data,
-    })
+    ret = {}
+    ret['selectedWord' + action.id.toString()] = action.data;
+    return  Object.assign({}, state, ret)
+    
   case 'SHOW':
     return  Object.assign({}, state, {
       showRes: action.data,

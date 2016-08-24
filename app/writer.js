@@ -10,9 +10,11 @@ import TextField from 'material-ui/TextField';
 import renameBtn from './actions';
 import 'whatwg-fetch';
 import Select from 'react-select';
-import { PropTypes } from 'react'
+import { PropTypes } from 'react';
 
-class WriterGrid extends Component{
+const demoWords = ["农夫山泉", "是","一家","中国", "大陆", "的", "饮用水", "和", "饮料", "生产","企业"];
+
+class WordsGrid extends Component{
 
   constructor(props, context){
     super(props, context);
@@ -20,23 +22,16 @@ class WriterGrid extends Component{
 
   render() {
 
-    var layouts = {lg:[{i:"searchText", x: 5, y: 2, w: 4, h: 0.2, static:true},
-                       {i:"searchBtn", x: 9, y: 2, w: 1, h: 0.2, static:true},
-                       {i:"searchResTable", x: 4, y: 2.3, w: 7, h: 0.5, static:true }],
-                   md:[
-                     {i:"searchText", x: 5, y: 2, w: 4, h: 1, static:true},
-                     {i:"searchBtn", x: 9, y: 2, w: 1, h: 1, static:true},
-                     {i:"searchResTable", x: 3, y: 3, w: 6, h: 1, static:true }],
+    var wordsLayouts = [];
 
-                   sm:[
-                     {i:"searchText", x: 2, y: 2, w: 2, h: 1, static:true},
-                     {i:"searchBtn", x: 4, y: 2, w: 1, h: 1, static:true},
-                     {i:"searchResTable", x: 2, y: 3, w: 6, h: 1, static:true }],
+    for (var index in demoWords){
+      wordsLayouts.push({i:"word"+index.toString(), x:parseInt(index)*0.5, y:2, w:0.5, h:0.2, static:true})
 
-                   xs:[
-                     {i:"searchText", x: 0, y: 2, w: 1, h: 1, static:true},
-                     {i:"searchBtn", x: 1, y: 2, w: 1, h: 1, static:true},
-                     {i:"searchResTable", x: 0, y: 3, w: 6, h: 1, static:true }],
+    }
+    var layouts = {lg:wordsLayouts,
+                   md:wordsLayouts,
+                   sm:wordsLayouts,
+                   xs:wordsLayouts,
                   }
     return (
         <ResponsiveReactGridLayout
@@ -50,10 +45,7 @@ class WriterGrid extends Component{
   }
 }
 
-
-
-
-class Writer extends Component{
+class WordComponent extends Component{
 
   render() {
     var options = [
@@ -67,17 +59,44 @@ class Writer extends Component{
     return (
         <MuiThemeProvider>
         <Select
-      placeholder="hello"
+      placeholder={this.props.holder}
       multi={true}
       name="form-field-name"
-      value={this.props.selectedWords}
+      value={this.props.value}
       options={options}
-      onChange={(val) => this.props.multiSelect(val)}
+      onChange={(val) => this.props.multiSelect(val, this.props.id)}
         />
         </MuiThemeProvider>
     )
   }
 }
+
+class Writer extends Component {
+
+  render() {
+    var words = [];
+    for (var index in demoWords){
+      words.push(
+          <div key={"word"+index.toString()}>
+          <WordComponent
+        holder={demoWords[index]}
+        value={eval('this.props.selectedWord' + index.toString())}
+        id={index} /></div>
+      )
+    }
+    return (
+        <MuiThemeProvider>
+        <WordsGrid>
+        {words}
+        </WordsGrid>
+        </MuiThemeProvider>
+    )
+  }
+}
+
+
+
+
 
 // Writer.propTypes = {
 //   selectedWords: PropTypes.any,
@@ -111,8 +130,8 @@ let select = state => {return state};
 
 function mapDispatchToProps(dispatch) {
   return {
-    multiSelect: (val) => {
-      dispatch({type:"MULTISELECT", data:val});
+    multiSelect: (val, id) => {
+      dispatch({type:"MULTISELECT", data:val, id:id});
     },
   };
 }
