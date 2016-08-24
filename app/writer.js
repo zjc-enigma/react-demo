@@ -55,23 +55,7 @@ class WriterGrid extends Component{
 
 class Writer extends Component{
 
-  // constructor(props, context){
-  //   super(props, context);
-  // }
-  // getChildContext(){
-  //   return {
-  //   }
-  // }
-
-  // logChange() {
-  //   //console.log("Selected: " + val.value);
-  //   //console.dir(this);
-  //   //console.dir(this.props.selectedWords);
-  //   this.props.multiSelect();
-  // }
-
   render() {
-
     var options = [
       { value: 'one', label: 'One' },
       { value: 'two', label: 'Two' },
@@ -80,10 +64,10 @@ class Writer extends Component{
       { value: 'far', label: 'T' },
     ];
 
-
     return (
         <MuiThemeProvider>
         <Select
+      placeholder="hello"
       multi={true}
       name="form-field-name"
       value={this.props.selectedWords}

@@ -32369,23 +32369,6 @@
 
 	  _createClass(Writer, [{
 	    key: 'render',
-
-
-	    // constructor(props, context){
-	    //   super(props, context);
-	    // }
-	    // getChildContext(){
-	    //   return {
-	    //   }
-	    // }
-
-	    // logChange() {
-	    //   //console.log("Selected: " + val.value);
-	    //   //console.dir(this);
-	    //   //console.dir(this.props.selectedWords);
-	    //   this.props.multiSelect();
-	    // }
-
 	    value: function render() {
 	      var _this3 = this;
 
@@ -32395,6 +32378,7 @@
 	        _MuiThemeProvider2.default,
 	        null,
 	        _react2.default.createElement(_reactSelect2.default, {
+	          placeholder: 'hello',
 	          multi: true,
 	          name: 'form-field-name',
 	          value: this.props.selectedWords,
