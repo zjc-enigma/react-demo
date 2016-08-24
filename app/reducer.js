@@ -1,9 +1,13 @@
 export default function reducer(state = [], action) {
 
   switch(action.type){
+  case 'MULTISELECT':
 
+    return  Object.assign({}, state, {
+      selectedWords: action.data,
+    })
   case 'SHOW':
-    return   Object.assign({}, state, {
+    return  Object.assign({}, state, {
       showRes: action.data,
     })
 

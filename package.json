@@ -28,6 +28,7 @@
     "react-grid-layout-builder": "0.0.6",
     "react-redux": "^4.4.5",
     "react-resizable": "^1.4.2",
+    "react-select": "^1.0.0-beta14",
     "react-tap-event-plugin": "^1.0.0",
     "redux": "^3.5.2",
     "webpack": "^1.13.1",
