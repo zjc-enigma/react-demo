@@ -1,11 +1,18 @@
 export default function reducer(state = [], action) {
 
   switch(action.type){
+
+  case 'GET_SIM_WORDS':
+    var ret = {}
+    ret['simWords' + action.id.toString()] = action.data;
+    return Object.assign({}, state, ret)
+
   case 'MULTISELECT':
-    ret = {}
-    ret['selectedWord' + action.id.toString()] = action.data;
+    var ret = {}
+    ret["selected" + action.id.toString()] = action.data
+
     return  Object.assign({}, state, ret)
-    
+
   case 'SHOW':
     return  Object.assign({}, state, {
       showRes: action.data,

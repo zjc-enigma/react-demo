@@ -18,16 +18,20 @@ class WordsGrid extends Component{
 
   constructor(props, context){
     super(props, context);
+
   }
 
   render() {
-
+    console.dir(this.props.options);
     var wordsLayouts = [];
 
     for (var index in demoWords){
-      wordsLayouts.push({i:"word"+index.toString(), x:parseInt(index)*0.5, y:2, w:0.5, h:0.2, static:true})
+      wordsLayouts.push({i:"word"+index.toString(), x:parseInt(index), y:2, w:1, h:0.2, static:true})
 
     }
+
+    wordsLayouts.push({i:"generate", x:15, y:2, w:1, h:0.2, static:true})
+
     var layouts = {lg:wordsLayouts,
                    md:wordsLayouts,
                    sm:wordsLayouts,
@@ -38,7 +42,7 @@ class WordsGrid extends Component{
       className="layout"
       layouts={layouts}
       breakpoints={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}
-      cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}>
+      cols={{lg: 16, md: 10, sm: 6, xs: 4, xxs: 2}}>
         {this.props.children}
         </ResponsiveReactGridLayout>
     );
@@ -46,6 +50,15 @@ class WordsGrid extends Component{
 }
 
 class WordComponent extends Component{
+
+  constructor(props, context){
+    super(props, context);
+    this.props.getSimWords(this.props.holder, this.props.id)
+  }
+
+  handler(val) {
+    this.props.multiSelect(val, this.props.id)
+  }
 
   render() {
     var options = [
@@ -63,27 +76,83 @@ class WordComponent extends Component{
       multi={true}
       name="form-field-name"
       value={this.props.value}
-      options={options}
-      onChange={(val) => this.props.multiSelect(val, this.props.id)}
+      options={this.props.options}
+      onChange={(val) => this.handler(val)}
         />
         </MuiThemeProvider>
     )
   }
 }
 
+
+class GenerateButton extends Component{
+
+  generate(){
+
+    var res = "";
+    for (var index in demoWords){
+      var selected = eval("this.props.all.selected" + index.toString())
+
+      if(selected) {
+
+        var randWord = selected[Math.floor(Math.random()*selected.length)].label;
+
+        res += randWord;
+      }
+      else {
+        res += demoWords[index];
+      }
+    }
+    console.log("generated:" + res);
+    return res;
+  }
+  render(){
+
+    return(
+        <MuiThemeProvider>
+        <RaisedButton
+      label={this.props.name}
+      onClick={() => this.generate()}
+        />
+        </MuiThemeProvider>)
+  }
+}
+
+
 class Writer extends Component {
+
+  // getValue(index){
+  //   var selected = this.props.selected;
+
+  //   if(selected){
+  //                                    return eval("selected.word" + index.toString());
+  //   }
+  //   else{
+  //     return [];
+  //   }
+  // }
 
   render() {
     var words = [];
+
     for (var index in demoWords){
       words.push(
           <div key={"word"+index.toString()}>
           <WordComponent
         holder={demoWords[index]}
-        value={eval('this.props.selectedWord' + index.toString())}
+        value={eval("this.props.selected" + index.toString())}
+        multiSelect={this.props.multiSelect}
+        getSimWords={this.props.getSimWords}
+        options={eval('this.props.simWords' + index.toString())}
         id={index} /></div>
       )
     }
+    words.push(<div key={"generate"}>
+               <GenerateButton
+               name="Go"
+               all={this.props}
+               /> </div>)
+
     return (
         <MuiThemeProvider>
         <WordsGrid>
@@ -94,45 +163,44 @@ class Writer extends Component {
   }
 }
 
-
-
-
-
-// Writer.propTypes = {
-//   selectedWords: PropTypes.any,
-//   multiSelect: PropTypes.any,
-// }
-
-class TButton extends Component{
-
-  render(){
-    return(
-        <MuiThemeProvider>
-        <RaisedButton
-      label={this.props.name}
-      onClick={(name) => this.props.rename(name)}
-        />
-        </MuiThemeProvider>
-    )
-  }
-
-}
-
-
 let select = state => {return state};
 
-// function mapStateToProps(state) {
-//   return {
-//     name: state.selectedWords,
-//   };
-// }
-
-
 function mapDispatchToProps(dispatch) {
+  let parseJson = function(response){
+    return response.json()
+  };
+
+  let updateSimWords = function(json, id) {
+
+    dispatch({
+      type: "GET_SIM_WORDS",
+      data: json,
+      id: id
+    });
+  };
+
   return {
     multiSelect: (val, id) => {
       dispatch({type:"MULTISELECT", data:val, id:id});
+
+      console.log('multiselect');
+      console.dir(val);
     },
+    getSimWords: (word, id) => {
+
+      fetch("/simwords",
+            {method: "POST",
+             headers:{
+               'Accept': 'application/json',
+               'Content-Type': 'application/json'},
+             body: JSON.stringify({base_word: word})
+            })
+        .then(parseJson)
+        .then((json) => updateSimWords(json, id))
+        .catch(function(e){console.log('parsing failed', e)})
+
+    }
+
   };
 }
 export default connect(select, mapDispatchToProps)(Writer);

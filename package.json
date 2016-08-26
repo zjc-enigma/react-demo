@@ -28,10 +28,16 @@
     "react-grid-layout-builder": "0.0.6",
     "react-redux": "^4.4.5",
     "react-resizable": "^1.4.2",
+    "react-router": "^2.7.0",
+    "react-router-redux": "^4.0.5",
     "react-select": "^1.0.0-beta14",
     "react-tap-event-plugin": "^1.0.0",
     "redux": "^3.5.2",
     "webpack": "^1.13.1",
     "whatwg-fetch": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.8.0",
+    "babel-preset-stage-2": "^6.13.0"
   }
 }

@@ -20,20 +20,24 @@ class SearchGrid extends Component{
 
     var layouts = {lg:[{i:"searchText", x: 5, y: 2, w: 4, h: 0.2, static:true},
                        {i:"searchBtn", x: 9, y: 2, w: 1, h: 0.2, static:true},
+                       {i:"processBtn", x: 10, y: 2, w: 1, h: 0.2, static:true},
                        {i:"searchResTable", x: 4, y: 2.3, w: 7, h: 0.5, static:true }],
                    md:[
                      {i:"searchText", x: 5, y: 2, w: 4, h: 1, static:true},
                      {i:"searchBtn", x: 9, y: 2, w: 1, h: 1, static:true},
+                     {i:"processBtn", x: 10, y: 2, w: 1, h: 0.2, static:true},
                      {i:"searchResTable", x: 3, y: 3, w: 6, h: 1, static:true }],
 
                    sm:[
                      {i:"searchText", x: 2, y: 2, w: 2, h: 1, static:true},
                      {i:"searchBtn", x: 4, y: 2, w: 1, h: 1, static:true},
+                     {i:"processBtn", x: 5, y: 2, w: 1, h: 0.2, static:true},
                      {i:"searchResTable", x: 2, y: 3, w: 6, h: 1, static:true }],
 
                    xs:[
                      {i:"searchText", x: 0, y: 2, w: 1, h: 1, static:true},
                      {i:"searchBtn", x: 1, y: 2, w: 1, h: 1, static:true},
+                     {i:"processBtn", x: 2, y: 2, w: 1, h: 0.2, static:true},
                      {i:"searchResTable", x: 0, y: 3, w: 6, h: 1, static:true }],
                   }
     return (
@@ -49,29 +53,43 @@ class SearchGrid extends Component{
 }
 
 
-
 class SearchBtn extends Component {
   constructor(props, context){
     super(props, context);
   }
-
+  search(text){
+    this.context.searchQuery(text);
+  }
   render() {
     //() => this.context.rename(this.context.text)
     //
     return (
         <RaisedButton
-      label={this.context.name}
-      onClick={() => this.context.rename()} />
+      label={this.props.name}
+      onClick={() => this.search(this.context.text)} />
     )
   }
 }
 SearchBtn.contextTypes = {
   name: React.PropTypes.any,
-  rename: React.PropTypes.any,
+  searchQuery: React.PropTypes.any,
   text: React.PropTypes.any,
   showRes: React.PropTypes.any
 };
 
+class ProcessBtn extends Component {
+
+  constructor(props, context){
+    super(props, context);
+  }
+  render() {
+    return (
+        <RaisedButton
+      label={this.props.name}
+      onClick={() => {}} />
+    )
+  }
+}
 
 
 
@@ -117,7 +135,7 @@ class SearchResTable extends Component {
     //
     console.log('is selected');
     console.dir(this.context.resTableSelection);
-    
+
     for (var index in this.context.resTableSelection){
       if (this.context.resTableSelection[index].content === Res.content){
         return true;
@@ -196,7 +214,7 @@ class SearchBar extends Component {
   getChildContext(){
     return {
       name: this.props.name,
-      rename: this.props.rename,
+      searchQuery: this.props.searchQuery,
       text: this.props.text,
       textInput: this.props.textInput,
       showRes: this.props.showRes,
@@ -215,7 +233,9 @@ class SearchBar extends Component {
 
         <div key={'searchText'} ><SearchTextField /></div>
 
-        <div key={'searchBtn'} ><SearchBtn /></div>
+        <div key={'searchBtn'} ><SearchBtn name={"Search"}/></div>
+        
+        <div key={'processBtn'} ><ProcessBtn name={"Process"}/></div>
 
         <div key={'searchResTable'} ><SearchResTable /></div>
 
@@ -227,7 +247,7 @@ class SearchBar extends Component {
 
 SearchBar.childContextTypes = {
   name: React.PropTypes.any,
-  rename: React.PropTypes.any,
+  searchQuery: React.PropTypes.any,
   text: React.PropTypes.any,
   textInput: React.PropTypes.any,
   showRes: React.PropTypes.any,
@@ -244,24 +264,20 @@ let select = state => {return state};
 function mapDispatchToProps(dispatch) {
 
   let parseJson = function(response){
-    console.dir(response)
     return response.json()
   };
 
   let showClick = function(json) {
-    // alert('onclick');
-    //console.log(json.tt);
-    //console.dir(json.json())
-    //json.json().then(function(j){console.log(j.tt)});
-    console.log("showclick");
-    console.log(typeof json);
-    console.dir(json);
+
+    console.dir(json)
+
     dispatch({
       type: "SEARCHRES",
       data: json
     });
-
   };
+
+
   let changeText = function(text){
 
     console.log("change text");
@@ -270,21 +286,39 @@ function mapDispatchToProps(dispatch) {
       data: text
     });
   }
-  
 
   return {
+    searchQuery: function(text){
+
+      // var url = new URL("/query"),
+      //     params = {key:'大陆'}
+      // Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+      // fetch('http://example.com/foo?name=' + encodeURIComponent(name))
+
+      fetch('/query',
+            {method: "POST",
+             headers:{
+               'Accept': 'application/json',
+               'Content-Type': 'application/json'},
+             body: JSON.stringify({key: text})
+            })
+        .then(parseJson)
+        .then(showClick)
+        .catch(function(e){console.log('parsing failed', e)})
+    },
     rename: function(){
 
       dispatch({
         type:"SHOW",
-        data: true
+        data: true,
       })
       fetch("/rand_titles",
             {method: 'GET',
              headers:{
                'Accept': 'application/json',
                'Content-Type': 'application/json'},
-            })
+             }
+            )
         .then(parseJson)
         .then(showClick)
         .catch(function(e){console.log('parsing failed', e)})

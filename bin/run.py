@@ -1,7 +1,7 @@
 #coding=utf-8
 import sys
-
-
+reload(sys)
+sys.setdefaultencoding('UTF8')
 from os import path
 from flask import Flask
 from flask import jsonify
@@ -13,38 +13,53 @@ from flask import make_response
 from functools import wraps, update_wrapper
 from datetime import datetime
 from wtforms import Form, BooleanField, StringField, PasswordField, validators, IntegerField, FloatField
-from flask.ext.restful import Resource, Api, fields, marshal_with
+from flask.ext.restful import Resource, Api, fields, marshal_with, reqparse
 sys.path.append('../lib')
 from data import random_select_titles
+from data import search_title
 from data import random_select_ad
-
-class RegistrationForm(Form):
-    pid = StringField('pid', [validators.DataRequired(), ])
-
-
+import gensim
+word_model = gensim.models.Word2Vec.load_word2vec_format("../data/model2", binary=False)
 
 
 app = Flask(__name__, static_folder="../static", template_folder="../templates")
 api = Api(app)
 
-state = {}
+#state = {}
+# class HelloRestful(Resource):
+#     def get(self, hi):
+#         return {hi: "world"}
 
-class HelloRestful(Resource):
-    def get(self, hi):
-        return {hi: "world"}
-
-    def put(self, hi):
-
-        state[hi] = request.json['hehe']
-        #request.form['hehe']
-        return state
-
+#     def put(self, hi):
+#         state[hi] = request.json['hehe']
+#         #request.form['hehe']
+#         return state
 #api.add_resource(HelloRestful, '/<string:hi>')
 
+class SimWords(Resource):
+
+    def post(self):
+        """
+        word: unicode format
+        """
+
+        sim_words = []
+        try:
+            base_word = request.json['base_word']
+
+            for item in word_model.most_similar(base_word):
+                sim_words.append({"value": item[0],
+                                 "label": item[0]})
+        except Exception, e:
+            print e
+
+        return sim_words
+
+api.add_resource(SimWords, '/simwords')
 
 
 class Title(Resource):
-    #random_select_titles(num)
+
     def get(self, num=10):
         # fake_titles = {
         # "body1":["123", "asdf", "njjjk"],
@@ -59,6 +74,21 @@ class Title(Resource):
 api.add_resource(Title, '/rand_titles')
 
 
+class Search(Resource):
+
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('key', type=str)
+        query = parser.parse_args()['key']
+
+        return search_title(query)
+
+    def post(self):
+        query = request.json['key']
+        return search_title(query.encode('utf8'))
+
+api.add_resource(Search, '/query')
+
 def nocache(view):
     @wraps(view)
     def no_cache(*args, **kwargs):
@@ -68,7 +98,7 @@ def nocache(view):
         response.headers['Pragma'] = 'no-cache'
         response.headers['Expires'] = '-1'
         return response
-        
+
     return update_wrapper(no_cache, view)
 
 
@@ -78,23 +108,21 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/restful")
-def restful():
-    aa = {"a": 123,
-          "b": "big"}
+# @app.route("/restful")
+# def restful():
+#     aa = {"a": 123,
+#           "b": "big"}
+#     return json.dumps(aa)
 
-    return json.dumps(aa)
+# @app.route("/post", methods=['POST', 'GET'])
+# def poste():
+#     #form = RegistrationForm(request.form)
+#     #form = RegistrationForm.fro
+#     if request.method == 'POST':
+#         pid = form.pid.data
+#         return "form encoded :" +pid
 
-
-@app.route("/post", methods=['POST', 'GET'])
-def poste():
-    #form = RegistrationForm(request.form)
-    #form = RegistrationForm.fro
-    if request.method == 'POST':
-        pid = form.pid.data
-        return "form encoded :" +pid
-
-    return '{}'
+#     return '{}'
 
 
 
