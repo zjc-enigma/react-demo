@@ -3,29 +3,31 @@ injectTapEventPlugin();
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import ReactDOM from 'react-dom';
 import React  from 'react';
-//import SearchBar from './search';
+import SearchBar from './search';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import reducer from './reducer';
-//import Writer from './writer';
-import TButton from './writer';
+import Writer from './writer';
+import HorizontalLinearStepper from './search';
+
+//import TButton from './writer';
+//import { Router, Route, hashHistory, browserHistory } from 'react-router';
+//import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
 var store = createStore(reducer);
-
-
+// const store = createStore(
+//   combineReducers({
+//     ...reducer,
+//     routing: routerReducer
+//   })
+// )
+//const history = syncHistoryWithStore(browserHistory, store)
+//Route path="/writer" component={Writer} > </Route>
 ReactDOM.render(
     <Provider store={store}>
-    <TButton />
+    <MuiThemeProvider>
+    <HorizontalLinearStepper />
+    </MuiThemeProvider>
     </Provider>,
   document.getElementById('demo1'));
 
-//store.dispatch({type:"RENAME", data:"Search"});
-//store.dispatch({type:"UPDATE_RES_SELECTION", data:[] });
-// store.dispatch({
-//   type:"MULTISELECT",
-//   data:"hahaha"
-// });
-// store.dispatch({
-//   type:"RENAME",
-//   data:"123456"
-// });
