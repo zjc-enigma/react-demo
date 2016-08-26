@@ -5,7 +5,7 @@ export default function reducer(state = [], action) {
     ret = {}
     ret['selectedWord' + action.id.toString()] = action.data;
     return  Object.assign({}, state, ret)
-    
+
   case 'SHOW':
     return  Object.assign({}, state, {
       showRes: action.data,
