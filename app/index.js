@@ -23,6 +23,7 @@ var store = createStore(reducer);
 // )
 //const history = syncHistoryWithStore(browserHistory, store)
 //Route path="/writer" component={Writer} > </Route>
+
 ReactDOM.render(
     <Provider store={store}>
     <MuiThemeProvider>
@@ -31,3 +32,4 @@ ReactDOM.render(
     </Provider>,
   document.getElementById('demo1'));
 
+store.dispatch({type:"INIT", finished: false, stepIndex: 0});

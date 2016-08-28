@@ -333,8 +333,6 @@ class SearchBar extends Component {
 
   constructor(props, context){
     super(props, context);
-    finished: false,
-    stepIndex: 0,
 
   }
 
