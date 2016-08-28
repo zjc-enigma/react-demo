@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import reducer from './reducer';
 import Writer from './writer';
-import HorizontalLinearStepper from './search';
+//import HorizontalLinearStepper from './search';
 
 //import TButton from './writer';
 //import { Router, Route, hashHistory, browserHistory } from 'react-router';
@@ -26,7 +26,7 @@ var store = createStore(reducer);
 ReactDOM.render(
     <Provider store={store}>
     <MuiThemeProvider>
-    <HorizontalLinearStepper />
+    <SearchBar />
     </MuiThemeProvider>
     </Provider>,
   document.getElementById('demo1'));

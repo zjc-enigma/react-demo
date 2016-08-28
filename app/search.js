@@ -26,19 +26,15 @@ import FlatButton from 'material-ui/FlatButton';
 class HorizontalLinearStepper extends Component {
   constructor(props, context){
     super(props, context);
-    this.state = {
-      finished: false,
-      stepIndex: 0,
-    };
+    // this.state = {
+    //   finished: false,
+    //   stepIndex: 0,
+    // };
   }
 
 
-  handleNext () {
-    dispatch({
-        type: "NEXT_STEP",
-        stepIndex: stepIndex + 1,
-        finished: stepIndex >= 2,
-      });
+  handleNext (stepIndex) {
+    this.props.steperNext(stepIndex);
   };
 
   handlePrev ()  {
@@ -51,19 +47,20 @@ class HorizontalLinearStepper extends Component {
   getStepContent(stepIndex) {
     switch (stepIndex) {
       case 0:
-      return (
-          <SearchBar
-        name={this.props.name}
-        searchQuery={this.props.searchQuery}
-        text={this.props.text}
-        textInput={this.props.textInput}
-        showRes={this.props.showRes}
-        searchRes={this.props.searchRes}
-        resTableSelection={this.props.resTableSelection}
-        updateSelection={this.props.updateSelection}
-          />
-      );
-      case 1:
+      // return (
+      //     <SearchBar
+      //   name={this.props.name}
+      //   searchQuery={this.props.searchQuery}
+      //   text={this.props.text}
+      //   textInput={this.props.textInput}
+      //   showRes={this.props.showRes}
+      //   searchRes={this.props.searchRes}
+      //   resTableSelection={this.props.resTableSelection}
+      //   updateSelection={this.props.updateSelection}
+      //     />
+      // );
+      return "0 steps";
+    case 1:
         return 'What is an ad group anyways?';
       case 2:
         return 'This is the bit I really care about!';
@@ -74,10 +71,11 @@ class HorizontalLinearStepper extends Component {
 
   render() {
     //const {finished, stepIndex} = this.state;
-    var finished = this.state.finished;
-    var stepIndex = this.state.stepIndex;
+    var finished = this.props.finished;
+    var stepIndex = this.props.stepIndex;
     const contentStyle = {margin: '0 16px'};
-
+    console.log(stepIndex);
+    console.log(finished);
     return (
       <div style={{width: '100%', maxWidth: 700, margin: 'auto'}}>
         <Stepper activeStep={stepIndex}>
@@ -98,7 +96,7 @@ class HorizontalLinearStepper extends Component {
                 href="#"
                 onClick={(event) => {
                   event.preventDefault();
-                  this.setState({stepIndex: 0, finished: false});
+                  //this.setState({stepIndex: 0, finished: false});
                 }}
               >
                 Click here
@@ -117,7 +115,7 @@ class HorizontalLinearStepper extends Component {
                 <RaisedButton
                   label={stepIndex === 2 ? 'Finish' : 'Next'}
             primary={true}
-            onClick={this.handleNext}
+            onClick={() => this.handleNext(stepIndex)}
 
                 />
               </div>
@@ -140,23 +138,27 @@ class SearchGrid extends Component{
 
   render() {
 
-    var layouts = {lg:[{i:"searchText", x: 5, y: 2, w: 4, h: 0.2, static:true},
+    var layouts = {lg:[{i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
+                       {i:"searchText", x: 5, y: 2, w: 4, h: 0.2, static:true},
                        {i:"searchBtn", x: 9, y: 2, w: 1, h: 0.2, static:true},
                        {i:"processBtn", x: 10, y: 2, w: 1, h: 0.2, static:true},
                        {i:"searchResTable", x: 4, y: 2.3, w: 7, h: 0.5, static:true }],
                    md:[
+                     {i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
                      {i:"searchText", x: 5, y: 2, w: 4, h: 1, static:true},
                      {i:"searchBtn", x: 9, y: 2, w: 1, h: 1, static:true},
                      {i:"processBtn", x: 10, y: 2, w: 1, h: 0.2, static:true},
                      {i:"searchResTable", x: 3, y: 3, w: 6, h: 1, static:true }],
 
                    sm:[
+                     {i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
                      {i:"searchText", x: 2, y: 2, w: 2, h: 1, static:true},
                      {i:"searchBtn", x: 4, y: 2, w: 1, h: 1, static:true},
                      {i:"processBtn", x: 5, y: 2, w: 1, h: 0.2, static:true},
                      {i:"searchResTable", x: 2, y: 3, w: 6, h: 1, static:true }],
 
                    xs:[
+                     {i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
                      {i:"searchText", x: 0, y: 2, w: 1, h: 1, static:true},
                      {i:"searchBtn", x: 1, y: 2, w: 1, h: 1, static:true},
                      {i:"processBtn", x: 2, y: 2, w: 1, h: 0.2, static:true},
@@ -331,6 +333,9 @@ class SearchBar extends Component {
 
   constructor(props, context){
     super(props, context);
+    finished: false,
+    stepIndex: 0,
+
   }
 
   getChildContext(){
@@ -349,9 +354,16 @@ class SearchBar extends Component {
 
   render() {
     //className={this.props.showRes ? 'hidden' : ''}
+    console.dir(this.props.steperNext);
     return (
         <MuiThemeProvider>
         <SearchGrid>
+
+        <div key={'steper'} ><HorizontalLinearStepper
+      steperNext={this.props.steperNext}
+      stepIndex={this.props.stepIndex}
+      finished={this.props.finished}
+        /></div>
 
         <div key={'searchText'} ><SearchTextField /></div>
 
@@ -409,6 +421,14 @@ function mapDispatchToProps(dispatch) {
   }
 
   return {
+    steperNext: function(step){
+      dispatch({
+        type: "NEXT_STEP",
+        stepIndex: step + 1,
+        finished: step >= 2,
+      });
+    },
+
     searchQuery: function(text){
 
       // var url = new URL("/query"),
@@ -466,7 +486,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default connect(select, mapDispatchToProps)(HorizontalLinearStepper);
+export default connect(select, mapDispatchToProps)(SearchBar);
 
 
 //export default HorizontalLinearStepper;

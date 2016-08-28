@@ -1,7 +1,12 @@
 export default function reducer(state = [], action) {
 
   switch(action.type){
-
+  case "NEXT_STEP":
+    console.log("next step");
+    return  Object.assign({}, state, {
+      stepIndex: action.stepIndex,
+      finished: action.finished
+    })
   case 'GET_SIM_WORDS':
     var ret = {}
     ret['simWords' + action.id.toString()] = action.data;
