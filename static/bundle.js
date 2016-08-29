@@ -30913,7 +30913,7 @@
 	      });
 
 	    case 'GENERATE_RES':
-	      console.log("GENERATE_RES");
+
 	      var words = action.words;
 	      var res = [];
 	      var tmp = "";
@@ -46591,6 +46591,7 @@
 	  _createClass(HorizontalLinearStepper, [{
 	    key: 'handleNext',
 	    value: function handleNext(stepIndex) {
+	      console.dir(this.context.resTableSelection);
 	      this.props.steperNext(stepIndex, this.context.resTableSelection);
 	    }
 	  }, {
@@ -46624,8 +46625,6 @@
 	      var finished = this.props.finished;
 	      var stepIndex = this.props.stepIndex;
 	      var contentStyle = { margin: '0 16px' };
-	      console.log(stepIndex);
-	      console.log(finished);
 	      return _react2.default.createElement(
 	        'div',
 	        { style: { width: '100%', maxWidth: 700, margin: 'auto' } },
@@ -46867,8 +46866,7 @@
 	    key: 'render',
 	    value: function render() {
 	      //          <TableRow selected={this.isSelected(searchRes[index])}>
-	      console.log("generaterestable");
-	      console.dir(this.props.generateRes);
+
 	      var generateRes = this.props.generateRes;
 	      var rows = [];
 	      for (var index in generateRes) {
@@ -46937,8 +46935,6 @@
 	      //     return true;
 	      // });
 	      //
-	      console.log('is selected');
-	      console.dir(this.context.resTableSelection);
 
 	      for (var index in this.context.resTableSelection) {
 	        if (this.context.resTableSelection[index].content === Res.content) {
@@ -46979,7 +46975,6 @@
 
 	      var handleRowSelected = function handleRowSelected(slices) {
 
-	        console.dir(_this10.context.resTableSelection);
 	        if (slices === 'all') {
 	          _this10.context.updateSelection(searchRes);
 	        } else if (slices === 'none') {
@@ -47126,8 +47121,6 @@
 	            id: index })
 	        ));
 	      }
-	      console.log("searchbar");
-	      console.dir(this.props.generateResult);
 
 	      words.push(_react2.default.createElement(
 	        'div',
@@ -47224,7 +47217,6 @@
 
 	  var changeText = function changeText(text) {
 
-	    console.log("change text");
 	    dispatch({
 	      type: "CHANGETEXT",
 	      data: text
@@ -47337,9 +47329,6 @@
 	    },
 	    multiSelect: function multiSelect(val, id) {
 	      dispatch({ type: "MULTISELECT", data: val, id: id });
-
-	      console.log('multiselect');
-	      console.dir(val);
 	    },
 	    getSimWords: function getSimWords(word, id) {
 

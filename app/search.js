@@ -31,6 +31,7 @@ class HorizontalLinearStepper extends Component {
 
 
   handleNext (stepIndex) {
+    console.dir(this.context.resTableSelection);
     this.props.steperNext(stepIndex, this.context.resTableSelection);
   };
 
@@ -59,8 +60,6 @@ class HorizontalLinearStepper extends Component {
     var finished = this.props.finished;
     var stepIndex = this.props.stepIndex;
     const contentStyle = {margin: '0 16px'};
-    console.log(stepIndex);
-    console.log(finished);
     return (
       <div style={{width: '100%', maxWidth: 700, margin: 'auto'}}>
         <Stepper activeStep={stepIndex}>
@@ -252,8 +251,7 @@ class GenerateResTable extends Component{
 
   render() {
     //          <TableRow selected={this.isSelected(searchRes[index])}>
-    console.log("generaterestable");
-    console.dir(this.props.generateRes);
+
     var generateRes = this.props.generateRes;
     var rows = [];
     for (var index in generateRes){
@@ -294,8 +292,6 @@ class SearchResTable extends Component {
     //     return true;
     // });
     //
-    console.log('is selected');
-    console.dir(this.context.resTableSelection);
 
     for (var index in this.context.resTableSelection){
       if (this.context.resTableSelection[index].content === Res.content){
@@ -322,7 +318,6 @@ class SearchResTable extends Component {
 
     const handleRowSelected = (slices) => {
 
-      console.dir(this.context.resTableSelection);
       if (slices === 'all') {
         this.context.updateSelection(searchRes);
       } else if  (slices === 'none') {
@@ -429,8 +424,6 @@ class SearchBar extends Component {
         id={index} /></div>
       )
     }
-    console.log("searchbar");
-    console.dir(this.props.generateResult);
 
     words.push(
       <div key={'steper'} ><HorizontalLinearStepper
@@ -516,7 +509,7 @@ function mapDispatchToProps(dispatch) {
 
   let changeText = function(text){
 
-    console.log("change text");
+
     dispatch({
       type: "CHANGETEXT",
       data: text
@@ -636,9 +629,6 @@ function mapDispatchToProps(dispatch) {
     },
     multiSelect: (val, id) => {
       dispatch({type:"MULTISELECT", data:val, id:id});
-
-      console.log('multiselect');
-      console.dir(val);
     },
     getSimWords: (word, id) => {
 

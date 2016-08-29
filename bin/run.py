@@ -80,9 +80,9 @@ class TokenSentance(Resource):
 
     def post(self):
         res = []
-
+        print str(request.json['sentences'])
         sentence_list = json.loads(request.json['sentences'])
-
+        print str(sentence_list)
         for sentence in sentence_list:
             tokened = myutils.tokenize_zh_line(sentence.decode('utf8'))
             print sentence
@@ -108,6 +108,7 @@ class Search(Resource):
         return search_title(query.encode('utf8'))
 
 api.add_resource(Search, '/query')
+
 
 def nocache(view):
     @wraps(view)

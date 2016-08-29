@@ -40,7 +40,7 @@ export default function reducer(state = [], action) {
     })
 
   case 'GENERATE_RES':
-    console.log("GENERATE_RES");
+
     var words = action.words
     var res = [];
     var tmp="";
