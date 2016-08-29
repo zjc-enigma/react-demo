@@ -33,3 +33,4 @@ ReactDOM.render(
   document.getElementById('demo1'));
 
 store.dispatch({type:"INIT", finished: false, stepIndex: 0});
+store.dispatch({type:"HIDE_WRITER", data:true});

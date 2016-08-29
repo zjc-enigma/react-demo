@@ -7,7 +7,7 @@ export default function reducer(state = [], action) {
       finished: action.finished
     })
   case "NEXT_STEP":
-    console.log("next step");
+
     return  Object.assign({}, state, {
       stepIndex: action.stepIndex,
       finished: action.finished
@@ -23,9 +23,36 @@ export default function reducer(state = [], action) {
 
     return  Object.assign({}, state, ret)
 
-  case 'SHOW':
+  case 'HIDE_WRITER':
     return  Object.assign({}, state, {
-      showRes: action.data,
+      hideWriter: action.data,
+    })
+
+  case 'GENERATE_RES':
+    console.log("GENERATE_RES");
+    var words = action.words
+    var res = [];
+    var tmp="";
+    for (var index in words){
+
+      var selected = eval("state.selected" + index.toString())
+        if(selected) {
+          var randWord = selected[Math.floor(Math.random()*selected.length)].label;
+          tmp += randWord;
+        }
+        else {
+          tmp += words[index];
+        }
+    }
+    res.push(tmp);
+    
+    return  Object.assign({}, state, {
+      generateResult: res,
+      hideResTable: action.data,
+    })
+  case 'HIDE_SEARCHBAR':
+    return  Object.assign({}, state, {
+      hideSearchBar: action.data,
     })
 
   case 'UPDATE_RES_SELECTION':

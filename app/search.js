@@ -8,6 +8,7 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import renameBtn from './actions';
+import Select from 'react-select';
 import 'whatwg-fetch';
 import {
   Step,
@@ -16,7 +17,7 @@ import {
 } from 'material-ui/Stepper';
 
 import FlatButton from 'material-ui/FlatButton';
-
+const demoWords = ["农夫山泉", "是","一家","中国", "大陆", "的", "饮用水", "和", "饮料", "生产","企业"];
 /**
  * Horizontal steppers are ideal when the contents of one step depend on an earlier step.
  * Avoid using long step names in horizontal steppers.
@@ -137,33 +138,47 @@ class SearchGrid extends Component{
   }
 
   render() {
+    var wordsLayouts = [];
+    for (var index in demoWords){
+      wordsLayouts.push({i:"word"+index.toString(), x:parseInt(index), y:3, w:1, h:0.2, static:true})
 
-    var layouts = {lg:[{i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
-                       {i:"searchText", x: 5, y: 2, w: 4, h: 0.2, static:true},
-                       {i:"searchBtn", x: 9, y: 2, w: 1, h: 0.2, static:true},
-                       {i:"processBtn", x: 10, y: 2, w: 1, h: 0.2, static:true},
-                       {i:"searchResTable", x: 4, y: 2.3, w: 7, h: 0.5, static:true }],
-                   md:[
-                     {i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
-                     {i:"searchText", x: 5, y: 2, w: 4, h: 1, static:true},
-                     {i:"searchBtn", x: 9, y: 2, w: 1, h: 1, static:true},
-                     {i:"processBtn", x: 10, y: 2, w: 1, h: 0.2, static:true},
-                     {i:"searchResTable", x: 3, y: 3, w: 6, h: 1, static:true }],
+    }
 
-                   sm:[
-                     {i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
-                     {i:"searchText", x: 2, y: 2, w: 2, h: 1, static:true},
-                     {i:"searchBtn", x: 4, y: 2, w: 1, h: 1, static:true},
-                     {i:"processBtn", x: 5, y: 2, w: 1, h: 0.2, static:true},
-                     {i:"searchResTable", x: 2, y: 3, w: 6, h: 1, static:true }],
+    wordsLayouts.push({i:"generate", x:15, y:2, w:1, h:0.2, static:true})
 
-                   xs:[
-                     {i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
-                     {i:"searchText", x: 0, y: 2, w: 1, h: 1, static:true},
-                     {i:"searchBtn", x: 1, y: 2, w: 1, h: 1, static:true},
-                     {i:"processBtn", x: 2, y: 2, w: 1, h: 0.2, static:true},
-                     {i:"searchResTable", x: 0, y: 3, w: 6, h: 1, static:true }],
-                  }
+
+    var layouts = {lg:wordsLayouts.concat(
+      [{i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
+       {i:"searchText", x: 5, y: 2, w: 4, h: 0.2, static:true},
+       {i:"searchBtn", x: 9, y: 2, w: 1, h: 0.2, static:true},
+       {i:"processBtn", x: 10, y: 2, w: 1, h: 0.2, static:true},
+       {i:"searchResTable", x: 4, y: 2.3, w: 7, h: 0.5, static:true },
+       {i:"generateResTable", x: 4, y: 5, w: 7, h: 0.5, static:true }]),
+     md:wordsLayouts.concat(
+       [{i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
+        {i:"searchText", x: 5, y: 2, w: 4, h: 1, static:true},
+        {i:"searchBtn", x: 9, y: 2, w: 1, h: 1, static:true},
+        {i:"processBtn", x: 10, y: 2, w: 1, h: 0.2, static:true},
+        {i:"searchResTable", x: 3, y: 3, w: 6, h: 1, static:true },
+        {i:"generateResTable", x: 4, y: 5, w: 7, h: 0.5, static:true}
+       ]),
+
+    sm:wordsLayouts.concat([
+      {i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
+      {i:"searchText", x: 2, y: 2, w: 2, h: 1, static:true},
+      {i:"searchBtn", x: 4, y: 2, w: 1, h: 1, static:true},
+      {i:"processBtn", x: 5, y: 2, w: 1, h: 0.2, static:true},
+      {i:"searchResTable", x: 2, y: 3, w: 6, h: 1, static:true},
+      {i:"generateResTable", x: 4, y: 5, w: 7, h: 0.5, static:true}
+    ]),
+
+    xs:wordsLayouts.concat([
+      {i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
+      {i:"searchText", x: 0, y: 2, w: 1, h: 1, static:true},
+      {i:"searchBtn", x: 1, y: 2, w: 1, h: 1, static:true},
+      {i:"processBtn", x: 2, y: 2, w: 1, h: 0.2, static:true},
+      {i:"searchResTable", x: 0, y: 3, w: 6, h: 1, static:true }]),}
+
     return (
         <ResponsiveReactGridLayout
       className="layout"
@@ -230,7 +245,7 @@ class SearchTextField extends Component {
   render() {
     return (
         <TextField
-      hintText="Input your secret"
+      hintText={this.props.hint}
       value={this.context.text}
       onChange={this.context.textInput}
       fullWidth={true} />
@@ -243,6 +258,43 @@ SearchTextField.contextTypes = {
   textInput: React.PropTypes.any,
 
 };
+
+
+class GenerateResTable extends Component{
+  constructor(props, context){
+    super(props, context);
+  }
+
+  render() {
+    //          <TableRow selected={this.isSelected(searchRes[index])}>
+    console.log("generaterestable");
+    console.dir(this.props.generateRes);
+    var generateRes = this.props.generateRes;
+    var rows = [];
+    for (var index in generateRes){
+      rows.push(
+        <TableRow>
+          <TableRowColumn>{generateRes[index]}</TableRowColumn>
+          </TableRow>)
+    }
+
+    return (
+        <Table
+      selectable={true}
+      multiSelectable={true}
+      onRowSelection={(slices) => handleRowSelected(slices)}>
+        <TableHeader>
+        <TableRow>
+        <TableHeaderColumn>文案</TableHeaderColumn>
+        </TableRow>
+        </TableHeader>
+        <TableBody>
+        {rows}
+      </TableBody>
+        </Table>
+    )
+  }
+}
 
 
 class SearchResTable extends Component {
@@ -328,12 +380,46 @@ SearchResTable.contextTypes = {
 
 };
 
+class WordComponent extends Component{
+
+  constructor(props, context){
+    super(props, context);
+    this.props.getSimWords(this.props.holder, this.props.id)
+  }
+
+  handler(val) {
+    this.props.multiSelect(val, this.props.id)
+  }
+
+  render() {
+    var options = [
+      { value: 'one', label: 'One' },
+      { value: 'two', label: 'Two' },
+      { value: 'the', label: 'w' },
+      { value: 'on', label: 'o' },
+      { value: 'far', label: 'T' },
+    ];
+
+    return (
+        <MuiThemeProvider>
+        <Select
+      placeholder={this.props.holder}
+      multi={true}
+      name="form-field-name"
+      value={this.props.value}
+      options={this.props.options}
+      onChange={(val) => this.handler(val)}
+        />
+        </MuiThemeProvider>
+    )
+  }
+}
+
 
 class SearchBar extends Component {
 
   constructor(props, context){
     super(props, context);
-
   }
 
   getChildContext(){
@@ -351,28 +437,60 @@ class SearchBar extends Component {
   }
 
   render() {
-    //className={this.props.showRes ? 'hidden' : ''}
-    console.dir(this.props.steperNext);
+
+    var words = [];
+    for (var index in demoWords){
+      words.push(
+          <div key={"word"+index.toString()} className={this.props.hideWriter ? 'hidden' : ''}>
+          <WordComponent
+        holder={demoWords[index]}
+        value={eval("this.props.selected" + index.toString())}
+        multiSelect={this.props.multiSelect}
+        getSimWords={this.props.getSimWords}
+        options={eval('this.props.simWords' + index.toString())}
+        id={index} /></div>
+      )
+    }
+    console.log("searchbar");
+    console.dir(this.props.generateResult);
+
+    words.push(
+      <div key={'steper'} ><HorizontalLinearStepper
+    steperNext={this.props.steperNext}
+    stepIndex={this.props.stepIndex}
+    finished={this.props.finished} /></div>)
+
+    words.push(
+        <div key={'searchText'}
+      className={this.props.hideSearchBar ? 'hidden' : ''} >
+        <SearchTextField
+      name={"input your secrets"} /></div>)
+
+    words.push(
+        <div key={'searchBtn'}
+      className={this.props.hideSearchBar ? 'hidden' : ''}>
+        <SearchBtn
+      name={"Search"} /></div>)
+
+    words.push(
+        <div key={'searchResTable'}
+      className={this.props.hideSearchBar ? 'hidden' : ''}>
+        <SearchResTable />
+        </div>)
+
+    words.push(
+        <div key={'generateResTable'}>
+        <GenerateResTable generateRes={this.props.generateResult}/>
+        </div>
+    )
+
+
     return (
         <MuiThemeProvider>
         <SearchGrid>
-
-        <div key={'steper'} ><HorizontalLinearStepper
-      steperNext={this.props.steperNext}
-      stepIndex={this.props.stepIndex}
-      finished={this.props.finished}
-        /></div>
-
-        <div key={'searchText'} ><SearchTextField /></div>
-
-        <div key={'searchBtn'} ><SearchBtn name={"Search"}/></div>
-        
-        <div key={'processBtn'} ><ProcessBtn name={"Process"}/></div>
-
-        <div key={'searchResTable'} ><SearchResTable /></div>
-        
+        {words}
         </SearchGrid>
-        
+
         </MuiThemeProvider>
     )
   }
@@ -417,14 +535,53 @@ function mapDispatchToProps(dispatch) {
       data: text
     });
   }
+  let updateSimWords = function(json, id) {
+
+    dispatch({
+      type: "GET_SIM_WORDS",
+      data: json,
+      id: id
+    });
+  };
 
   return {
     steperNext: function(step){
+      switch(step){
+      case 0:
+        dispatch({
+          type: "HIDE_SEARCHBAR",
+          data: true
+        });
+        dispatch({
+          type: "HIDE_WRITER",
+          data: false
+        });
+        break;
+
+      case 1:
+        dispatch({
+          type: "HIDE_WRITER",
+          data: true
+        });
+        dispatch({
+          type:"GENERATE_RES",
+          words: demoWords,
+          data: true
+        })
+        break;
+
+      case 2:
+        break;
+
+      default:
+        break;
+      }
       dispatch({
         type: "NEXT_STEP",
         stepIndex: step + 1,
         finished: step >= 2,
       });
+
     },
 
     searchQuery: function(text){
@@ -454,10 +611,6 @@ function mapDispatchToProps(dispatch) {
     },
     rename: function(){
 
-      dispatch({
-        type:"SHOW",
-        data: true,
-      })
       fetch("/rand_titles",
             {method: 'GET',
              headers:{
@@ -473,18 +626,32 @@ function mapDispatchToProps(dispatch) {
       changeText(event.target.value);
     },
     updateSelection: function(selectionItems){
-      //console.log("updateselection");
-      // console.dir(selectionItems);
+
       dispatch({
         type: 'UPDATE_RES_SELECTION',
         data: selectionItems
       });
+    },
+    multiSelect: (val, id) => {
+      dispatch({type:"MULTISELECT", data:val, id:id});
+
+      console.log('multiselect');
+      console.dir(val);
+    },
+    getSimWords: (word, id) => {
+
+      fetch("/simwords",
+            {method: "POST",
+             headers:{
+               'Accept': 'application/json',
+               'Content-Type': 'application/json'},
+             body: JSON.stringify({base_word: word})
+            })
+        .then(parseJson)
+        .then((json) => updateSimWords(json, id))
+        .catch(function(e){console.log('parsing failed', e)})
     }
   };
 }
-
-
 export default connect(select, mapDispatchToProps)(SearchBar);
-
-
 //export default HorizontalLinearStepper;
