@@ -27,10 +27,6 @@ const demoWords = ["农夫山泉", "是","一家","中国", "大陆", "的", "�
 class HorizontalLinearStepper extends Component {
   constructor(props, context){
     super(props, context);
-    // this.state = {
-    //   finished: false,
-    //   stepIndex: 0,
-    // };
   }
 
 
@@ -48,18 +44,6 @@ class HorizontalLinearStepper extends Component {
   getStepContent(stepIndex) {
     switch (stepIndex) {
       case 0:
-      // return (
-      //     <SearchBar
-      //   name={this.props.name}
-      //   searchQuery={this.props.searchQuery}
-      //   text={this.props.text}
-      //   textInput={this.props.textInput}
-      //   showRes={this.props.showRes}
-      //   searchRes={this.props.searchRes}
-      //   resTableSelection={this.props.resTableSelection}
-      //   updateSelection={this.props.updateSelection}
-      //     />
-      // );
       return "0 steps";
     case 1:
         return 'What is an ad group anyways?';
@@ -71,7 +55,7 @@ class HorizontalLinearStepper extends Component {
   }
 
   render() {
-    //const {finished, stepIndex} = this.state;
+
     var finished = this.props.finished;
     var stepIndex = this.props.stepIndex;
     const contentStyle = {margin: '0 16px'};
@@ -97,7 +81,6 @@ class HorizontalLinearStepper extends Component {
                 href="#"
                 onClick={(event) => {
                   event.preventDefault();
-                  //this.setState({stepIndex: 0, finished: false});
                 }}
               >
                 Click here

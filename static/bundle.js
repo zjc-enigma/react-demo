@@ -29134,10 +29134,6 @@
 	    _classCallCheck(this, HorizontalLinearStepper);
 
 	    return _possibleConstructorReturn(this, Object.getPrototypeOf(HorizontalLinearStepper).call(this, props, context));
-	    // this.state = {
-	    //   finished: false,
-	    //   stepIndex: 0,
-	    // };
 	  }
 
 	  _createClass(HorizontalLinearStepper, [{
@@ -29159,18 +29155,6 @@
 	    value: function getStepContent(stepIndex) {
 	      switch (stepIndex) {
 	        case 0:
-	          // return (
-	          //     <SearchBar
-	          //   name={this.props.name}
-	          //   searchQuery={this.props.searchQuery}
-	          //   text={this.props.text}
-	          //   textInput={this.props.textInput}
-	          //   showRes={this.props.showRes}
-	          //   searchRes={this.props.searchRes}
-	          //   resTableSelection={this.props.resTableSelection}
-	          //   updateSelection={this.props.updateSelection}
-	          //     />
-	          // );
 	          return "0 steps";
 	        case 1:
 	          return 'What is an ad group anyways?';
@@ -29185,7 +29169,6 @@
 	    value: function render() {
 	      var _this2 = this;
 
-	      //const {finished, stepIndex} = this.state;
 	      var finished = this.props.finished;
 	      var stepIndex = this.props.stepIndex;
 	      var contentStyle = { margin: '0 16px' };
@@ -29237,7 +29220,6 @@
 	                href: '#',
 	                onClick: function onClick(event) {
 	                  event.preventDefault();
-	                  //this.setState({stepIndex: 0, finished: false});
 	                }
 	              },
 	              'Click here'

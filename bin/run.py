@@ -15,6 +15,8 @@ from datetime import datetime
 from wtforms import Form, BooleanField, StringField, PasswordField, validators, IntegerField, FloatField
 from flask.ext.restful import Resource, Api, fields, marshal_with, reqparse
 sys.path.append('../lib')
+sys.path.append('/Users/Patrick/Git/')
+from utils import myutils
 from data import random_select_titles
 from data import search_title
 from data import random_select_ad
@@ -73,6 +75,21 @@ class Title(Resource):
 
 api.add_resource(Title, '/rand_titles')
 
+
+class TokenSentance(Resource):
+
+    def post(self):
+        res = []
+
+        sentence_list = request.json['sentences']
+        print str(sentence_list)
+        for sentence in sentence_list:
+            tokened = myutils.tokenize_zh_line(sentence.decode('utf8'))
+            res.append(tokened)
+
+        return res
+
+api.add_resource(TokenSentance, '/token')
 
 class Search(Resource):
 
