@@ -31,7 +31,7 @@ class HorizontalLinearStepper extends Component {
 
 
   handleNext (stepIndex) {
-    this.props.steperNext(stepIndex);
+    this.props.steperNext(stepIndex, this.context.resTableSelection);
   };
 
   handlePrev ()  {
@@ -111,7 +111,9 @@ class HorizontalLinearStepper extends Component {
   }
 }
 
-
+HorizontalLinearStepper.contextTypes = {
+  resTableSelection: React.PropTypes.any,
+}
 
 
 class SearchGrid extends Component{
@@ -375,13 +377,6 @@ class WordComponent extends Component{
   }
 
   render() {
-    var options = [
-      { value: 'one', label: 'One' },
-      { value: 'two', label: 'Two' },
-      { value: 'the', label: 'w' },
-      { value: 'on', label: 'o' },
-      { value: 'far', label: 'T' },
-    ];
 
     return (
         <MuiThemeProvider>
@@ -509,6 +504,15 @@ function mapDispatchToProps(dispatch) {
     });
   };
 
+  let getSelectedSentences = function(){
+    var selectedItems = state.resTableSelection;
+    //var pattern = /selected/;
+    var res = [];
+    for(var index in selectedItems){
+      res.push(selectedItems[index].content);
+    }
+    return res;
+  }
 
   let changeText = function(text){
 
@@ -528,13 +532,28 @@ function mapDispatchToProps(dispatch) {
   };
 
   return {
-    steperNext: function(step){
+    steperNext: function(step, selectedSentences){
       switch(step){
       case 0:
         dispatch({
           type: "HIDE_SEARCHBAR",
           data: true
         });
+
+        fetch('/token',
+              {method: "POST",
+               headers:{
+                 'Accept': 'application/json',
+                 'Content-Type': 'application/json'},
+               body: JSON.stringify({sentences: selectedSentences})
+              })
+          .then(parseJson)
+          .then(json => dispatch({
+            type: "TOKEN_SELECTED_SENTENCE",
+            data: json
+          }))
+          .catch(function(e){console.log('parsing failed', e)});
+
         dispatch({
           type: "HIDE_WRITER",
           data: false

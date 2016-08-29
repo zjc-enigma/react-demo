@@ -1,6 +1,17 @@
+
+
+
+
 export default function reducer(state = [], action) {
 
   switch(action.type){
+
+  case "TOKEN_SELECTED_SENTENCE":
+    console.log('token selected');
+    console.log(action.data);
+    return  Object.assign({}, state, {
+      tokened:action.data
+    })
   case "INIT":
     return  Object.assign({}, state, {
       stepIndex: action.stepIndex,
