@@ -81,10 +81,13 @@ class TokenSentance(Resource):
     def post(self):
         res = []
 
-        sentence_list = request.json['sentences']
-        print str(sentence_list)
+        sentence_list = json.loads(request.json['sentences'])
+
         for sentence in sentence_list:
             tokened = myutils.tokenize_zh_line(sentence.decode('utf8'))
+            print sentence
+            print type(sentence)
+            print str(tokened)
             res.append(tokened)
 
         return res
