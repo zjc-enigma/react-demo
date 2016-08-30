@@ -29120,14 +29120,13 @@
 	var ResponsiveReactGridLayout = (0, _reactGridLayout.WidthProvider)(_reactGridLayout.Responsive);
 	//import ReactGridLayout from 'react-grid-layout';
 
-	var demoWords = ["农夫山泉", "是", "一家", "中国", "大陆", "的", "饮用水", "和", "饮料", "生产", "企业"];
+	// const demoWords = ["农夫山泉", "是","一家","中国", "大陆", "的", "饮用水", "和", "饮料", "生产","企业"];
 	/**
 	 * Horizontal steppers are ideal when the contents of one step depend on an earlier step.
 	 * Avoid using long step names in horizontal steppers.
 	 *
 	 * Linear steppers require users to complete one step in order to move on to the next.
 	 */
-
 	var HorizontalLinearStepper = function (_Component) {
 	  _inherits(HorizontalLinearStepper, _Component);
 
@@ -29244,7 +29243,7 @@
 	                label: stepIndex === 2 ? 'Finish' : 'Next',
 	                primary: true,
 	                onClick: function onClick() {
-	                  return _this2.props.steperNext();
+	                  return _this2.handleNext(stepIndex);
 	                }
 
 	              })
@@ -29276,11 +29275,16 @@
 	    key: 'render',
 	    value: function render() {
 	      var wordsLayouts = [];
-	      for (var index in demoWords) {
-	        wordsLayouts.push({ i: "word" + index.toString(), x: parseInt(index), y: 3, w: 1, h: 0.2, static: true });
-	      }
+	      for (var sentenceIndex in this.props.tokened) {
+	        var demoWords = this.props.tokened[sentenceIndex];
 
-	      wordsLayouts.push({ i: "generate", x: 15, y: 2, w: 1, h: 0.2, static: true });
+	        for (var index in demoWords) {
+	          wordsLayouts.push({ i: "word_" + sentenceIndex.toString() + "_" + index.toString(),
+	            x: parseInt(index), y: 3 + parseInt(sentenceIndex), w: 1, h: 0.2, static: true });
+	        }
+
+	        wordsLayouts.push({ i: "generate", x: 15, y: 2, w: 1, h: 0.2, static: true });
+	      }
 
 	      var layouts = { lg: wordsLayouts.concat([{ i: "steper", x: 5, y: 0, w: 4, h: 0.2, static: true }, { i: "searchText", x: 5, y: 2, w: 4, h: 0.2, static: true }, { i: "searchBtn", x: 9, y: 2, w: 1, h: 0.2, static: true }, { i: "processBtn", x: 10, y: 2, w: 1, h: 0.2, static: true }, { i: "searchResTable", x: 4, y: 2.3, w: 7, h: 0.5, static: true }, { i: "generateResTable", x: 4, y: 5, w: 7, h: 0.5, static: true }]),
 	        md: wordsLayouts.concat([{ i: "steper", x: 5, y: 0, w: 4, h: 0.2, static: true }, { i: "searchText", x: 5, y: 2, w: 4, h: 1, static: true }, { i: "searchBtn", x: 9, y: 2, w: 1, h: 1, static: true }, { i: "processBtn", x: 10, y: 2, w: 1, h: 0.2, static: true }, { i: "searchResTable", x: 3, y: 3, w: 6, h: 1, static: true }, { i: "generateResTable", x: 4, y: 5, w: 7, h: 0.5, static: true }]),
@@ -29324,7 +29328,7 @@
 	      var _this5 = this;
 
 	      //() => this.context.rename(this.context.text)
-	      if (this.props.show) {
+	      if (!this.props.hide) {
 	        return _react2.default.createElement(_RaisedButton2.default, {
 	          label: this.props.name,
 	          onClick: function onClick() {
@@ -29388,7 +29392,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      if (this.props.show) {
+	      if (!this.props.hide) {
 	        return _react2.default.createElement(_TextField2.default, {
 	          hintText: this.props.hint,
 	          value: this.context.text,
@@ -29492,105 +29496,103 @@
 	      return false;
 	    }
 	  }, {
-	    key: 'render',
-	    value: function render() {
+	    key: 'handleRowSelected',
+	    value: function handleRowSelected(slices) {
 	      var _this11 = this;
 
-	      //    if (this.props.show){
-	      var searchRes = this.props.searchRes;
-	      var rows = [];
-	      for (var index in searchRes) {
-	        rows.push(_react2.default.createElement(
-	          _Table.TableRow,
-	          { selected: this.isSelected(searchRes[index]) },
-	          _react2.default.createElement(
-	            _Table.TableRowColumn,
-	            null,
-	            searchRes[index].tag
-	          ),
-	          _react2.default.createElement(
-	            _Table.TableRowColumn,
-	            null,
-	            '头条'
-	          ),
-	          _react2.default.createElement(
-	            _Table.TableRowColumn,
-	            { style: { width: '60%' } },
-	            searchRes[index].content
-	          )
-	        ));
+	      if (slices === 'all') {
+	        this.context.updateSelection(this.props.searchRes);
+	      } else if (slices.length === 0) {
+
+	        slices = this.props.slices;
+	        var selectedItems = slices.map(function (slice) {
+	          return _this11.props.searchRes[slice];
+	        });
+	        this.context.updateSelection(selectedItems);
+	      } else {
+	        console.log('slices is not none');
+	        console.dir(slices);
+	        this.props.updateSlices(slices);
+	        var _selectedItems = slices.map(function (slice) {
+	          return _this11.props.searchRes[slice];
+	        });
+	        this.context.updateSelection(_selectedItems);
 	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this12 = this;
 
-	      var handleRowSelected = function handleRowSelected(slices) {
-
-	        if (slices === 'all') {
-	          _this11.context.updateSelection(searchRes);
-	        } else if (slices.length === 0) {
-	          //this.context.updateSelection([]);
-	          slices = _this11.props.slices;
-	          var selectedItems = slices.map(function (slice) {
-	            return searchRes[slice];
-	          });
-	          _this11.context.updateSelection(selectedItems);
-	        } else {
-	          console.log('slices is not none');
-	          console.dir(slices);
-	          _this11.props.updateSlices(slices);
-	          var _selectedItems = slices.map(function (slice) {
-	            return searchRes[slice];
-	          });
-	          _this11.context.updateSelection(_selectedItems);
-	        }
-	      };
-
-	      return _react2.default.createElement(
-	        _Table.Table,
-	        {
-	          selectable: true,
-	          multiSelectable: true,
-	          onRowSelection: function onRowSelection(slices) {
-	            return handleRowSelected(slices);
-	          } },
-	        _react2.default.createElement(
-	          _Table.TableHeader,
-	          null,
-	          _react2.default.createElement(
+	      if (!this.props.hide) {
+	        var searchRes = this.props.searchRes;
+	        var rows = [];
+	        for (var index in searchRes) {
+	          rows.push(_react2.default.createElement(
 	            _Table.TableRow,
+	            { selected: this.isSelected(searchRes[index]) },
+	            _react2.default.createElement(
+	              _Table.TableRowColumn,
+	              null,
+	              searchRes[index].tag
+	            ),
+	            _react2.default.createElement(
+	              _Table.TableRowColumn,
+	              null,
+	              '头条'
+	            ),
+	            _react2.default.createElement(
+	              _Table.TableRowColumn,
+	              { style: { width: '60%' } },
+	              searchRes[index].content
+	            )
+	          ));
+	        }
+	        return _react2.default.createElement(
+	          _Table.Table,
+	          {
+	            selectable: true,
+	            multiSelectable: true,
+	            onRowSelection: function onRowSelection(slices) {
+	              return _this12.handleRowSelected(slices);
+	            } },
+	          _react2.default.createElement(
+	            _Table.TableHeader,
 	            null,
 	            _react2.default.createElement(
-	              _Table.TableHeaderColumn,
+	              _Table.TableRow,
 	              null,
-	              '类别'
-	            ),
-	            _react2.default.createElement(
-	              _Table.TableHeaderColumn,
-	              null,
-	              '来源'
-	            ),
-	            _react2.default.createElement(
-	              _Table.TableHeaderColumn,
-	              { style: { width: '60%' } },
-	              '内容'
+	              _react2.default.createElement(
+	                _Table.TableHeaderColumn,
+	                null,
+	                '类别'
+	              ),
+	              _react2.default.createElement(
+	                _Table.TableHeaderColumn,
+	                null,
+	                '来源'
+	              ),
+	              _react2.default.createElement(
+	                _Table.TableHeaderColumn,
+	                { style: { width: '60%' } },
+	                '内容'
+	              )
 	            )
+	          ),
+	          _react2.default.createElement(
+	            _Table.TableBody,
+	            null,
+	            rows
 	          )
-	        ),
-	        _react2.default.createElement(
-	          _Table.TableBody,
-	          null,
-	          rows
-	        )
-	      );
-	      //    } else {
-	      //      return null;
-	      //    }
+	        );
+	      } else {
+	        return null;
+	      }
 	    }
 	  }]);
 
 	  return SearchResTable;
 	}(_react.Component);
-
-	//searchRes: React.PropTypes.any,
-	//resTableSelection: React.PropTypes.any,
 
 	SearchResTable.contextTypes = {
 	  updateSelection: _react2.default.PropTypes.any
@@ -29603,10 +29605,10 @@
 	  function WordComponent(props, context) {
 	    _classCallCheck(this, WordComponent);
 
-	    var _this12 = _possibleConstructorReturn(this, Object.getPrototypeOf(WordComponent).call(this, props, context));
+	    var _this13 = _possibleConstructorReturn(this, Object.getPrototypeOf(WordComponent).call(this, props, context));
 
-	    _this12.props.getSimWords(_this12.props.holder, _this12.props.id);
-	    return _this12;
+	    _this13.props.getSimWords(_this13.props.holder, _this13.props.id);
+	    return _this13;
 	  }
 
 	  _createClass(WordComponent, [{
@@ -29617,7 +29619,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this13 = this;
+	      var _this14 = this;
 
 	      return _react2.default.createElement(
 	        _MuiThemeProvider2.default,
@@ -29629,7 +29631,7 @@
 	          value: this.props.value,
 	          options: this.props.options,
 	          onChange: function onChange(val) {
-	            return _this13.handler(val);
+	            return _this14.handler(val);
 	          }
 	        })
 	      );
@@ -29665,18 +29667,22 @@
 	    key: 'render',
 	    value: function render() {
 	      var words = [];
-	      for (var index in demoWords) {
-	        words.push(_react2.default.createElement(
-	          'div',
-	          { key: "word" + index.toString(), className: this.props.hideWriter ? 'hidden' : '' },
-	          _react2.default.createElement(WordComponent, {
-	            holder: demoWords[index],
-	            value: eval("this.props.selected" + index.toString()),
-	            multiSelect: this.props.multiSelect,
-	            getSimWords: this.props.getSimWords,
-	            options: eval('this.props.simWords' + index.toString()),
-	            id: index })
-	        ));
+	      for (var sentenceIndex in this.props.tokened) {
+	        var demoWords = this.props.tokened[sentenceIndex];
+
+	        for (var index in demoWords) {
+	          words.push(_react2.default.createElement(
+	            'div',
+	            { key: "word_" + sentenceIndex.toString() + "_" + index.toString(), className: this.props.hideWriter ? 'hidden' : '' },
+	            _react2.default.createElement(WordComponent, {
+	              holder: demoWords[index],
+	              value: eval("this.props.selected_" + sentenceIndex.toString() + "_" + index.toString()),
+	              multiSelect: this.props.multiSelect,
+	              getSimWords: this.props.getSimWords,
+	              options: eval('this.props.simWords_' + sentenceIndex.toString() + "_" + index.toString()),
+	              id: sentenceIndex.toString() + "_" + index.toString() })
+	          ));
+	        }
 	      }
 
 	      words.push(_react2.default.createElement(
@@ -29685,7 +29691,7 @@
 	        _react2.default.createElement(HorizontalLinearStepper, {
 	          resTableSelection: this.props.resTableSelection,
 	          steperPrev: this.props.steperPrev,
-	          steperNext: this.props.hideSearch,
+	          steperNext: this.props.steperNext,
 	          stepIndex: this.props.stepIndex,
 	          finished: this.props.finished })
 	      ));
@@ -29694,7 +29700,7 @@
 	        'div',
 	        { key: 'searchText' },
 	        _react2.default.createElement(SearchTextField, {
-	          show: this.props.hideSearchBar,
+	          hide: this.props.hideSearchBar,
 	          name: "input your secrets" })
 	      ));
 
@@ -29702,17 +29708,15 @@
 	        'div',
 	        { key: 'searchBtn' },
 	        _react2.default.createElement(SearchBtn, {
-	          show: this.props.hideSearchBar,
+	          hide: this.props.hideSearchBar,
 	          name: "Search" })
 	      ));
 
-	      words.push(_react2.default.createElement(
-	        'div',
-	        { key: 'processBtn' },
-	        _react2.default.createElement(ProcessBtn, {
-	          handler: this.props.hideSearch,
-	          name: "Process" })
-	      ));
+	      // words.push(
+	      //     <div key={'processBtn'}>
+	      //     <ProcessBtn
+	      //   handler={this.props.hideSearch}
+	      //   name={"Process"} /></div>)
 
 	      words.push(_react2.default.createElement(
 	        'div',
@@ -29720,7 +29724,7 @@
 	        _react2.default.createElement(SearchResTable, {
 	          resTableSelection: this.props.resTableSelection,
 	          searchRes: this.props.searchRes,
-	          show: this.props.hideSearchBar,
+	          hide: this.props.hideSearchBar,
 	          updateSlices: this.props.updateSlices,
 	          slices: this.props.slices
 	        })
@@ -29737,7 +29741,7 @@
 	        null,
 	        _react2.default.createElement(
 	          SearchGrid,
-	          null,
+	          { tokened: this.props.tokened },
 	          words
 	        )
 	      );
@@ -29777,8 +29781,7 @@
 	    });
 	  };
 
-	  var getSelectedSentences = function getSelectedSentences() {
-	    var selectedItems = state.resTableSelection;
+	  var getSelectedSentences = function getSelectedSentences(selectedItems) {
 	    var res = [];
 	    for (var index in selectedItems) {
 	      res.push(selectedItems[index].content);
@@ -29813,8 +29816,7 @@
 	      switch (step) {
 	        case 1:
 	          dispatch({
-	            type: "HIDE_SEARCHBAR",
-	            data: false
+	            type: "HIDE_SEARCHBAR"
 	          });
 	          break;
 
@@ -29831,15 +29833,14 @@
 	      switch (step) {
 	        case 0:
 	          dispatch({
-	            type: "HIDE_SEARCHBAR",
-	            data: true
+	            type: "HIDE_SEARCHBAR"
 	          });
 
 	          fetch('/token', { method: "POST",
 	            headers: {
 	              'Accept': 'application/json',
 	              'Content-Type': 'application/json' },
-	            body: JSON.stringify({ sentences: selectedSentences })
+	            body: JSON.stringify({ sentences: getSelectedSentences(selectedSentences) })
 	          }).then(parseJson).then(function (json) {
 	            return dispatch({
 	              type: "TOKEN_SELECTED_SENTENCE",
@@ -46433,7 +46434,8 @@
 	  switch (action.type) {
 
 	    case "TOKEN_SELECTED_SENTENCE":
-
+	      console.log('token selected sentences');
+	      console.dir(state);
 	      return Object.assign({}, state, {
 	        tokened: action.data
 	      });
@@ -46454,14 +46456,14 @@
 	      });
 	    case 'GET_SIM_WORDS':
 	      var ret = {};
-	      //    ret['simWords' + action.id.toString()] = action.data;
-	      //    return Object.assign({}, state, ret)
+	      ret['simWords_' + action.id.toString()] = action.data;
+	      return Object.assign({}, state, ret);
 	      return state;
 
 	    case 'MULTISELECT':
 	      var ret = {};
-	      //    ret["selected" + action.id.toString()] = action.data
-	      //    return  Object.assign({}, state, ret)
+	      ret["selected_" + action.id.toString()] = action.data;
+	      return Object.assign({}, state, ret);
 	      return state;
 
 	    case 'HIDE_WRITER':
@@ -46494,14 +46496,13 @@
 	      return _extends({}, state, { slices: action.data });
 
 	    case 'HIDE_SEARCHBAR':
-	      var ret = false;
-
-	      if (state.hideSearchBar === false) {
-	        ret = true;
-	      } else {
-	        ret = false;
-	      }
-	      return _extends({}, state, { hideSearchBar: ret });
+	      // var ret = false;
+	      // if(state.hideSearchBar === false){
+	      //   ret = true;
+	      // } else {
+	      //   ret = false;
+	      // }
+	      return _extends({}, state, { hideSearchBar: true });
 
 	    case 'UPDATE_RES_SELECTION':
 	      return _extends({}, state, { resTableSelection: action.data });

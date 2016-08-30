@@ -3,7 +3,8 @@ export default function reducer(state = [], action) {
   switch(action.type){
 
   case "TOKEN_SELECTED_SENTENCE":
-    
+    console.log('token selected sentences');
+    console.dir(state);
     return  Object.assign({}, state, {
       tokened:action.data
     })
@@ -24,14 +25,14 @@ export default function reducer(state = [], action) {
     })
   case 'GET_SIM_WORDS':
     var ret = {}
-    //    ret['simWords' + action.id.toString()] = action.data;
-    //    return Object.assign({}, state, ret)
+       ret['simWords_' + action.id.toString()] = action.data;
+       return Object.assign({}, state, ret)
     return state;
 
   case 'MULTISELECT':
     var ret = {}
-    //    ret["selected" + action.id.toString()] = action.data
-    //    return  Object.assign({}, state, ret)
+       ret["selected_" + action.id.toString()] = action.data
+       return  Object.assign({}, state, ret)
     return state;
 
   case 'HIDE_WRITER':
@@ -65,14 +66,13 @@ export default function reducer(state = [], action) {
     return {...state, slices: action.data};
 
   case 'HIDE_SEARCHBAR':
-    var ret = false;
-
-    if(state.hideSearchBar === false){
-      ret = true;
-    } else {
-      ret = false;
-    }
-    return {...state, hideSearchBar: ret }
+    // var ret = false;
+    // if(state.hideSearchBar === false){
+    //   ret = true;
+    // } else {
+    //   ret = false;
+    // }
+    return {...state, hideSearchBar: true }
     
 
   case 'UPDATE_RES_SELECTION':

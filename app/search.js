@@ -17,7 +17,7 @@ import {
 } from 'material-ui/Stepper';
 
 import FlatButton from 'material-ui/FlatButton';
-const demoWords = ["农夫山泉", "是","一家","中国", "大陆", "的", "饮用水", "和", "饮料", "生产","企业"];
+// const demoWords = ["农夫山泉", "是","一家","中国", "大陆", "的", "饮用水", "和", "饮料", "生产","企业"];
 /**
  * Horizontal steppers are ideal when the contents of one step depend on an earlier step.
  * Avoid using long step names in horizontal steppers.
@@ -95,7 +95,7 @@ class HorizontalLinearStepper extends Component {
                 <RaisedButton
                   label={stepIndex === 2 ? 'Finish' : 'Next'}
             primary={true}
-            onClick={() => this.props.steperNext()}
+            onClick={() => this.handleNext(stepIndex)}
 
                 />
               </div>
@@ -120,13 +120,16 @@ class SearchGrid extends Component{
 
   render() {
     var wordsLayouts = [];
-    for (var index in demoWords){
-      wordsLayouts.push({i:"word"+index.toString(), x:parseInt(index), y:3, w:1, h:0.2, static:true})
+    for (var sentenceIndex in this.props.tokened){
+      var demoWords = this.props.tokened[sentenceIndex];
 
+      for (var index in demoWords){
+        wordsLayouts.push({i:"word_"+ sentenceIndex.toString() + "_" + index.toString(),
+                           x:parseInt(index), y:(3 + parseInt(sentenceIndex)), w:1, h:0.2, static:true})
+      }
+
+      wordsLayouts.push({i:"generate", x:15, y:2, w:1, h:0.2, static:true})
     }
-
-    wordsLayouts.push({i:"generate", x:15, y:2, w:1, h:0.2, static:true})
-
 
     var layouts = {lg:wordsLayouts.concat(
       [{i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
@@ -182,7 +185,7 @@ class SearchBtn extends Component {
   }
   render() {
     //() => this.context.rename(this.context.text)
-    if(this.props.show){
+    if(!this.props.hide){
       return (
           <RaisedButton
         label={this.props.name}
@@ -226,7 +229,7 @@ class SearchTextField extends Component {
     this.context.text = event.target.value;
   }
   render() {
-    if(this.props.show){
+    if(!this.props.hide){
       return (
           <TextField
         hintText={this.props.hint}
@@ -298,9 +301,33 @@ class SearchResTable extends Component {
     return false;
   }
 
-  render() {
+  handleRowSelected(slices) {
 
-//    if (this.props.show){
+    if (slices === 'all') {
+      this.context.updateSelection(this.props.searchRes);
+    } else if  (slices.length === 0) {
+
+      slices = this.props.slices;
+      let selectedItems = slices.map(slice => {
+        return this.props.searchRes[slice];
+
+      });
+      this.context.updateSelection(selectedItems);
+
+    } else {
+      console.log('slices is not none');
+      console.dir(slices);
+      this.props.updateSlices(slices);
+      let selectedItems = slices.map(slice => {
+        return this.props.searchRes[slice];
+
+      });
+      this.context.updateSelection(selectedItems);
+    }
+  }
+
+  render() {
+    if(!this.props.hide){
       var searchRes = this.props.searchRes;
       var rows = [];
       for (var index in searchRes){
@@ -310,39 +337,12 @@ class SearchResTable extends Component {
             <TableRowColumn>头条</TableRowColumn>
             <TableRowColumn style={{width: '60%'}}>{searchRes[index].content}</TableRowColumn>
             </TableRow>)
-
       }
-
-    const handleRowSelected = (slices) => {
-    
-      if (slices === 'all') {
-          this.context.updateSelection(searchRes);
-      } else if  (slices.length === 0) {
-        //this.context.updateSelection([]);
-        slices = this.props.slices;
-        let selectedItems = slices.map(slice => {
-          return searchRes[slice];
-
-        });
-        this.context.updateSelection(selectedItems);
-
-      } else {
-        console.log('slices is not none');
-        console.dir(slices);
-        this.props.updateSlices(slices);
-        let selectedItems = slices.map(slice => {
-          return searchRes[slice];
-
-        });
-        this.context.updateSelection(selectedItems);
-      }
-    }
-
       return (
           <Table
         selectable={true}
         multiSelectable={true}
-        onRowSelection={(slices) => handleRowSelected(slices)}>
+        onRowSelection={(slices) => this.handleRowSelected(slices)}>
           <TableHeader>
           <TableRow>
           <TableHeaderColumn>类别</TableHeaderColumn>
@@ -355,14 +355,11 @@ class SearchResTable extends Component {
         </TableBody>
           </Table>
       );
-//    } else {
-//      return null;
-//    }
+   } else {
+     return null;
+   }
   }
 }
-
-//searchRes: React.PropTypes.any,
-//resTableSelection: React.PropTypes.any,
 
 SearchResTable.contextTypes = {
   updateSelection: React.PropTypes.any,
@@ -418,51 +415,55 @@ class SearchBar extends Component {
 
   render() {
     var words = [];
-    for (var index in demoWords){
-      words.push(
-          <div key={"word"+index.toString()} className={this.props.hideWriter ? 'hidden' : ''}>
-          <WordComponent
-        holder={demoWords[index]}
-        value={eval("this.props.selected" + index.toString())}
-        multiSelect={this.props.multiSelect}
-        getSimWords={this.props.getSimWords}
-        options={eval('this.props.simWords' + index.toString())}
-        id={index} /></div>
-      )
+    for (var sentenceIndex in this.props.tokened){
+      var demoWords = this.props.tokened[sentenceIndex];
+
+      for (var index in demoWords){
+        words.push(
+            <div key={"word_" + sentenceIndex.toString() + "_" + index.toString()} className={this.props.hideWriter ? 'hidden' : ''}>
+            <WordComponent
+          holder={demoWords[index]}
+          value={eval("this.props.selected_" + sentenceIndex.toString() + "_"+ index.toString())}
+          multiSelect={this.props.multiSelect}
+          getSimWords={this.props.getSimWords}
+          options={eval('this.props.simWords_' + sentenceIndex.toString() + "_" +index.toString())}
+          id={sentenceIndex.toString() + "_" +index.toString()} /></div>
+        )
+      }
     }
 
     words.push(
         <div key={'steper'} ><HorizontalLinearStepper
       resTableSelection={this.props.resTableSelection}
       steperPrev={this.props.steperPrev}
-      steperNext={this.props.hideSearch}
+      steperNext={this.props.steperNext}
       stepIndex={this.props.stepIndex}
       finished={this.props.finished} /></div>)
 
     words.push(
         <div key={'searchText'}>
         <SearchTextField
-      show={this.props.hideSearchBar}
+      hide={this.props.hideSearchBar}
       name={"input your secrets"} /></div>)
 
     words.push(
         <div key={'searchBtn'}>
         <SearchBtn
-      show={this.props.hideSearchBar}
+      hide={this.props.hideSearchBar}
       name={"Search"} /></div>)
 
-    words.push(
-        <div key={'processBtn'}>
-        <ProcessBtn
-      handler={this.props.hideSearch}
-      name={"Process"} /></div>)
+    // words.push(
+    //     <div key={'processBtn'}>
+    //     <ProcessBtn
+    //   handler={this.props.hideSearch}
+    //   name={"Process"} /></div>)
 
     words.push(
         <div key={'searchResTable'}>
         <SearchResTable
       resTableSelection={this.props.resTableSelection}
       searchRes={this.props.searchRes}
-      show={this.props.hideSearchBar}
+      hide={this.props.hideSearchBar}
       updateSlices={this.props.updateSlices}
       slices={this.props.slices}
         />
@@ -477,7 +478,7 @@ class SearchBar extends Component {
     
     return (
         <MuiThemeProvider>
-        <SearchGrid>
+        <SearchGrid tokened={this.props.tokened}>
         {words}
         </SearchGrid>
 
@@ -516,8 +517,7 @@ function mapDispatchToProps(dispatch) {
     });
   };
 
-  let getSelectedSentences = function(){
-    var selectedItems = state.resTableSelection;
+  let getSelectedSentences = function(selectedItems){
     var res = [];
     for(var index in selectedItems){
       res.push(selectedItems[index].content);
@@ -544,7 +544,7 @@ function mapDispatchToProps(dispatch) {
 
   return {
     hideSearch: function(){
-      
+
       dispatch({
         type: "HIDE_SEARCHBAR",
       });
@@ -555,7 +555,6 @@ function mapDispatchToProps(dispatch) {
       case 1:
         dispatch({
           type: "HIDE_SEARCHBAR",
-          data: false
         });
         break;
 
@@ -574,7 +573,6 @@ function mapDispatchToProps(dispatch) {
       case 0:
         dispatch({
           type: "HIDE_SEARCHBAR",
-          data: true
         });
 
         fetch('/token',
@@ -582,7 +580,7 @@ function mapDispatchToProps(dispatch) {
                headers:{
                  'Accept': 'application/json',
                  'Content-Type': 'application/json'},
-               body: JSON.stringify({sentences: selectedSentences})
+               body: JSON.stringify({sentences: getSelectedSentences(selectedSentences)})
               })
           .then(parseJson)
           .then(json => dispatch({
