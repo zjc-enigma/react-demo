@@ -40,12 +40,14 @@ export default function reducer(state = [], action) {
 
   case 'GENERATE_RES':
 
-    var words = action.words
+    var tokened = state.tokened;
     var res = [];
-    var tmp="";
-    for (var index in words){
 
-      var selected = eval("state.selected" + index.toString())
+    for (var wordsIndex in tokened){
+      var words = tokened[wordsIndex]
+      var tmp="";
+      for (var index in words){
+        var selected = eval("state.selected_" + wordsIndex.toString() + "_" + index.toString())
         if(selected) {
           var randWord = selected[Math.floor(Math.random()*selected.length)].label;
           tmp += randWord;
@@ -53,27 +55,37 @@ export default function reducer(state = [], action) {
         else {
           tmp += words[index];
         }
+      }
+      res.push(tmp);
     }
-    res.push(tmp);
     
     return  Object.assign({}, state, {
       generateResult: res,
-      hideResTable: action.data,
     })
 
   case 'UPDATE_SLICES':
     console.dir(state);
     return {...state, slices: action.data};
 
+  case 'HIDE_GENERATE_RES':
+    return {...state, hideGenerateRes: true }
+
+  case 'SHOW_GENERATE_RES':
+    return {...state, hideGenerateRes: false }
+
+  case 'HIDE_SEARCH_RES':
+    return {...state, hideSearchRes: true }
+
+  case 'SHOW_SEARCH_RES':
+    return {...state, hideSearchRes: false }
+
+
   case 'HIDE_SEARCHBAR':
-    // var ret = false;
-    // if(state.hideSearchBar === false){
-    //   ret = true;
-    // } else {
-    //   ret = false;
-    // }
     return {...state, hideSearchBar: true }
-    
+
+  case 'SHOW_SEARCHBAR':
+    return {...state, hideSearchBar: false }
+
 
   case 'UPDATE_RES_SELECTION':
     return   {...state, resTableSelection: action.data}

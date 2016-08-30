@@ -257,31 +257,34 @@ class GenerateResTable extends Component{
 
   render() {
     //          <TableRow selected={this.isSelected(searchRes[index])}>
+    if(!this.props.hide){
+      var generateRes = this.props.generateRes;
+      var rows = [];
+      for (var index in generateRes){
+        rows.push(
+            <TableRow>
+            <TableRowColumn>{generateRes[index]}</TableRowColumn>
+            </TableRow>)
+      }
 
-    var generateRes = this.props.generateRes;
-    var rows = [];
-    for (var index in generateRes){
-      rows.push(
-        <TableRow>
-          <TableRowColumn>{generateRes[index]}</TableRowColumn>
-          </TableRow>)
+      return (
+          <Table
+        selectable={true}
+        multiSelectable={true}
+        onRowSelection={(slices) => handleRowSelected(slices)}>
+          <TableHeader>
+          <TableRow>
+          <TableHeaderColumn>文案</TableHeaderColumn>
+          </TableRow>
+          </TableHeader>
+          <TableBody>
+          {rows}
+        </TableBody>
+          </Table>
+      )
+    } else {
+      return null;
     }
-
-    return (
-        <Table
-      selectable={true}
-      multiSelectable={true}
-      onRowSelection={(slices) => handleRowSelected(slices)}>
-        <TableHeader>
-        <TableRow>
-        <TableHeaderColumn>文案</TableHeaderColumn>
-        </TableRow>
-        </TableHeader>
-        <TableBody>
-        {rows}
-      </TableBody>
-        </Table>
-    )
   }
 }
 
@@ -289,7 +292,6 @@ class GenerateResTable extends Component{
 class SearchResTable extends Component {
   constructor(props, context){
     super(props, context);
-    //this.context.updateSelection([]);
   }
   isSelected (Res) {
 
@@ -461,9 +463,9 @@ class SearchBar extends Component {
     words.push(
         <div key={'searchResTable'}>
         <SearchResTable
+      hide={this.props.hideSearchRes}
       resTableSelection={this.props.resTableSelection}
       searchRes={this.props.searchRes}
-      hide={this.props.hideSearchBar}
       updateSlices={this.props.updateSlices}
       slices={this.props.slices}
         />
@@ -471,11 +473,12 @@ class SearchBar extends Component {
 
     words.push(
         <div key={'generateResTable'}>
-        <GenerateResTable generateRes={this.props.generateResult}/>
+        <GenerateResTable
+      hide={this.props.hideGenerateRes} 
+      generateRes={this.props.generateResult}/>
         </div>
     )
 
-    
     return (
         <MuiThemeProvider>
         <SearchGrid tokened={this.props.tokened}>
@@ -494,7 +497,6 @@ SearchBar.childContextTypes = {
   textInput: React.PropTypes.any,
   showRes: React.PropTypes.any,
   searchRes: React.PropTypes.any,
-  //resTableSelection: React.PropTypes.any,
   updateSelection: React.PropTypes.any,
 
 };
@@ -510,7 +512,7 @@ function mapDispatchToProps(dispatch) {
   };
 
   let showClick = function(json) {
-    
+
     dispatch({
       type: "SEARCHRES",
       data: json
@@ -593,6 +595,7 @@ function mapDispatchToProps(dispatch) {
           type: "HIDE_WRITER",
           data: false
         });
+        dispatch({type: "HIDE_SEARCH_RES"});
         break;
 
       case 1:
@@ -602,9 +605,12 @@ function mapDispatchToProps(dispatch) {
         });
         dispatch({
           type:"GENERATE_RES",
-          words: demoWords,
           data: true
-        })
+        });
+        dispatch({
+          type: "SHOW_GENERATE_RES",
+        });
+
         break;
 
       case 2:
@@ -632,7 +638,10 @@ function mapDispatchToProps(dispatch) {
               })
           .then(parseJson)
           .then(showClick)
-          .catch(function(e){console.log('parsing failed', e)})
+          .catch(function(e){console.log('parsing failed', e)});
+
+        dispatch({type: "SHOW_SEARCH_RES"});
+
       } else {
         alert("Please input search text");
         dispatch({

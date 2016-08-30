@@ -556,8 +556,11 @@
 	), document.getElementById('demo1'));
 
 	store.dispatch({ type: "INIT", finished: false, stepIndex: 0 });
-	//store.dispatch({type:"HIDE_SEARCHBAR", data:false});
+	store.dispatch({ type: "HIDE_SEARCHBAR" });
 	store.dispatch({ type: "HIDE_WRITER", data: true });
+	store.dispatch({ type: "HIDE_GENERATE_RES" });
+	store.dispatch({ type: "HIDE_SEARCH_RES" });
+	store.dispatch({ type: "SHOW_SEARCHBAR" });
 
 /***/ },
 /* 3 */
@@ -29426,48 +29429,51 @@
 	    key: 'render',
 	    value: function render() {
 	      //          <TableRow selected={this.isSelected(searchRes[index])}>
-
-	      var generateRes = this.props.generateRes;
-	      var rows = [];
-	      for (var index in generateRes) {
-	        rows.push(_react2.default.createElement(
-	          _Table.TableRow,
-	          null,
-	          _react2.default.createElement(
-	            _Table.TableRowColumn,
-	            null,
-	            generateRes[index]
-	          )
-	        ));
-	      }
-
-	      return _react2.default.createElement(
-	        _Table.Table,
-	        {
-	          selectable: true,
-	          multiSelectable: true,
-	          onRowSelection: function onRowSelection(slices) {
-	            return handleRowSelected(slices);
-	          } },
-	        _react2.default.createElement(
-	          _Table.TableHeader,
-	          null,
-	          _react2.default.createElement(
+	      if (!this.props.hide) {
+	        var generateRes = this.props.generateRes;
+	        var rows = [];
+	        for (var index in generateRes) {
+	          rows.push(_react2.default.createElement(
 	            _Table.TableRow,
 	            null,
 	            _react2.default.createElement(
-	              _Table.TableHeaderColumn,
+	              _Table.TableRowColumn,
 	              null,
-	              '文案'
+	              generateRes[index]
 	            )
+	          ));
+	        }
+
+	        return _react2.default.createElement(
+	          _Table.Table,
+	          {
+	            selectable: true,
+	            multiSelectable: true,
+	            onRowSelection: function onRowSelection(slices) {
+	              return handleRowSelected(slices);
+	            } },
+	          _react2.default.createElement(
+	            _Table.TableHeader,
+	            null,
+	            _react2.default.createElement(
+	              _Table.TableRow,
+	              null,
+	              _react2.default.createElement(
+	                _Table.TableHeaderColumn,
+	                null,
+	                '文案'
+	              )
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _Table.TableBody,
+	            null,
+	            rows
 	          )
-	        ),
-	        _react2.default.createElement(
-	          _Table.TableBody,
-	          null,
-	          rows
-	        )
-	      );
+	        );
+	      } else {
+	        return null;
+	      }
 	    }
 	  }]);
 
@@ -29481,7 +29487,6 @@
 	    _classCallCheck(this, SearchResTable);
 
 	    return _possibleConstructorReturn(this, Object.getPrototypeOf(SearchResTable).call(this, props, context));
-	    //this.context.updateSelection([]);
 	  }
 
 	  _createClass(SearchResTable, [{
@@ -29722,9 +29727,9 @@
 	        'div',
 	        { key: 'searchResTable' },
 	        _react2.default.createElement(SearchResTable, {
+	          hide: this.props.hideSearchRes,
 	          resTableSelection: this.props.resTableSelection,
 	          searchRes: this.props.searchRes,
-	          hide: this.props.hideSearchBar,
 	          updateSlices: this.props.updateSlices,
 	          slices: this.props.slices
 	        })
@@ -29733,7 +29738,9 @@
 	      words.push(_react2.default.createElement(
 	        'div',
 	        { key: 'generateResTable' },
-	        _react2.default.createElement(GenerateResTable, { generateRes: this.props.generateResult })
+	        _react2.default.createElement(GenerateResTable, {
+	          hide: this.props.hideGenerateRes,
+	          generateRes: this.props.generateResult })
 	      ));
 
 	      return _react2.default.createElement(
@@ -29758,7 +29765,6 @@
 	  textInput: _react2.default.PropTypes.any,
 	  showRes: _react2.default.PropTypes.any,
 	  searchRes: _react2.default.PropTypes.any,
-	  //resTableSelection: React.PropTypes.any,
 	  updateSelection: _react2.default.PropTypes.any
 
 	};
@@ -29854,6 +29860,7 @@
 	            type: "HIDE_WRITER",
 	            data: false
 	          });
+	          dispatch({ type: "HIDE_SEARCH_RES" });
 	          break;
 
 	        case 1:
@@ -29863,9 +29870,12 @@
 	          });
 	          dispatch({
 	            type: "GENERATE_RES",
-	            words: demoWords,
 	            data: true
 	          });
+	          dispatch({
+	            type: "SHOW_GENERATE_RES"
+	          });
+
 	          break;
 
 	        case 2:
@@ -29891,6 +29901,8 @@
 	        }).then(parseJson).then(showClick).catch(function (e) {
 	          console.log('parsing failed', e);
 	        });
+
+	        dispatch({ type: "SHOW_SEARCH_RES" });
 	      } else {
 	        alert("Please input search text");
 	        dispatch({
@@ -46471,38 +46483,49 @@
 
 	    case 'GENERATE_RES':
 
-	      var words = action.words;
+	      var tokened = state.tokened;
 	      var res = [];
-	      var tmp = "";
-	      for (var index in words) {
 
-	        var selected = eval("state.selected" + index.toString());
-	        if (selected) {
-	          var randWord = selected[Math.floor(Math.random() * selected.length)].label;
-	          tmp += randWord;
-	        } else {
-	          tmp += words[index];
+	      for (var wordsIndex in tokened) {
+	        var words = tokened[wordsIndex];
+	        var tmp = "";
+	        for (var index in words) {
+	          var selected = eval("state.selected_" + wordsIndex.toString() + "_" + index.toString());
+	          if (selected) {
+	            var randWord = selected[Math.floor(Math.random() * selected.length)].label;
+	            tmp += randWord;
+	          } else {
+	            tmp += words[index];
+	          }
 	        }
+	        res.push(tmp);
 	      }
-	      res.push(tmp);
 
 	      return Object.assign({}, state, {
-	        generateResult: res,
-	        hideResTable: action.data
+	        generateResult: res
 	      });
 
 	    case 'UPDATE_SLICES':
 	      console.dir(state);
 	      return _extends({}, state, { slices: action.data });
 
+	    case 'HIDE_GENERATE_RES':
+	      return _extends({}, state, { hideGenerateRes: true });
+
+	    case 'SHOW_GENERATE_RES':
+	      return _extends({}, state, { hideGenerateRes: false });
+
+	    case 'HIDE_SEARCH_RES':
+	      return _extends({}, state, { hideSearchRes: true });
+
+	    case 'SHOW_SEARCH_RES':
+	      return _extends({}, state, { hideSearchRes: false });
+
 	    case 'HIDE_SEARCHBAR':
-	      // var ret = false;
-	      // if(state.hideSearchBar === false){
-	      //   ret = true;
-	      // } else {
-	      //   ret = false;
-	      // }
 	      return _extends({}, state, { hideSearchBar: true });
+
+	    case 'SHOW_SEARCHBAR':
+	      return _extends({}, state, { hideSearchBar: false });
 
 	    case 'UPDATE_RES_SELECTION':
 	      return _extends({}, state, { resTableSelection: action.data });
