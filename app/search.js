@@ -31,15 +31,12 @@ class HorizontalLinearStepper extends Component {
 
 
   handleNext (stepIndex) {
-    console.dir(this.context.resTableSelection);
-    this.props.steperNext(stepIndex, this.context.resTableSelection);
+
+    this.props.steperNext(stepIndex, this.props.resTableSelection);
   };
 
-  handlePrev ()  {
-    const {stepIndex} = this.state;
-    if (stepIndex > 0) {
-      this.setState({stepIndex: stepIndex - 1});
-    }
+  handlePrev (stepIndex)  {
+    this.props.steperPrev(stepIndex);
   };
 
   getStepContent(stepIndex) {
@@ -92,13 +89,13 @@ class HorizontalLinearStepper extends Component {
                 <FlatButton
                   label="Back"
                   disabled={stepIndex === 0}
-                  onTouchTap={this.handlePrev}
+            onTouchTap={() => this.handlePrev(stepIndex)}
                   style={{marginRight: 12}}
                 />
                 <RaisedButton
                   label={stepIndex === 2 ? 'Finish' : 'Next'}
             primary={true}
-            onClick={() => this.handleNext(stepIndex)}
+            onClick={() => this.props.steperNext()}
 
                 />
               </div>
@@ -110,9 +107,9 @@ class HorizontalLinearStepper extends Component {
   }
 }
 
-HorizontalLinearStepper.contextTypes = {
-  resTableSelection: React.PropTypes.any,
-}
+// HorizontalLinearStepper.contextTypes = {
+//   resTableSelection: React.PropTypes.any,
+// };
 
 
 class SearchGrid extends Component{
@@ -185,12 +182,15 @@ class SearchBtn extends Component {
   }
   render() {
     //() => this.context.rename(this.context.text)
-    //
-    return (
-        <RaisedButton
-      label={this.props.name}
-      onClick={() => this.search(this.context.text)} />
-    )
+    if(this.props.show){
+      return (
+          <RaisedButton
+        label={this.props.name}
+        onClick={() => this.search(this.context.text)} />
+      )
+    } else {
+      return null;
+    }
   }
 }
 SearchBtn.contextTypes = {
@@ -206,10 +206,11 @@ class ProcessBtn extends Component {
     super(props, context);
   }
   render() {
+
     return (
         <RaisedButton
       label={this.props.name}
-      onClick={() => {}} />
+      onClick={() => this.props.handler()}/>
     )
   }
 }
@@ -224,16 +225,18 @@ class SearchTextField extends Component {
   inputHandler(event){
     this.context.text = event.target.value;
   }
-  //      onChange={this.inputHandler.bind(this)}
-  //      ref="testField"
   render() {
-    return (
-        <TextField
-      hintText={this.props.hint}
-      value={this.context.text}
-      onChange={this.context.textInput}
-      fullWidth={true} />
-    )
+    if(this.props.show){
+      return (
+          <TextField
+        hintText={this.props.hint}
+        value={this.context.text}
+        onChange={this.context.textInput}
+        fullWidth={true} />
+      )
+    } else {
+      return null;
+    }
   }
 }
 
@@ -283,18 +286,12 @@ class GenerateResTable extends Component{
 class SearchResTable extends Component {
   constructor(props, context){
     super(props, context);
-    this.context.updateSelection([]);
+    //this.context.updateSelection([]);
   }
   isSelected (Res) {
 
-    // this.context.resTableSelection.forEach(selectedItem => {
-    //   if (selectedItem.content === Res.content)
-    //     return true;
-    // });
-    //
-
-    for (var index in this.context.resTableSelection){
-      if (this.context.resTableSelection[index].content === Res.content){
+    for (var index in this.props.resTableSelection){
+      if (this.props.resTableSelection[index].content === Res.content){
         return true;
       }
     }
@@ -303,10 +300,10 @@ class SearchResTable extends Component {
 
   render() {
 
-    var searchRes = this.context.searchRes;
-
-    var rows = [];
-    for (var index in searchRes){
+//    if (this.props.show){
+      var searchRes = this.props.searchRes;
+      var rows = [];
+      for (var index in searchRes){
         rows.push(
             <TableRow selected={this.isSelected(searchRes[index])}>
             <TableRowColumn>{searchRes[index].tag}</TableRowColumn>
@@ -314,49 +311,61 @@ class SearchResTable extends Component {
             <TableRowColumn style={{width: '60%'}}>{searchRes[index].content}</TableRowColumn>
             </TableRow>)
 
-    }
-
-    const handleRowSelected = (slices) => {
-
-      if (slices === 'all') {
-        this.context.updateSelection(searchRes);
-      } else if  (slices === 'none') {
-        this.context.updateSelection([]);
-
-      } else {
-        let selectedItems = slices.map(slice => {
-          return searchRes[slice];
-        })
-        this.context.updateSelection(selectedItems);
       }
 
+    const handleRowSelected = (slices) => {
+    
+      if (slices === 'all') {
+          this.context.updateSelection(searchRes);
+      } else if  (slices.length === 0) {
+        //this.context.updateSelection([]);
+        slices = this.props.slices;
+        let selectedItems = slices.map(slice => {
+          return searchRes[slice];
 
+        });
+        this.context.updateSelection(selectedItems);
+
+      } else {
+        console.log('slices is not none');
+        console.dir(slices);
+        this.props.updateSlices(slices);
+        let selectedItems = slices.map(slice => {
+          return searchRes[slice];
+
+        });
+        this.context.updateSelection(selectedItems);
+      }
     }
 
-    return (
-        <Table
-      selectable={true}
-      multiSelectable={true}
-      onRowSelection={(slices) => handleRowSelected(slices)}>
-        <TableHeader>
-        <TableRow>
-        <TableHeaderColumn>类别</TableHeaderColumn>
-        <TableHeaderColumn>来源</TableHeaderColumn>
-        <TableHeaderColumn style={{width: '60%'}}>内容</TableHeaderColumn>
-        </TableRow>
-        </TableHeader>
-        <TableBody>
-        {rows}
+      return (
+          <Table
+        selectable={true}
+        multiSelectable={true}
+        onRowSelection={(slices) => handleRowSelected(slices)}>
+          <TableHeader>
+          <TableRow>
+          <TableHeaderColumn>类别</TableHeaderColumn>
+          <TableHeaderColumn>来源</TableHeaderColumn>
+          <TableHeaderColumn style={{width: '60%'}}>内容</TableHeaderColumn>
+          </TableRow>
+          </TableHeader>
+          <TableBody>
+          {rows}
         </TableBody>
-        </Table>
-    );
+          </Table>
+      );
+//    } else {
+//      return null;
+//    }
   }
 }
 
+//searchRes: React.PropTypes.any,
+//resTableSelection: React.PropTypes.any,
+
 SearchResTable.contextTypes = {
-  searchRes: React.PropTypes.any,
   updateSelection: React.PropTypes.any,
-  resTableSelection: React.PropTypes.any,
 
 };
 
@@ -402,15 +411,12 @@ class SearchBar extends Component {
       text: this.props.text,
       textInput: this.props.textInput,
       showRes: this.props.showRes,
-      searchRes: this.props.searchRes,
-      resTableSelection: this.props.resTableSelection,
       updateSelection: this.props.updateSelection,
 
     }
   }
 
   render() {
-
     var words = [];
     for (var index in demoWords){
       words.push(
@@ -426,27 +432,40 @@ class SearchBar extends Component {
     }
 
     words.push(
-      <div key={'steper'} ><HorizontalLinearStepper
-    steperNext={this.props.steperNext}
-    stepIndex={this.props.stepIndex}
-    finished={this.props.finished} /></div>)
+        <div key={'steper'} ><HorizontalLinearStepper
+      resTableSelection={this.props.resTableSelection}
+      steperPrev={this.props.steperPrev}
+      steperNext={this.props.hideSearch}
+      stepIndex={this.props.stepIndex}
+      finished={this.props.finished} /></div>)
 
     words.push(
-        <div key={'searchText'}
-      className={this.props.hideSearchBar ? 'hidden' : ''} >
+        <div key={'searchText'}>
         <SearchTextField
+      show={this.props.hideSearchBar}
       name={"input your secrets"} /></div>)
 
     words.push(
-        <div key={'searchBtn'}
-      className={this.props.hideSearchBar ? 'hidden' : ''}>
+        <div key={'searchBtn'}>
         <SearchBtn
+      show={this.props.hideSearchBar}
       name={"Search"} /></div>)
 
     words.push(
-        <div key={'searchResTable'}
-      className={this.props.hideSearchBar ? 'hidden' : ''}>
-        <SearchResTable />
+        <div key={'processBtn'}>
+        <ProcessBtn
+      handler={this.props.hideSearch}
+      name={"Process"} /></div>)
+
+    words.push(
+        <div key={'searchResTable'}>
+        <SearchResTable
+      resTableSelection={this.props.resTableSelection}
+      searchRes={this.props.searchRes}
+      show={this.props.hideSearchBar}
+      updateSlices={this.props.updateSlices}
+      slices={this.props.slices}
+        />
         </div>)
 
     words.push(
@@ -455,7 +474,7 @@ class SearchBar extends Component {
         </div>
     )
 
-
+    
     return (
         <MuiThemeProvider>
         <SearchGrid>
@@ -474,7 +493,7 @@ SearchBar.childContextTypes = {
   textInput: React.PropTypes.any,
   showRes: React.PropTypes.any,
   searchRes: React.PropTypes.any,
-  resTableSelection: React.PropTypes.any,
+  //resTableSelection: React.PropTypes.any,
   updateSelection: React.PropTypes.any,
 
 };
@@ -490,7 +509,7 @@ function mapDispatchToProps(dispatch) {
   };
 
   let showClick = function(json) {
-
+    
     dispatch({
       type: "SEARCHRES",
       data: json
@@ -499,7 +518,6 @@ function mapDispatchToProps(dispatch) {
 
   let getSelectedSentences = function(){
     var selectedItems = state.resTableSelection;
-    //var pattern = /selected/;
     var res = [];
     for(var index in selectedItems){
       res.push(selectedItems[index].content);
@@ -525,6 +543,32 @@ function mapDispatchToProps(dispatch) {
   };
 
   return {
+    hideSearch: function(){
+      
+      dispatch({
+        type: "HIDE_SEARCHBAR",
+      });
+
+    },
+    steperPrev: function(step){
+      switch(step){
+      case 1:
+        dispatch({
+          type: "HIDE_SEARCHBAR",
+          data: false
+        });
+        break;
+
+      default:
+        break;
+      }
+
+      if (step > 0) {
+        dispatch({type: "PREV_STEP",
+                  stepIndex: step - 1});
+      }
+
+    },
     steperNext: function(step, selectedSentences){
       switch(step){
       case 0:
@@ -580,11 +624,6 @@ function mapDispatchToProps(dispatch) {
     },
 
     searchQuery: function(text){
-
-      // var url = new URL("/query"),
-      //     params = {key:'大陆'}
-      // Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
-      // fetch('http://example.com/foo?name=' + encodeURIComponent(name))
       if(text){
         fetch('/query',
               {method: "POST",
@@ -597,6 +636,7 @@ function mapDispatchToProps(dispatch) {
           .then(showClick)
           .catch(function(e){console.log('parsing failed', e)})
       } else {
+        alert("Please input search text");
         dispatch({
           type: "SEARCHRES",
           data: []
@@ -619,6 +659,13 @@ function mapDispatchToProps(dispatch) {
     },
     textInput: function(event){
       changeText(event.target.value);
+    },
+    updateSlices: function(slices) {
+
+      dispatch({
+        type: 'UPDATE_SLICES',
+        data: slices
+      });
     },
     updateSelection: function(selectionItems){
 

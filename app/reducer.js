@@ -1,14 +1,9 @@
-
-
-
-
 export default function reducer(state = [], action) {
 
   switch(action.type){
 
   case "TOKEN_SELECTED_SENTENCE":
-    console.log('token selected');
-    console.log(action.data);
+    
     return  Object.assign({}, state, {
       tokened:action.data
     })
@@ -16,6 +11,10 @@ export default function reducer(state = [], action) {
     return  Object.assign({}, state, {
       stepIndex: action.stepIndex,
       finished: action.finished
+    })
+  case "PREV_STEP":
+    return Object.assign({}, state, {
+      stepIndex: action.stepIndex,
     })
   case "NEXT_STEP":
 
@@ -25,19 +24,18 @@ export default function reducer(state = [], action) {
     })
   case 'GET_SIM_WORDS':
     var ret = {}
-    ret['simWords' + action.id.toString()] = action.data;
-    return Object.assign({}, state, ret)
+    //    ret['simWords' + action.id.toString()] = action.data;
+    //    return Object.assign({}, state, ret)
+    return state;
 
   case 'MULTISELECT':
     var ret = {}
-    ret["selected" + action.id.toString()] = action.data
-
-    return  Object.assign({}, state, ret)
+    //    ret["selected" + action.id.toString()] = action.data
+    //    return  Object.assign({}, state, ret)
+    return state;
 
   case 'HIDE_WRITER':
-    return  Object.assign({}, state, {
-      hideWriter: action.data,
-    })
+    return  {...state, hideWriter: action.data}
 
   case 'GENERATE_RES':
 
@@ -61,26 +59,30 @@ export default function reducer(state = [], action) {
       generateResult: res,
       hideResTable: action.data,
     })
+
+  case 'UPDATE_SLICES':
+    console.dir(state);
+    return {...state, slices: action.data};
+
   case 'HIDE_SEARCHBAR':
-    return  Object.assign({}, state, {
-      hideSearchBar: action.data,
-    })
+    var ret = false;
+
+    if(state.hideSearchBar === false){
+      ret = true;
+    } else {
+      ret = false;
+    }
+    return {...state, hideSearchBar: ret }
+    
 
   case 'UPDATE_RES_SELECTION':
-
-    return   Object.assign({}, state, {
-      resTableSelection: action.data,
-    })
+    return   {...state, resTableSelection: action.data}
+    
 
   case 'SEARCHRES':
     return   Object.assign({}, state, {
       searchRes: action.data,
     })
-
-  case 'RENAME':
-    return  {
-      name: action.data,
-    }
 
   case 'CHANGETEXT':
     return  Object.assign({}, state, {
