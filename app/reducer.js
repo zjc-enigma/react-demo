@@ -133,7 +133,11 @@ export default function reducer(state = [], action) {
 
   case 'UPDATE_RES_SELECTION':
     return   {...state, resTableSelection: action.data}
-    
+
+  case 'RESIZE_WORDS':
+    console.log("RESIZE");
+    console.dir(action.data);
+    return   {...state, wordsComponentWidth: action.data}
 
   case 'SEARCHRES':
     return   Object.assign({}, state, {

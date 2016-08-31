@@ -96,8 +96,35 @@ class PrevBtn extends Component{
       return null;
     }
   }
-
 }
+
+
+
+class NextBtn extends Component{
+
+  constructor(props, context){
+    super(props, context);
+  }
+
+  handler() {
+    this.props.resizeWords(this.props.wordsWidth);
+    this.props.steperNext(this.props.stepIndex, this.props.resTableSelection);
+  }
+  render(){
+
+    if(!this.props.hide){
+      console.log('wordsWidth', this.props.wordsWidth);
+      return(
+          <RaisedButton
+        label="Next"
+        onClick={() => this.handler()} />
+      )
+    } else {
+      return null;
+    }
+  }
+}
+
 
 class SearchGrid extends Component{
   static defaultProps = {
@@ -124,8 +151,14 @@ class SearchGrid extends Component{
       var demoWords = this.props.tokened[sentenceIndex];
 
       for (var index in demoWords){
+        var wordWidth = this.props.wordsComponentWidth[sentenceIndex.toString() + "_" + index.toString()]
+
+        wordWidth = (wordWidth? wordWidth : 1)*0.5;
         wordsLayouts.push({i:"word_"+ sentenceIndex.toString() + "_" + index.toString(),
-                           x:parseInt(index), y:(1 + parseInt(sentenceIndex)), w:1, h:0.2, static:true})
+                           x:parseInt(index),
+                           y:(1 + parseInt(sentenceIndex)),
+                           w: wordWidth,
+                           h:0.2, static:true})
       }
     }
 
@@ -416,6 +449,15 @@ class SearchBar extends Component {
 
   constructor(props, context){
     super(props, context);
+
+    const wordsWidth = {};
+    for (var sentenceIndex in this.props.tokened){
+      var demoWords = this.props.tokened[sentenceIndex];
+
+      for (var index in demoWords){
+        wordsWidth[sentenceIndex.toString() + "_" + index.toString()] = demoWords[index].length;
+      }
+    }
   }
 
   getChildContext(){
@@ -436,18 +478,25 @@ class SearchBar extends Component {
       var demoWords = this.props.tokened[sentenceIndex];
 
       for (var index in demoWords){
+
         words.push(
-            <div key={"word_" + sentenceIndex.toString() + "_" + index.toString()} className={this.props.hideWriter ? 'hidden' : ''}>
-            <WordComponent
-          holder={demoWords[index]}
-          value={eval("this.props.selected_" + sentenceIndex.toString() + "_"+ index.toString())}
-          multiSelect={this.props.multiSelect}
-          getSimWords={this.props.getSimWords}
-          options={eval('this.props.simWords_' + sentenceIndex.toString() + "_" +index.toString())}
-          id={sentenceIndex.toString() + "_" +index.toString()} /></div>
+            <div
+          key={"word_" + sentenceIndex.toString() + "_" + index.toString()}
+          className={this.props.hideWriter ? 'hidden' : ''}>
+            {demoWords[index].length === 1? (
+              demoWords[index]
+            ) : (<WordComponent
+                 holder={demoWords[index]}
+                 value={eval("this.props.selected_" + sentenceIndex.toString() + "_"+ index.toString())}
+                 multiSelect={this.props.multiSelect}
+                 getSimWords={this.props.getSimWords}
+                 options={eval('this.props.simWords_' + sentenceIndex.toString() + "_" +index.toString())}
+                 id={sentenceIndex.toString() + "_" +index.toString()} />)}
+            </div>
         )
       }
     }
+    //
 
     words.push(
         <div key={'steper'} ><HorizontalLinearStepper
@@ -476,14 +525,19 @@ class SearchBar extends Component {
       handler={() => this.props.steperPrev(this.props.stepIndex)}
       hide={this.props.hidePrevBtn}/></div>)
 
+
     words.push(
         <div key={"searchNextBtn"}>
-        <RaisedButton
+        <NextBtn
       label={this.props.stepIndex === 2 ? 'Finish' : 'Next'}
       disabled={this.props.resTableSelection === undefined}
       primary={true}
-      onClick={() => this.props.steperNext(this.props.stepIndex, this.props.resTableSelection)}
-        />
+      stepIndex={this.props.stepIndex}
+      resTableSelection={this.props.resTableSelection}
+      steperNext={this.props.steperNext}
+      wordsWidth={this.wordsWidth}
+      resizeWords={this.props.resizeWords}
+      hide={false}/>
         </div>
     )
     // words.push(
@@ -525,7 +579,9 @@ class SearchBar extends Component {
       generateResTableHeight={this.props.generateResTableHeight}
       prevBtnWidth={this.props.prevBtnWidth}
       prevBtnHeight={this.props.prevBtnHeight}
-      nextBtnX={this.props.nextBtnX}>
+      nextBtnX={this.props.nextBtnX}
+      wordsComponentWidth={this.props.wordsComponentWidth}
+        >
 
         {words}
         </SearchGrid>
@@ -730,6 +786,13 @@ function mapDispatchToProps(dispatch) {
       }
 
     },
+    resizeWords: function(wordsWidth){
+      dispatch({
+        type: 'RESIZE_WORDS',
+        data: wordsWidth
+      })
+    },
+
     rename: function(){
 
       fetch("/rand_titles",

@@ -29250,8 +29250,44 @@
 	  return PrevBtn;
 	}(_react.Component);
 
-	var SearchGrid = function (_Component3) {
-	  _inherits(SearchGrid, _Component3);
+	var NextBtn = function (_Component3) {
+	  _inherits(NextBtn, _Component3);
+
+	  function NextBtn(props, context) {
+	    _classCallCheck(this, NextBtn);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(NextBtn).call(this, props, context));
+	  }
+
+	  _createClass(NextBtn, [{
+	    key: 'handler',
+	    value: function handler() {
+	      this.props.resizeWords(this.props.wordsWidth);
+	      this.props.steperNext(this.props.stepIndex, this.props.resTableSelection);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this5 = this;
+
+	      if (!this.props.hide) {
+	        console.log('wordsWidth', this.props.wordsWidth);
+	        return _react2.default.createElement(_RaisedButton2.default, {
+	          label: 'Next',
+	          onClick: function onClick() {
+	            return _this5.handler();
+	          } });
+	      } else {
+	        return null;
+	      }
+	    }
+	  }]);
+
+	  return NextBtn;
+	}(_react.Component);
+
+	var SearchGrid = function (_Component4) {
+	  _inherits(SearchGrid, _Component4);
 
 	  function SearchGrid(props, context) {
 	    _classCallCheck(this, SearchGrid);
@@ -29268,8 +29304,14 @@
 	        var demoWords = this.props.tokened[sentenceIndex];
 
 	        for (var index in demoWords) {
+	          var wordWidth = this.props.wordsComponentWidth[sentenceIndex.toString() + "_" + index.toString()];
+
+	          wordWidth = (wordWidth ? wordWidth : 1) * 0.5;
 	          wordsLayouts.push({ i: "word_" + sentenceIndex.toString() + "_" + index.toString(),
-	            x: parseInt(index), y: 1 + parseInt(sentenceIndex), w: 1, h: 0.2, static: true });
+	            x: parseInt(index),
+	            y: 1 + parseInt(sentenceIndex),
+	            w: wordWidth,
+	            h: 0.2, static: true });
 	        }
 	      }
 
@@ -29318,8 +29360,8 @@
 	  nextBtnX: 11
 	};
 
-	var SearchBtn = function (_Component4) {
-	  _inherits(SearchBtn, _Component4);
+	var SearchBtn = function (_Component5) {
+	  _inherits(SearchBtn, _Component5);
 
 	  function SearchBtn(props, context) {
 	    _classCallCheck(this, SearchBtn);
@@ -29335,7 +29377,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this6 = this;
+	      var _this8 = this;
 
 	      //() => this.context.rename(this.context.text)
 	      if (!this.props.hide) {
@@ -29343,7 +29385,7 @@
 	          fullWidth: true,
 	          label: this.props.name,
 	          onClick: function onClick() {
-	            return _this6.search(_this6.context.text);
+	            return _this8.search(_this8.context.text);
 	          } });
 	      } else {
 	        return null;
@@ -29361,8 +29403,8 @@
 	  showRes: _react2.default.PropTypes.any
 	};
 
-	var ProcessBtn = function (_Component5) {
-	  _inherits(ProcessBtn, _Component5);
+	var ProcessBtn = function (_Component6) {
+	  _inherits(ProcessBtn, _Component6);
 
 	  function ProcessBtn(props, context) {
 	    _classCallCheck(this, ProcessBtn);
@@ -29373,12 +29415,12 @@
 	  _createClass(ProcessBtn, [{
 	    key: 'render',
 	    value: function render() {
-	      var _this8 = this;
+	      var _this10 = this;
 
 	      return _react2.default.createElement(_RaisedButton2.default, {
 	        label: this.props.name,
 	        onClick: function onClick() {
-	          return _this8.props.handler();
+	          return _this10.props.handler();
 	        } });
 	    }
 	  }]);
@@ -29386,8 +29428,8 @@
 	  return ProcessBtn;
 	}(_react.Component);
 
-	var SearchTextField = function (_Component6) {
-	  _inherits(SearchTextField, _Component6);
+	var SearchTextField = function (_Component7) {
+	  _inherits(SearchTextField, _Component7);
 
 	  function SearchTextField(props, context) {
 	    _classCallCheck(this, SearchTextField);
@@ -29424,8 +29466,8 @@
 
 	};
 
-	var GenerateResTable = function (_Component7) {
-	  _inherits(GenerateResTable, _Component7);
+	var GenerateResTable = function (_Component8) {
+	  _inherits(GenerateResTable, _Component8);
 
 	  function GenerateResTable(props, context) {
 	    _classCallCheck(this, GenerateResTable);
@@ -29488,8 +29530,8 @@
 	  return GenerateResTable;
 	}(_react.Component);
 
-	var SearchResTable = function (_Component8) {
-	  _inherits(SearchResTable, _Component8);
+	var SearchResTable = function (_Component9) {
+	  _inherits(SearchResTable, _Component9);
 
 	  function SearchResTable(props, context) {
 	    _classCallCheck(this, SearchResTable);
@@ -29511,7 +29553,7 @@
 	  }, {
 	    key: 'handleRowSelected',
 	    value: function handleRowSelected(slices) {
-	      var _this12 = this;
+	      var _this14 = this;
 
 	      if (slices === 'all') {
 	        this.context.updateSelection(this.props.searchRes);
@@ -29519,14 +29561,14 @@
 
 	        slices = this.props.slices;
 	        var selectedItems = slices.map(function (slice) {
-	          return _this12.props.searchRes[slice];
+	          return _this14.props.searchRes[slice];
 	        });
 	        this.context.updateSelection(selectedItems);
 	      } else {
 
 	        this.props.updateSlices(slices);
 	        var _selectedItems = slices.map(function (slice) {
-	          return _this12.props.searchRes[slice];
+	          return _this14.props.searchRes[slice];
 	        });
 	        this.context.updateSelection(_selectedItems);
 	      }
@@ -29534,7 +29576,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this13 = this;
+	      var _this15 = this;
 
 	      if (!this.props.hide) {
 	        var searchRes = this.props.searchRes;
@@ -29566,7 +29608,7 @@
 	            selectable: true,
 	            multiSelectable: true,
 	            onRowSelection: function onRowSelection(slices) {
-	              return _this13.handleRowSelected(slices);
+	              return _this15.handleRowSelected(slices);
 	            } },
 	          _react2.default.createElement(
 	            _Table.TableHeader,
@@ -29611,16 +29653,16 @@
 
 	};
 
-	var WordComponent = function (_Component9) {
-	  _inherits(WordComponent, _Component9);
+	var WordComponent = function (_Component10) {
+	  _inherits(WordComponent, _Component10);
 
 	  function WordComponent(props, context) {
 	    _classCallCheck(this, WordComponent);
 
-	    var _this14 = _possibleConstructorReturn(this, Object.getPrototypeOf(WordComponent).call(this, props, context));
+	    var _this16 = _possibleConstructorReturn(this, Object.getPrototypeOf(WordComponent).call(this, props, context));
 
-	    _this14.props.getSimWords(_this14.props.holder, _this14.props.id);
-	    return _this14;
+	    _this16.props.getSimWords(_this16.props.holder, _this16.props.id);
+	    return _this16;
 	  }
 
 	  _createClass(WordComponent, [{
@@ -29631,7 +29673,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this15 = this;
+	      var _this17 = this;
 
 	      return _react2.default.createElement(
 	        _MuiThemeProvider2.default,
@@ -29643,7 +29685,7 @@
 	          value: this.props.value,
 	          options: this.props.options,
 	          onChange: function onChange(val) {
-	            return _this15.handler(val);
+	            return _this17.handler(val);
 	          }
 	        })
 	      );
@@ -29653,13 +29695,23 @@
 	  return WordComponent;
 	}(_react.Component);
 
-	var SearchBar = function (_Component10) {
-	  _inherits(SearchBar, _Component10);
+	var SearchBar = function (_Component11) {
+	  _inherits(SearchBar, _Component11);
 
 	  function SearchBar(props, context) {
 	    _classCallCheck(this, SearchBar);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(SearchBar).call(this, props, context));
+	    var _this18 = _possibleConstructorReturn(this, Object.getPrototypeOf(SearchBar).call(this, props, context));
+
+	    var wordsWidth = {};
+	    for (var sentenceIndex in _this18.props.tokened) {
+	      var demoWords = _this18.props.tokened[sentenceIndex];
+
+	      for (var index in demoWords) {
+	        wordsWidth[sentenceIndex.toString() + "_" + index.toString()] = demoWords[index].length;
+	      }
+	    }
+	    return _this18;
 	  }
 
 	  _createClass(SearchBar, [{
@@ -29678,17 +29730,20 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this17 = this;
+	      var _this19 = this;
 
 	      var words = [];
 	      for (var sentenceIndex in this.props.tokened) {
 	        var demoWords = this.props.tokened[sentenceIndex];
 
 	        for (var index in demoWords) {
+
 	          words.push(_react2.default.createElement(
 	            'div',
-	            { key: "word_" + sentenceIndex.toString() + "_" + index.toString(), className: this.props.hideWriter ? 'hidden' : '' },
-	            _react2.default.createElement(WordComponent, {
+	            {
+	              key: "word_" + sentenceIndex.toString() + "_" + index.toString(),
+	              className: this.props.hideWriter ? 'hidden' : '' },
+	            demoWords[index].length === 1 ? demoWords[index] : _react2.default.createElement(WordComponent, {
 	              holder: demoWords[index],
 	              value: eval("this.props.selected_" + sentenceIndex.toString() + "_" + index.toString()),
 	              multiSelect: this.props.multiSelect,
@@ -29698,6 +29753,7 @@
 	          ));
 	        }
 	      }
+	      //
 
 	      words.push(_react2.default.createElement(
 	        'div',
@@ -29731,7 +29787,7 @@
 	        { key: 'prevBtn' },
 	        _react2.default.createElement(PrevBtn, {
 	          handler: function handler() {
-	            return _this17.props.steperPrev(_this17.props.stepIndex);
+	            return _this19.props.steperPrev(_this19.props.stepIndex);
 	          },
 	          hide: this.props.hidePrevBtn })
 	      ));
@@ -29739,14 +29795,16 @@
 	      words.push(_react2.default.createElement(
 	        'div',
 	        { key: "searchNextBtn" },
-	        _react2.default.createElement(_RaisedButton2.default, {
+	        _react2.default.createElement(NextBtn, {
 	          label: this.props.stepIndex === 2 ? 'Finish' : 'Next',
 	          disabled: this.props.resTableSelection === undefined,
 	          primary: true,
-	          onClick: function onClick() {
-	            return _this17.props.steperNext(_this17.props.stepIndex, _this17.props.resTableSelection);
-	          }
-	        })
+	          stepIndex: this.props.stepIndex,
+	          resTableSelection: this.props.resTableSelection,
+	          steperNext: this.props.steperNext,
+	          wordsWidth: this.wordsWidth,
+	          resizeWords: this.props.resizeWords,
+	          hide: false })
 	      ));
 	      // words.push(
 	      //     <div key={'processBtn'}>
@@ -29791,7 +29849,9 @@
 	            generateResTableHeight: this.props.generateResTableHeight,
 	            prevBtnWidth: this.props.prevBtnWidth,
 	            prevBtnHeight: this.props.prevBtnHeight,
-	            nextBtnX: this.props.nextBtnX },
+	            nextBtnX: this.props.nextBtnX,
+	            wordsComponentWidth: this.props.wordsComponentWidth
+	          },
 	          words
 	        )
 	      );
@@ -29986,6 +30046,13 @@
 	        });
 	      }
 	    },
+	    resizeWords: function resizeWords(wordsWidth) {
+	      dispatch({
+	        type: 'RESIZE_WORDS',
+	        data: wordsWidth
+	      });
+	    },
+
 	    rename: function rename() {
 
 	      fetch("/rand_titles", { method: 'GET',
@@ -46647,6 +46714,11 @@
 
 	    case 'UPDATE_RES_SELECTION':
 	      return _extends({}, state, { resTableSelection: action.data });
+
+	    case 'RESIZE_WORDS':
+	      console.log("RESIZE");
+	      console.dir(action.data);
+	      return _extends({}, state, { wordsComponentWidth: action.data });
 
 	    case 'SEARCHRES':
 	      return Object.assign({}, state, {
