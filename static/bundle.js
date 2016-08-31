@@ -554,13 +554,12 @@
 	        _react2.default.createElement(_search2.default, null)
 	    )
 	), document.getElementById('demo1'));
-
-	store.dispatch({ type: "INIT", finished: false, stepIndex: 0 });
-	store.dispatch({ type: "HIDE_SEARCHBAR" });
-	store.dispatch({ type: "HIDE_WRITER", data: true });
-	store.dispatch({ type: "HIDE_GENERATE_RES" });
-	store.dispatch({ type: "HIDE_SEARCH_RES" });
 	store.dispatch({ type: "SHOW_SEARCHBAR" });
+	store.dispatch({ type: "INIT", finished: false, stepIndex: 0 });
+	//store.dispatch({type:"HIDE_SEARCHBAR"});
+	store.dispatch({ type: "HIDE_WRITER", data: true });
+	store.dispatch({ type: "HIDE_GENERATE_TABLE" });
+	store.dispatch({ type: "HIDE_SEARCH_RES" });
 
 /***/ },
 /* 3 */
@@ -29153,16 +29152,16 @@
 	  }, {
 	    key: 'getStepContent',
 	    value: function getStepContent(stepIndex) {
-	      switch (stepIndex) {
-	        case 0:
-	          return "0 steps";
-	        case 1:
-	          return 'What is an ad group anyways?';
-	        case 2:
-	          return 'This is the bit I really care about!';
-	        default:
-	          return 'You\'re a long way from home sonny jim!';
-	      }
+	      // switch (stepIndex) {
+	      //   case 0:
+	      //   return "0 steps";
+	      // case 1:
+	      //     return 'What is an ad group anyways?';
+	      //   case 2:
+	      //     return 'This is the bit I really care about!';
+	      //   default:
+	      //     return 'You\'re a long way from home sonny jim!';
+	      // }
 	    }
 	  }, {
 	    key: 'render',
@@ -29209,7 +29208,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { style: contentStyle },
-	          finished ? _react2.default.createElement(
+	          stepIndex > 0 ? _react2.default.createElement(
 	            'p',
 	            null,
 	            _react2.default.createElement(
@@ -29234,22 +29233,13 @@
 	            _react2.default.createElement(
 	              'div',
 	              { style: { marginTop: 12 } },
-	              _react2.default.createElement(_FlatButton2.default, {
+	              stepIndex > 0 ? _react2.default.createElement(_FlatButton2.default, {
 	                label: 'Back',
 	                disabled: stepIndex === 0,
 	                onTouchTap: function onTouchTap() {
 	                  return _this2.handlePrev(stepIndex);
 	                },
-	                style: { marginRight: 12 }
-	              }),
-	              _react2.default.createElement(_RaisedButton2.default, {
-	                label: stepIndex === 2 ? 'Finish' : 'Next',
-	                primary: true,
-	                onClick: function onClick() {
-	                  return _this2.handleNext(stepIndex);
-	                }
-
-	              })
+	                style: { marginRight: 12 } }) : null
 	            )
 	          )
 	        )
@@ -29277,22 +29267,33 @@
 	  _createClass(SearchGrid, [{
 	    key: 'render',
 	    value: function render() {
+
 	      var wordsLayouts = [];
 	      for (var sentenceIndex in this.props.tokened) {
 	        var demoWords = this.props.tokened[sentenceIndex];
 
 	        for (var index in demoWords) {
 	          wordsLayouts.push({ i: "word_" + sentenceIndex.toString() + "_" + index.toString(),
-	            x: parseInt(index), y: 3 + parseInt(sentenceIndex), w: 1, h: 0.2, static: true });
+	            x: parseInt(index), y: 1 + parseInt(sentenceIndex), w: 1, h: 0.2, static: true });
 	        }
 
-	        wordsLayouts.push({ i: "generate", x: 15, y: 2, w: 1, h: 0.2, static: true });
+	        //wordsLayouts.push({i:"generate", x:5, y:1, w:1, h:0.2, static:true})
 	      }
+	      console.log("width", this.props.searchBtnWidth);
+	      console.log("height", this.props.searchBtnHeight);
+	      var layouts = { lg: wordsLayouts.concat([{ i: "steper", x: 5, y: 0, w: 4, h: 0.2, static: true }, { i: "searchText", x: 4, y: 0.5,
+	          w: this.props.searchTextWidth,
+	          h: this.props.searchTextHeight, static: true }, { i: "searchBtn", x: 10, y: 0.5,
+	          w: this.props.searchBtnWidth,
+	          h: this.props.searchBtnHeight, static: true }, { i: "searchNextBtn", x: 11, y: 0.5, w: 0.2, h: 0.2, static: true }, { i: "processBtn", x: 0, y: 0, w: 1, h: 0.2, static: true }, { i: "searchResTable", x: 4, y: 0.8,
+	          w: this.props.searchResWidth,
+	          h: this.props.searchResHeight, static: true }, { i: "generateResTable", x: 4, y: 1,
+	          w: this.props.generateResTableWidth,
+	          h: this.props.generateResTableHeight, static: true }]),
 
-	      var layouts = { lg: wordsLayouts.concat([{ i: "steper", x: 5, y: 0, w: 4, h: 0.2, static: true }, { i: "searchText", x: 5, y: 2, w: 4, h: 0.2, static: true }, { i: "searchBtn", x: 9, y: 2, w: 1, h: 0.2, static: true }, { i: "processBtn", x: 10, y: 2, w: 1, h: 0.2, static: true }, { i: "searchResTable", x: 4, y: 2.3, w: 7, h: 0.5, static: true }, { i: "generateResTable", x: 4, y: 5, w: 7, h: 0.5, static: true }]),
-	        md: wordsLayouts.concat([{ i: "steper", x: 5, y: 0, w: 4, h: 0.2, static: true }, { i: "searchText", x: 5, y: 2, w: 4, h: 1, static: true }, { i: "searchBtn", x: 9, y: 2, w: 1, h: 1, static: true }, { i: "processBtn", x: 10, y: 2, w: 1, h: 0.2, static: true }, { i: "searchResTable", x: 3, y: 3, w: 6, h: 1, static: true }, { i: "generateResTable", x: 4, y: 5, w: 7, h: 0.5, static: true }]),
+	        md: wordsLayouts.concat([{ i: "steper", x: 5, y: 0, w: 4, h: 0.2, static: true }, { i: "searchText", x: 5, y: 2, w: 4, h: 0.2, static: true }, { i: "searchBtn", x: 9, y: 2, w: 1, h: 0.2, static: true }, { i: "searchNextBtn", x: 10, y: 2, w: 1, h: 0.2, static: true }, { i: "processBtn", x: 10, y: 2, w: 1, h: 0.2, static: true }, { i: "searchResTable", x: 3, y: 0.8, w: 6, h: 1, static: true }, { i: "generateResTable", x: 4, y: 5, w: 7, h: 0.5, static: true }]),
 
-	        sm: wordsLayouts.concat([{ i: "steper", x: 5, y: 0, w: 4, h: 0.2, static: true }, { i: "searchText", x: 2, y: 2, w: 2, h: 1, static: true }, { i: "searchBtn", x: 4, y: 2, w: 1, h: 1, static: true }, { i: "processBtn", x: 5, y: 2, w: 1, h: 0.2, static: true }, { i: "searchResTable", x: 2, y: 3, w: 6, h: 1, static: true }, { i: "generateResTable", x: 4, y: 5, w: 7, h: 0.5, static: true }]),
+	        sm: wordsLayouts.concat([{ i: "steper", x: 5, y: 0, w: 4, h: 0.2, static: true }, { i: "searchText", x: 2, y: 2, w: 2, h: 0.2, static: true }, { i: "searchBtn", x: 4, y: 2, w: 1, h: 0.2, static: true }, { i: "processBtn", x: 5, y: 2, w: 1, h: 0.2, static: true }, { i: "searchResTable", x: 2, y: 0.8, w: 6, h: 1, static: true }, { i: "generateResTable", x: 4, y: 5, w: 7, h: 0.5, static: true }]),
 
 	        xs: wordsLayouts.concat([{ i: "steper", x: 5, y: 0, w: 4, h: 0.2, static: true }, { i: "searchText", x: 0, y: 2, w: 1, h: 1, static: true }, { i: "searchBtn", x: 1, y: 2, w: 1, h: 1, static: true }, { i: "processBtn", x: 2, y: 2, w: 1, h: 0.2, static: true }, { i: "searchResTable", x: 0, y: 3, w: 6, h: 1, static: true }]) };
 
@@ -29310,6 +29311,15 @@
 
 	  return SearchGrid;
 	}(_react.Component);
+
+	SearchGrid.defaultProps = {
+	  searchTextWidth: 6,
+	  searchTextHeight: 0.2,
+	  searchBtnWidth: 1,
+	  searchBtnHeight: 0.2,
+	  generateResTableWidth: 7,
+	  generateResTableHeight: 0.5
+	};
 
 	var SearchBtn = function (_Component3) {
 	  _inherits(SearchBtn, _Component3);
@@ -29333,6 +29343,7 @@
 	      //() => this.context.rename(this.context.text)
 	      if (!this.props.hide) {
 	        return _react2.default.createElement(_RaisedButton2.default, {
+	          fullWidth: true,
 	          label: this.props.name,
 	          onClick: function onClick() {
 	            return _this5.search(_this5.context.text);
@@ -29515,8 +29526,8 @@
 	        });
 	        this.context.updateSelection(selectedItems);
 	      } else {
-	        console.log('slices is not none');
-	        console.dir(slices);
+	        //console.log('slices is not none');
+	        //console.dir(slices);
 	        this.props.updateSlices(slices);
 	        var _selectedItems = slices.map(function (slice) {
 	          return _this11.props.searchRes[slice];
@@ -29671,6 +29682,8 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this16 = this;
+
 	      var words = [];
 	      for (var sentenceIndex in this.props.tokened) {
 	        var demoWords = this.props.tokened[sentenceIndex];
@@ -29713,10 +29726,22 @@
 	        'div',
 	        { key: 'searchBtn' },
 	        _react2.default.createElement(SearchBtn, {
-	          hide: this.props.hideSearchBar,
+	          hide: this.props.hideSearchBtn,
 	          name: "Search" })
 	      ));
 
+	      words.push(_react2.default.createElement(
+	        'div',
+	        { key: "searchNextBtn" },
+	        _react2.default.createElement(_RaisedButton2.default, {
+	          label: this.props.stepIndex === 2 ? 'Finish' : 'Next',
+	          disabled: this.props.resTableSelection === undefined,
+	          primary: true,
+	          onClick: function onClick() {
+	            return _this16.props.steperNext(_this16.props.stepIndex, _this16.props.resTableSelection);
+	          }
+	        })
+	      ));
 	      // words.push(
 	      //     <div key={'processBtn'}>
 	      //     <ProcessBtn
@@ -29748,7 +29773,16 @@
 	        null,
 	        _react2.default.createElement(
 	          SearchGrid,
-	          { tokened: this.props.tokened },
+	          {
+	            tokened: this.props.tokened,
+	            searchResWidth: this.props.searchResWidth,
+	            searchResHeight: this.props.searchResHeight,
+	            searchTextWidth: this.props.searchTextWidth,
+	            searchTextHeight: this.props.searchTextHeight,
+	            searchBtnWidth: this.props.searchBtnWidth,
+	            searchBtnHeight: this.props.searchBtnHeight,
+	            generateResTableWidth: this.props.generateResTableWidth,
+	            generateResTableHeight: this.props.generateResTableHeight },
 	          words
 	        )
 	      );
@@ -29873,7 +29907,7 @@
 	            data: true
 	          });
 	          dispatch({
-	            type: "SHOW_GENERATE_RES"
+	            type: "SHOW_GENERATE_TABLE"
 	          });
 
 	          break;
@@ -46446,8 +46480,8 @@
 	  switch (action.type) {
 
 	    case "TOKEN_SELECTED_SENTENCE":
-	      console.log('token selected sentences');
-	      console.dir(state);
+	      //console.log('token selected sentences');
+	      //console.dir(state);
 	      return Object.assign({}, state, {
 	        tokened: action.data
 	      });
@@ -46515,17 +46549,46 @@
 	    case 'SHOW_GENERATE_RES':
 	      return _extends({}, state, { hideGenerateRes: false });
 
+	    // case 'HIDE_SEARCH_RES':
+	    //   return {...state, hideSearchRes: true }
+
+	    // case 'SHOW_SEARCH_RES':
+	    //   return {...state, hideSearchRes: false }
+
 	    case 'HIDE_SEARCH_RES':
-	      return _extends({}, state, { hideSearchRes: true });
+	      return _extends({}, state, { searchResWidth: 0, searchResHeight: 0 });
 
 	    case 'SHOW_SEARCH_RES':
-	      return _extends({}, state, { hideSearchRes: false });
+	      return _extends({}, state, { searchResWidth: 7, searchResHeight: 0.5 });
+
+	    case 'HIDE_GENERATE_TABLE':
+	      return _extends({}, state, { generateResTableWidth: 0, generateResTableHeight: 0 });
+
+	    case 'SHOW_GENERATE_TABLE':
+	      return _extends({}, state, { generateResTableWidth: 7, generateResTableHeight: 0.5 });
 
 	    case 'HIDE_SEARCHBAR':
-	      return _extends({}, state, { hideSearchBar: true });
+
+	      return _extends({}, state, {
+	        searchTextWidth: 0, searchTextHeight: 0,
+	        searchBtnWidth: 0, searchBtnHeight: 0, hideSearchBtn: true });
 
 	    case 'SHOW_SEARCHBAR':
-	      return _extends({}, state, { hideSearchBar: false });
+	      return _extends({}, state, {
+	        searchTextWidth: 6, searchTextHeight: 0.2,
+	        searchBtnWidth: 1, searchBtnHeight: 0.2, hideSearchBtn: false });
+
+	    case 'HIDE_SEARCH_TEXT':
+	      return _extends({}, state, { searchTextWidth: 0, searchTextHeight: 0 });
+
+	    case 'SHOW_SEARCH_TEXT':
+	      return _extends({}, state, { searchTextWidth: 6, searchTextHeight: 0.2 });
+
+	    case 'HIDE_SEARCH_BTN':
+	      return _extends({}, state, { searchBtnWidth: 0, searchBtnHeight: 0, hideSearchBtn: true });
+
+	    case 'SHOW_SEARCH_BTN':
+	      return _extends({}, state, { searchBtnWidth: 1, searchBtnHeight: 0.2, hideSearchBtn: false });
 
 	    case 'UPDATE_RES_SELECTION':
 	      return _extends({}, state, { resTableSelection: action.data });

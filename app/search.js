@@ -25,6 +25,7 @@ import FlatButton from 'material-ui/FlatButton';
  * Linear steppers require users to complete one step in order to move on to the next.
  */
 class HorizontalLinearStepper extends Component {
+
   constructor(props, context){
     super(props, context);
   }
@@ -40,16 +41,16 @@ class HorizontalLinearStepper extends Component {
   };
 
   getStepContent(stepIndex) {
-    switch (stepIndex) {
-      case 0:
-      return "0 steps";
-    case 1:
-        return 'What is an ad group anyways?';
-      case 2:
-        return 'This is the bit I really care about!';
-      default:
-        return 'You\'re a long way from home sonny jim!';
-    }
+    // switch (stepIndex) {
+    //   case 0:
+    //   return "0 steps";
+    // case 1:
+    //     return 'What is an ad group anyways?';
+    //   case 2:
+    //     return 'This is the bit I really care about!';
+    //   default:
+    //     return 'You\'re a long way from home sonny jim!';
+    // }
   }
 
   render() {
@@ -71,7 +72,7 @@ class HorizontalLinearStepper extends Component {
           </Step>
         </Stepper>
         <div style={contentStyle}>
-          {finished ? (
+          {stepIndex > 0 ? (
             <p>
               <a
                 href="#"
@@ -83,21 +84,14 @@ class HorizontalLinearStepper extends Component {
               </a> to reset the example.
             </p>
           ) : (
-            <div>
+           <div>
               <p>{this.getStepContent(stepIndex)}</p>
               <div style={{marginTop: 12}}>
-                <FlatButton
+              {stepIndex > 0 ? (<FlatButton
                   label="Back"
                   disabled={stepIndex === 0}
             onTouchTap={() => this.handlePrev(stepIndex)}
-                  style={{marginRight: 12}}
-                />
-                <RaisedButton
-                  label={stepIndex === 2 ? 'Finish' : 'Next'}
-            primary={true}
-            onClick={() => this.handleNext(stepIndex)}
-
-                />
+                  style={{marginRight: 12}} />) : null}
               </div>
             </div>
           )}
@@ -113,46 +107,70 @@ class HorizontalLinearStepper extends Component {
 
 
 class SearchGrid extends Component{
+  static defaultProps = {
+    searchTextWidth :6,
+    searchTextHeight :0.2,
+    searchBtnWidth : 1,
+    searchBtnHeight :0.2,
+    generateResTableWidth: 7,
+    generateResTableHeight: 0.5
+  }
+
 
   constructor(props, context){
     super(props, context);
   }
 
   render() {
+
     var wordsLayouts = [];
     for (var sentenceIndex in this.props.tokened){
       var demoWords = this.props.tokened[sentenceIndex];
 
       for (var index in demoWords){
         wordsLayouts.push({i:"word_"+ sentenceIndex.toString() + "_" + index.toString(),
-                           x:parseInt(index), y:(3 + parseInt(sentenceIndex)), w:1, h:0.2, static:true})
+                           x:parseInt(index), y:(1 + parseInt(sentenceIndex)), w:1, h:0.2, static:true})
       }
 
-      wordsLayouts.push({i:"generate", x:15, y:2, w:1, h:0.2, static:true})
+      //wordsLayouts.push({i:"generate", x:5, y:1, w:1, h:0.2, static:true})
     }
-
+    console.log("width", this.props.searchBtnWidth);
+    console.log("height", this.props.searchBtnHeight);
     var layouts = {lg:wordsLayouts.concat(
       [{i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
-       {i:"searchText", x: 5, y: 2, w: 4, h: 0.2, static:true},
-       {i:"searchBtn", x: 9, y: 2, w: 1, h: 0.2, static:true},
-       {i:"processBtn", x: 10, y: 2, w: 1, h: 0.2, static:true},
-       {i:"searchResTable", x: 4, y: 2.3, w: 7, h: 0.5, static:true },
-       {i:"generateResTable", x: 4, y: 5, w: 7, h: 0.5, static:true }]),
+       {i:"searchText", x: 4, y: 0.5,
+        w: this.props.searchTextWidth,
+        h: this.props.searchTextHeight, static:true},
+       {i:"searchBtn", x: 10, y: 0.5,
+        w: this.props.searchBtnWidth,
+        h: this.props.searchBtnHeight, static:true},
+
+       {i:"searchNextBtn", x: 11, y: 0.5, w: 0.2, h: 0.2, static:true},
+       {i:"processBtn", x: 0, y: 0, w: 1, h: 0.2, static:true},
+       {i:"searchResTable", x: 4, y: 0.8,
+        w: this.props.searchResWidth,
+        h: this.props.searchResHeight, static:true },
+
+       {i:"generateResTable", x: 4, y: 1,
+        w: this.props.generateResTableWidth,
+        h: this.props.generateResTableHeight, static:true }]),
+
      md:wordsLayouts.concat(
        [{i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
-        {i:"searchText", x: 5, y: 2, w: 4, h: 1, static:true},
-        {i:"searchBtn", x: 9, y: 2, w: 1, h: 1, static:true},
+        {i:"searchText", x: 5, y: 2, w: 4, h: 0.2, static:true},
+        {i:"searchBtn", x: 9, y: 2, w: 1, h: 0.2, static:true},
+        {i:"searchNextBtn", x: 10, y: 2, w: 1, h: 0.2, static:true},
         {i:"processBtn", x: 10, y: 2, w: 1, h: 0.2, static:true},
-        {i:"searchResTable", x: 3, y: 3, w: 6, h: 1, static:true },
+        {i:"searchResTable", x: 3, y: 0.8, w: 6, h: 1, static:true },
         {i:"generateResTable", x: 4, y: 5, w: 7, h: 0.5, static:true}
        ]),
 
     sm:wordsLayouts.concat([
       {i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
-      {i:"searchText", x: 2, y: 2, w: 2, h: 1, static:true},
-      {i:"searchBtn", x: 4, y: 2, w: 1, h: 1, static:true},
+      {i:"searchText", x: 2, y: 2, w: 2, h: 0.2, static:true},
+      {i:"searchBtn", x: 4, y: 2, w: 1, h: 0.2, static:true},
       {i:"processBtn", x: 5, y: 2, w: 1, h: 0.2, static:true},
-      {i:"searchResTable", x: 2, y: 3, w: 6, h: 1, static:true},
+      {i:"searchResTable", x: 2, y: 0.8, w: 6, h: 1, static:true},
       {i:"generateResTable", x: 4, y: 5, w: 7, h: 0.5, static:true}
     ]),
 
@@ -188,6 +206,7 @@ class SearchBtn extends Component {
     if(!this.props.hide){
       return (
           <RaisedButton
+        fullWidth={true}
         label={this.props.name}
         onClick={() => this.search(this.context.text)} />
       )
@@ -317,8 +336,8 @@ class SearchResTable extends Component {
       this.context.updateSelection(selectedItems);
 
     } else {
-      console.log('slices is not none');
-      console.dir(slices);
+      //console.log('slices is not none');
+      //console.dir(slices);
       this.props.updateSlices(slices);
       let selectedItems = slices.map(slice => {
         return this.props.searchRes[slice];
@@ -451,9 +470,20 @@ class SearchBar extends Component {
     words.push(
         <div key={'searchBtn'}>
         <SearchBtn
-      hide={this.props.hideSearchBar}
+      hide={this.props.hideSearchBtn}
       name={"Search"} /></div>)
 
+
+    words.push(
+        <div key={"searchNextBtn"}>
+        <RaisedButton
+      label={this.props.stepIndex === 2 ? 'Finish' : 'Next'}
+      disabled={this.props.resTableSelection === undefined}
+      primary={true}
+      onClick={() => this.props.steperNext(this.props.stepIndex, this.props.resTableSelection)}
+        />
+        </div>
+    )
     // words.push(
     //     <div key={'processBtn'}>
     //     <ProcessBtn
@@ -481,7 +511,17 @@ class SearchBar extends Component {
 
     return (
         <MuiThemeProvider>
-        <SearchGrid tokened={this.props.tokened}>
+        <SearchGrid
+      tokened={this.props.tokened}
+      searchResWidth={this.props.searchResWidth}
+      searchResHeight={this.props.searchResHeight}
+      searchTextWidth={this.props.searchTextWidth}
+      searchTextHeight={this.props.searchTextHeight}
+      searchBtnWidth={this.props.searchBtnWidth}
+      searchBtnHeight={this.props.searchBtnHeight}
+      generateResTableWidth={this.props.generateResTableWidth}
+      generateResTableHeight={this.props.generateResTableHeight}>
+
         {words}
         </SearchGrid>
 
@@ -489,6 +529,7 @@ class SearchBar extends Component {
     )
   }
 }
+
 
 SearchBar.childContextTypes = {
   name: React.PropTypes.any,
@@ -608,7 +649,7 @@ function mapDispatchToProps(dispatch) {
           data: true
         });
         dispatch({
-          type: "SHOW_GENERATE_RES",
+          type: "SHOW_GENERATE_TABLE",
         });
 
         break;

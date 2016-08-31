@@ -3,8 +3,8 @@ export default function reducer(state = [], action) {
   switch(action.type){
 
   case "TOKEN_SELECTED_SENTENCE":
-    console.log('token selected sentences');
-    console.dir(state);
+    //console.log('token selected sentences');
+    //console.dir(state);
     return  Object.assign({}, state, {
       tokened:action.data
     })
@@ -73,18 +73,48 @@ export default function reducer(state = [], action) {
   case 'SHOW_GENERATE_RES':
     return {...state, hideGenerateRes: false }
 
+  // case 'HIDE_SEARCH_RES':
+  //   return {...state, hideSearchRes: true }
+
+  // case 'SHOW_SEARCH_RES':
+  //   return {...state, hideSearchRes: false }
+
   case 'HIDE_SEARCH_RES':
-    return {...state, hideSearchRes: true }
+    return {...state, searchResWidth: 0, searchResHeight: 0 }
 
   case 'SHOW_SEARCH_RES':
-    return {...state, hideSearchRes: false }
+    return {...state, searchResWidth: 7, searchResHeight: 0.5 }
+
+  case 'HIDE_GENERATE_TABLE':
+    return {...state, generateResTableWidth:0, generateResTableHeight: 0, }
+
+  case 'SHOW_GENERATE_TABLE':
+    return {...state, generateResTableWidth:7, generateResTableHeight: 0.5,  }
 
 
   case 'HIDE_SEARCHBAR':
-    return {...state, hideSearchBar: true }
+
+    return {...state,
+            searchTextWidth: 0, searchTextHeight: 0,
+            searchBtnWidth: 0, searchBtnHeight: 0, hideSearchBtn: true}
 
   case 'SHOW_SEARCHBAR':
-    return {...state, hideSearchBar: false }
+    return {...state,
+            searchTextWidth: 6, searchTextHeight: 0.2,
+            searchBtnWidth: 1, searchBtnHeight: 0.2, hideSearchBtn: false}
+
+  case 'HIDE_SEARCH_TEXT':
+    return {...state, searchTextWidth: 0, searchTextHeight: 0}
+
+  case 'SHOW_SEARCH_TEXT':
+    return {...state, searchTextWidth: 6, searchTextHeight: 0.2 }
+
+  case 'HIDE_SEARCH_BTN':
+    return {...state, searchBtnWidth: 0, searchBtnHeight: 0, hideSearchBtn: true}
+
+  case 'SHOW_SEARCH_BTN':
+    return {...state, searchBtnWidth: 1, searchBtnHeight: 0.2, hideSearchBtn: false }
+
 
 
   case 'UPDATE_RES_SELECTION':
