@@ -34,7 +34,8 @@ ReactDOM.render(
 store.dispatch({type: "SHOW_SEARCHBAR" });
 store.dispatch({type:"INIT", finished: false, stepIndex: 0});
 //store.dispatch({type:"HIDE_SEARCHBAR"});
-store.dispatch({type:"HIDE_WRITER", data:true});
+store.dispatch({type:"HIDE_WRITER"});
+store.dispatch({type:"HIDE_PREV_BTN"});
 store.dispatch({type: "HIDE_GENERATE_TABLE" });
 store.dispatch({type: "HIDE_SEARCH_RES" });
 

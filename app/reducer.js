@@ -3,8 +3,7 @@ export default function reducer(state = [], action) {
   switch(action.type){
 
   case "TOKEN_SELECTED_SENTENCE":
-    //console.log('token selected sentences');
-    //console.dir(state);
+
     return  Object.assign({}, state, {
       tokened:action.data
     })
@@ -36,7 +35,10 @@ export default function reducer(state = [], action) {
     return state;
 
   case 'HIDE_WRITER':
-    return  {...state, hideWriter: action.data}
+    return  {...state, hideWriter: true}
+
+  case 'SHOW_WRITER':
+    return  {...state, hideWriter: false}
 
   case 'GENERATE_RES':
 
@@ -64,7 +66,7 @@ export default function reducer(state = [], action) {
     })
 
   case 'UPDATE_SLICES':
-    console.dir(state);
+
     return {...state, slices: action.data};
 
   case 'HIDE_GENERATE_RES':
@@ -113,9 +115,21 @@ export default function reducer(state = [], action) {
     return {...state, searchBtnWidth: 0, searchBtnHeight: 0, hideSearchBtn: true}
 
   case 'SHOW_SEARCH_BTN':
-    return {...state, searchBtnWidth: 1, searchBtnHeight: 0.2, hideSearchBtn: false }
+    return {...state, searchBtnWidth: 1, searchBtnHeight: 0.2, hideSearchBtn: false}
 
 
+  case 'HIDE_PREV_BTN':
+    return {...state, prevBtnWidth: 0, prevBtnHeight: 0, hidePrevBtn: true}
+
+  case 'SHOW_PREV_BTN':
+    return {...state, prevBtnWidth: 1, prevBtnHeight: 0.2, hidePrevBtn: false}
+
+
+  case 'MOVE_NEXT_BTN_TO_MIDDLE':
+    return {...state, nextBtnX: 7.5}
+
+  case 'MOVE_NEXT_BTN_TO_RIGHT':
+    return {...state, nextBtnX: 11}
 
   case 'UPDATE_RES_SELECTION':
     return   {...state, resTableSelection: action.data}

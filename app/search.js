@@ -17,7 +17,6 @@ import {
 } from 'material-ui/Stepper';
 
 import FlatButton from 'material-ui/FlatButton';
-// const demoWords = ["农夫山泉", "是","一家","中国", "大陆", "的", "饮用水", "和", "饮料", "生产","企业"];
 /**
  * Horizontal steppers are ideal when the contents of one step depend on an earlier step.
  * Avoid using long step names in horizontal steppers.
@@ -54,9 +53,10 @@ class HorizontalLinearStepper extends Component {
   }
 
   render() {
-
+    
     var finished = this.props.finished;
     var stepIndex = this.props.stepIndex;
+
     const contentStyle = {margin: '0 16px'};
     return (
       <div style={{width: '100%', maxWidth: 700, margin: 'auto'}}>
@@ -72,39 +72,32 @@ class HorizontalLinearStepper extends Component {
           </Step>
         </Stepper>
         <div style={contentStyle}>
-          {stepIndex > 0 ? (
-            <p>
-              <a
-                href="#"
-                onClick={(event) => {
-                  event.preventDefault();
-                }}
-              >
-                Click here
-              </a> to reset the example.
-            </p>
-          ) : (
-           <div>
-              <p>{this.getStepContent(stepIndex)}</p>
-              <div style={{marginTop: 12}}>
-              {stepIndex > 0 ? (<FlatButton
-                  label="Back"
-                  disabled={stepIndex === 0}
-            onTouchTap={() => this.handlePrev(stepIndex)}
-                  style={{marginRight: 12}} />) : null}
-              </div>
-            </div>
-          )}
+        <p>{this.getStepContent(stepIndex)}</p>
         </div>
-      </div>
+        </div>
     );
   }
 }
 
-// HorizontalLinearStepper.contextTypes = {
-//   resTableSelection: React.PropTypes.any,
-// };
+class PrevBtn extends Component{
 
+  constructor(props, context){
+    super(props, context);
+  }
+
+  render(){
+    if(!this.props.hide){
+    return(
+        <RaisedButton
+      label="Back"
+      onTouchTap={() => this.props.handler()} />
+    )
+    } else {
+      return null;
+    }
+  }
+
+}
 
 class SearchGrid extends Component{
   static defaultProps = {
@@ -113,7 +106,10 @@ class SearchGrid extends Component{
     searchBtnWidth : 1,
     searchBtnHeight :0.2,
     generateResTableWidth: 7,
-    generateResTableHeight: 0.5
+    generateResTableHeight: 0.5,
+    prevBtnWidth: 0,
+    prevBtnHeight: 0,
+    nextBtnX: 11,
   }
 
 
@@ -131,11 +127,8 @@ class SearchGrid extends Component{
         wordsLayouts.push({i:"word_"+ sentenceIndex.toString() + "_" + index.toString(),
                            x:parseInt(index), y:(1 + parseInt(sentenceIndex)), w:1, h:0.2, static:true})
       }
-
-      //wordsLayouts.push({i:"generate", x:5, y:1, w:1, h:0.2, static:true})
     }
-    console.log("width", this.props.searchBtnWidth);
-    console.log("height", this.props.searchBtnHeight);
+
     var layouts = {lg:wordsLayouts.concat(
       [{i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
        {i:"searchText", x: 4, y: 0.5,
@@ -145,7 +138,11 @@ class SearchGrid extends Component{
         w: this.props.searchBtnWidth,
         h: this.props.searchBtnHeight, static:true},
 
-       {i:"searchNextBtn", x: 11, y: 0.5, w: 0.2, h: 0.2, static:true},
+       {i:"prevBtn", x: 6.5, y: 0.5,
+        w: this.props.prevBtnWidth,
+        h: this.props.prevBtnHeight, static:true},
+
+       {i:"searchNextBtn", x: this.props.nextBtnX, y: 0.5, w: 0.2, h: 0.2, static:true},
        {i:"processBtn", x: 0, y: 0, w: 1, h: 0.2, static:true},
        {i:"searchResTable", x: 4, y: 0.8,
         w: this.props.searchResWidth,
@@ -336,8 +333,7 @@ class SearchResTable extends Component {
       this.context.updateSelection(selectedItems);
 
     } else {
-      //console.log('slices is not none');
-      //console.dir(slices);
+
       this.props.updateSlices(slices);
       let selectedItems = slices.map(slice => {
         return this.props.searchRes[slice];
@@ -475,6 +471,12 @@ class SearchBar extends Component {
 
 
     words.push(
+        <div key={'prevBtn'}>
+        <PrevBtn
+      handler={() => this.props.steperPrev(this.props.stepIndex)}
+      hide={this.props.hidePrevBtn}/></div>)
+
+    words.push(
         <div key={"searchNextBtn"}>
         <RaisedButton
       label={this.props.stepIndex === 2 ? 'Finish' : 'Next'}
@@ -520,7 +522,10 @@ class SearchBar extends Component {
       searchBtnWidth={this.props.searchBtnWidth}
       searchBtnHeight={this.props.searchBtnHeight}
       generateResTableWidth={this.props.generateResTableWidth}
-      generateResTableHeight={this.props.generateResTableHeight}>
+      generateResTableHeight={this.props.generateResTableHeight}
+      prevBtnWidth={this.props.prevBtnWidth}
+      prevBtnHeight={this.props.prevBtnHeight}
+      nextBtnX={this.props.nextBtnX}>
 
         {words}
         </SearchGrid>
@@ -593,14 +598,43 @@ function mapDispatchToProps(dispatch) {
       });
 
     },
+
     steperPrev: function(step){
       switch(step){
+      case 0:
+        break;
       case 1:
+
         dispatch({
-          type: "HIDE_SEARCHBAR",
+          type: "SHOW_SEARCHBAR",
         });
+        dispatch({
+          type: "SHOW_SEARCH_RES",
+        });
+
+        dispatch({
+          type: "HIDE_WRITER",
+        });
+
+        dispatch({
+          type: "HIDE_PREV_BTN",
+        });
+        dispatch({
+          type: "MOVE_NEXT_BTN_TO_RIGHT",
+        });
+
+
         break;
 
+      case 2:
+        dispatch({
+          type: "HIDE_GENERATE_TABLE",
+        });
+        dispatch({
+          type: "SHOW_WRITER",
+        });
+
+        break;
       default:
         break;
       }
@@ -616,6 +650,13 @@ function mapDispatchToProps(dispatch) {
       case 0:
         dispatch({
           type: "HIDE_SEARCHBAR",
+        });
+        dispatch({
+          type: "SHOW_PREV_BTN",
+        });
+
+        dispatch({
+          type: "MOVE_NEXT_BTN_TO_MIDDLE",
         });
 
         fetch('/token',
@@ -633,8 +674,7 @@ function mapDispatchToProps(dispatch) {
           .catch(function(e){console.log('parsing failed', e)});
 
         dispatch({
-          type: "HIDE_WRITER",
-          data: false
+          type: "SHOW_WRITER",
         });
         dispatch({type: "HIDE_SEARCH_RES"});
         break;
@@ -642,7 +682,6 @@ function mapDispatchToProps(dispatch) {
       case 1:
         dispatch({
           type: "HIDE_WRITER",
-          data: true
         });
         dispatch({
           type:"GENERATE_RES",
@@ -651,7 +690,6 @@ function mapDispatchToProps(dispatch) {
         dispatch({
           type: "SHOW_GENERATE_TABLE",
         });
-
         break;
 
       case 2:
