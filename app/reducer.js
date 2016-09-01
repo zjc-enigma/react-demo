@@ -47,20 +47,37 @@ export default function reducer(state = [], action) {
 
     for (var wordsIndex in tokened){
       var words = tokened[wordsIndex]
+      var tmpArray = [];
       var tmp="";
       for (var index in words){
         var selected = eval("state.selected_" + wordsIndex.toString() + "_" + index.toString())
         if(selected) {
-          var randWord = selected[Math.floor(Math.random()*selected.length)].label;
-          tmp += randWord;
-        }
-        else {
-          tmp += words[index];
+          let temp = [];
+          for (var i in tmpArray){
+            for(var j in selected){
+              console.log(j);
+              console.log(selected[j].label);
+
+              temp.push(tmpArray[i] + selected[j].label);
+            }
+          }
+          tmpArray = temp;
+
+          // var randWord = selected[Math.floor(Math.random()*selected.length)].label;
+          // tmp += randWord;
+        } else {
+          if(tmpArray.length === 0){
+            tmpArray.push(words[index]);
+          } else{
+            for(var i in tmpArray){
+              //tmp += words[index];
+              tmpArray[i] += words[index];
+            }
+          }
         }
       }
-      res.push(tmp);
     }
-    
+    res = tmpArray;
     return  Object.assign({}, state, {
       generateResult: res,
     })

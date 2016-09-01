@@ -29199,7 +29199,7 @@
 	            _react2.default.createElement(
 	              _Stepper.StepLabel,
 	              null,
-	              'Select campaign settings'
+	              '搜索文案'
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -29208,7 +29208,7 @@
 	            _react2.default.createElement(
 	              _Stepper.StepLabel,
 	              null,
-	              'Create an ad group'
+	              '替换关键词'
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -29217,7 +29217,7 @@
 	            _react2.default.createElement(
 	              _Stepper.StepLabel,
 	              null,
-	              'Create an ad'
+	              '生成文案'
 	            )
 	          )
 	        ),
@@ -29318,23 +29318,15 @@
 	      var nextState = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
 	      var thisProps = this.props || {};
-	      //const thisState = this.state || {};
-	      //Object.keys(thisState).length !== Object.keys(nextState).length
 	      if (Object.keys(thisProps).length !== Object.keys(nextProps).length) {
 	        return true;
 	      }
-
 	      for (var key in nextProps) {
 	        if ((0, _immutable.is)(thisProps[key], nextProps[key])) {
 	          return true;
 	        }
 	      }
 
-	      // for (const key in nextState) {
-	      //   if (thisState[key] !== nextState[key] || is(thisState[key], nextState[key])) {
-	      //     return true;
-	      //   }
-	      // }
 	      console.log('no changed');
 	      return false;
 	    }
@@ -29360,15 +29352,19 @@
 	        }
 	      }
 
-	      var layouts = { lg: wordsLayouts.concat([{ i: "steper", x: 5, y: 0, w: 4, h: 0.2, static: true }, { i: "searchText", x: 4, y: 0.5,
+	      var layouts = { lg: wordsLayouts.concat([{ i: "steper", x: 5, y: 0, w: 4, h: 0.2, static: true }, { i: "searchText", x: 0,
+	          y: this.props.searchTextY,
 	          w: this.props.searchTextWidth,
-	          h: this.props.searchTextHeight, static: true }, { i: "searchBtn", x: 10, y: 0.5,
+	          h: this.props.searchTextHeight, static: true }, { i: "searchBtn", x: 0,
+	          y: this.props.searchBtnY,
 	          w: this.props.searchBtnWidth,
 	          h: this.props.searchBtnHeight, static: true }, { i: "prevBtn", x: 6.5, y: 0.5,
 	          w: this.props.prevBtnWidth,
-	          h: this.props.prevBtnHeight, static: true }, { i: "searchNextBtn", x: this.props.nextBtnX, y: 0.5, w: 0.2, h: 0.2, static: true }, { i: "processBtn", x: 0, y: 0, w: 1, h: 0.2, static: true }, { i: "searchResTable", x: 4, y: 0.8,
+	          h: this.props.prevBtnHeight, static: true }, { i: "searchNextBtn", x: this.props.nextBtnX, y: 0.5, w: 0.2, h: 0.2, static: true }, { i: "processBtn", x: 0, y: 0, w: 1, h: 0.2, static: true }, { i: "searchResTable", x: 4,
+	          y: this.props.searchResTableY,
 	          w: this.props.searchResWidth,
-	          h: this.props.searchResHeight, static: true }, { i: "generateResTable", x: 4, y: 1,
+	          h: this.props.searchResHeight, static: true }, { i: "generateResTable", x: 4,
+	          y: 1,
 	          w: this.props.generateResTableWidth,
 	          h: this.props.generateResTableHeight, static: true }]),
 
@@ -29398,6 +29394,9 @@
 	  searchTextHeight: 0.2,
 	  searchBtnWidth: 1,
 	  searchBtnHeight: 0.2,
+	  searchBtnY: 5,
+	  searchTextY: 5,
+	  searchResTableY: 8,
 	  generateResTableWidth: 7,
 	  generateResTableHeight: 0.5,
 	  prevBtnWidth: 0,
@@ -29587,7 +29586,9 @@
 	            _react2.default.createElement(
 	              _Table.TableRowColumn,
 	              null,
-	              generateRes[index]
+	              _react2.default.createElement(_TextField2.default, {
+	                value: generateRes[index],
+	                fullWidth: true })
 	            )
 	          ));
 	        }
@@ -29599,7 +29600,8 @@
 	            multiSelectable: true,
 	            onRowSelection: function onRowSelection(slices) {
 	              return handleRowSelected(slices);
-	            } },
+	            },
+	            onCellClick: function onCellClick() {} },
 	          _react2.default.createElement(
 	            _Table.TableHeader,
 	            null,
@@ -30202,8 +30204,7 @@
 	            type: "HIDE_WRITER"
 	          });
 	          dispatch({
-	            type: "GENERATE_RES",
-	            data: true
+	            type: "GENERATE_RES"
 	          });
 	          dispatch({
 	            type: "SHOW_GENERATE_TABLE"
@@ -46829,19 +46830,37 @@
 
 	      for (var wordsIndex in tokened) {
 	        var words = tokened[wordsIndex];
+	        var tmpArray = [];
 	        var tmp = "";
 	        for (var index in words) {
 	          var selected = eval("state.selected_" + wordsIndex.toString() + "_" + index.toString());
 	          if (selected) {
-	            var randWord = selected[Math.floor(Math.random() * selected.length)].label;
-	            tmp += randWord;
+	            var temp = [];
+	            for (var i in tmpArray) {
+	              for (var j in selected) {
+	                console.log(j);
+	                console.log(selected[j].label);
+
+	                temp.push(tmpArray[i] + selected[j].label);
+	              }
+	            }
+	            tmpArray = temp;
+
+	            // var randWord = selected[Math.floor(Math.random()*selected.length)].label;
+	            // tmp += randWord;
 	          } else {
-	            tmp += words[index];
+	            if (tmpArray.length === 0) {
+	              tmpArray.push(words[index]);
+	            } else {
+	              for (var i in tmpArray) {
+	                //tmp += words[index];
+	                tmpArray[i] += words[index];
+	              }
+	            }
 	          }
 	        }
-	        res.push(tmp);
 	      }
-
+	      res = tmpArray;
 	      return Object.assign({}, state, {
 	        generateResult: res
 	      });

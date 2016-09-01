@@ -66,13 +66,13 @@ class HorizontalLinearStepper extends Component {
       <div style={{width: '100%', maxWidth: 700, margin: 'auto'}}>
         <Stepper activeStep={stepIndex}>
           <Step>
-            <StepLabel>Select campaign settings</StepLabel>
+            <StepLabel>搜索文案</StepLabel>
           </Step>
           <Step>
-            <StepLabel>Create an ad group</StepLabel>
+            <StepLabel>替换关键词</StepLabel>
           </Step>
           <Step>
-            <StepLabel>Create an ad</StepLabel>
+            <StepLabel>生成文案</StepLabel>
           </Step>
         </Stepper>
         <div style={contentStyle}>
@@ -136,6 +136,9 @@ class SearchGrid extends Component{
     searchTextHeight :0.2,
     searchBtnWidth : 1,
     searchBtnHeight :0.2,
+    searchBtnY: 5,
+    searchTextY: 5,
+    searchResTableY: 8,
     generateResTableWidth: 7,
     generateResTableHeight: 0.5,
     prevBtnWidth: 0,
@@ -150,23 +153,15 @@ class SearchGrid extends Component{
 
   shouldComponentUpdate (nextProps={}, nextState={}) {
     const thisProps = this.props || {};
-    //const thisState = this.state || {};
-    //Object.keys(thisState).length !== Object.keys(nextState).length
     if (Object.keys(thisProps).length !== Object.keys(nextProps).length) {
       return true;
     }
-
     for (const key in nextProps) {
       if (is(thisProps[key], nextProps[key])) {
         return true;
       }
     }
 
-    // for (const key in nextState) {
-    //   if (thisState[key] !== nextState[key] || is(thisState[key], nextState[key])) {
-    //     return true;
-    //   }
-    // }
     console.log('no changed');
     return false;
   }
@@ -194,10 +189,12 @@ class SearchGrid extends Component{
 
     var layouts = {lg:wordsLayouts.concat(
       [{i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
-       {i:"searchText", x: 4, y: 0.5,
+       {i:"searchText", x: 0,
+        y: this.props.searchTextY,
         w: this.props.searchTextWidth,
         h: this.props.searchTextHeight, static:true},
-       {i:"searchBtn", x: 10, y: 0.5,
+       {i:"searchBtn", x: 0,
+        y: this.props.searchBtnY,
         w: this.props.searchBtnWidth,
         h: this.props.searchBtnHeight, static:true},
 
@@ -207,11 +204,13 @@ class SearchGrid extends Component{
 
        {i:"searchNextBtn", x: this.props.nextBtnX, y: 0.5, w: 0.2, h: 0.2, static:true},
        {i:"processBtn", x: 0, y: 0, w: 1, h: 0.2, static:true},
-       {i:"searchResTable", x: 4, y: 0.8,
+       {i:"searchResTable", x: 4,
+        y: this.props.searchResTableY,
         w: this.props.searchResWidth,
         h: this.props.searchResHeight, static:true },
 
-       {i:"generateResTable", x: 4, y: 1,
+       {i:"generateResTable", x: 4,
+        y: 1,
         w: this.props.generateResTableWidth,
         h: this.props.generateResTableHeight, static:true }]),
 
@@ -388,7 +387,10 @@ class GenerateResTable extends Component{
       for (var index in generateRes){
         rows.push(
             <TableRow>
-            <TableRowColumn>{generateRes[index]}</TableRowColumn>
+            <TableRowColumn><TextField
+          value={generateRes[index]}
+          fullWidth={true}/>
+            </TableRowColumn>
             </TableRow>)
       }
 
@@ -396,7 +398,8 @@ class GenerateResTable extends Component{
           <Table
         selectable={true}
         multiSelectable={true}
-        onRowSelection={(slices) => handleRowSelected(slices)}>
+        onRowSelection={(slices) => handleRowSelected(slices)}
+        onCellClick={() => {}}>
           <TableHeader>
           <TableRow>
           <TableHeaderColumn>文案</TableHeaderColumn>
@@ -909,7 +912,6 @@ function mapDispatchToProps(dispatch) {
         });
         dispatch({
           type:"GENERATE_RES",
-          data: true
         });
         dispatch({
           type: "SHOW_GENERATE_TABLE",
