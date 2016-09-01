@@ -29262,7 +29262,7 @@
 	  _createClass(NextBtn, [{
 	    key: 'handler',
 	    value: function handler() {
-	      this.props.resizeWords(this.props.wordsWidth);
+	      // this.props.resizeWords(this.props.wordsWidth);
 	      this.props.steperNext(this.props.stepIndex, this.props.resTableSelection);
 	    }
 	  }, {
@@ -29271,7 +29271,7 @@
 	      var _this5 = this;
 
 	      if (!this.props.hide) {
-	        console.log('wordsWidth', this.props.wordsWidth);
+	        //console.log('wordsWidth', this.props.wordsWidth);
 	        return _react2.default.createElement(_RaisedButton2.default, {
 	          label: 'Next',
 	          onClick: function onClick() {
@@ -29298,20 +29298,22 @@
 	  _createClass(SearchGrid, [{
 	    key: 'render',
 	    value: function render() {
-
+	      var stepWidth = 0.35;
 	      var wordsLayouts = [];
 	      for (var sentenceIndex in this.props.tokened) {
 	        var demoWords = this.props.tokened[sentenceIndex];
-
+	        var sentencePos = 0;
 	        for (var index in demoWords) {
 	          var wordWidth = this.props.wordsComponentWidth[sentenceIndex.toString() + "_" + index.toString()];
-
-	          wordWidth = (wordWidth ? wordWidth : 1) * 0.5;
+	          console.log('sentencePos', sentencePos);
+	          //wordWidth = (wordWidth? wordWidth : 1)*stepWidth;
+	          var width = wordWidth * stepWidth;
 	          wordsLayouts.push({ i: "word_" + sentenceIndex.toString() + "_" + index.toString(),
-	            x: parseInt(index),
+	            x: sentencePos,
 	            y: 1 + parseInt(sentenceIndex),
-	            w: wordWidth,
+	            w: width,
 	            h: 0.2, static: true });
+	          sentencePos += width;
 	        }
 	      }
 
@@ -29701,17 +29703,16 @@
 	  function SearchBar(props, context) {
 	    _classCallCheck(this, SearchBar);
 
-	    var _this18 = _possibleConstructorReturn(this, Object.getPrototypeOf(SearchBar).call(this, props, context));
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(SearchBar).call(this, props, context));
 
-	    var wordsWidth = {};
-	    for (var sentenceIndex in _this18.props.tokened) {
-	      var demoWords = _this18.props.tokened[sentenceIndex];
+	    // const wordsWidth = {};
+	    // for (var sentenceIndex in this.props.tokened){
+	    //   var demoWords = this.props.tokened[sentenceIndex];
 
-	      for (var index in demoWords) {
-	        wordsWidth[sentenceIndex.toString() + "_" + index.toString()] = demoWords[index].length;
-	      }
-	    }
-	    return _this18;
+	    //   for (var index in demoWords){
+	    //     wordsWidth[sentenceIndex.toString() + "_" + index.toString()] = demoWords[index].length;
+	    //   }
+	    // }
 	  }
 
 	  _createClass(SearchBar, [{
@@ -29743,7 +29744,10 @@
 	            {
 	              key: "word_" + sentenceIndex.toString() + "_" + index.toString(),
 	              className: this.props.hideWriter ? 'hidden' : '' },
-	            demoWords[index].length === 1 ? demoWords[index] : _react2.default.createElement(WordComponent, {
+	            demoWords[index].length === 1 ? _react2.default.createElement(_TextField2.default, {
+	              hintText: demoWords[index],
+	              fullWidth: true
+	            }) : _react2.default.createElement(WordComponent, {
 	              holder: demoWords[index],
 	              value: eval("this.props.selected_" + sentenceIndex.toString() + "_" + index.toString()),
 	              multiSelect: this.props.multiSelect,
@@ -29771,7 +29775,7 @@
 	        { key: 'searchText' },
 	        _react2.default.createElement(SearchTextField, {
 	          hide: this.props.hideSearchBar,
-	          name: "input your secrets" })
+	          hint: "input your secrets" })
 	      ));
 
 	      words.push(_react2.default.createElement(
@@ -29802,10 +29806,11 @@
 	          stepIndex: this.props.stepIndex,
 	          resTableSelection: this.props.resTableSelection,
 	          steperNext: this.props.steperNext,
-	          wordsWidth: this.wordsWidth,
-	          resizeWords: this.props.resizeWords,
 	          hide: false })
 	      ));
+	      //      wordsWidth={this.wordsWidth}
+	      //      resizeWords={this.props.resizeWords}
+
 	      // words.push(
 	      //     <div key={'processBtn'}>
 	      //     <ProcessBtn
@@ -29913,6 +29918,27 @@
 	      id: id
 	    });
 	  };
+	  var handleToken = function handleToken(json) {
+
+	    var wordsWidth = {};
+	    for (var sentenceIndex in json) {
+	      var demoWords = json[sentenceIndex];
+
+	      for (var index in demoWords) {
+	        wordsWidth[sentenceIndex.toString() + "_" + index.toString()] = demoWords[index].length;
+	      }
+	    }
+
+	    console.log('wordsWidth', wordsWidth);
+	    dispatch({
+	      type: 'RESIZE_WORDS',
+	      data: wordsWidth
+	    });
+	    dispatch({
+	      type: "TOKEN_SELECTED_SENTENCE",
+	      data: json
+	    });
+	  };
 
 	  return {
 	    hideSearch: function hideSearch() {
@@ -29986,10 +30012,7 @@
 	              'Content-Type': 'application/json' },
 	            body: JSON.stringify({ sentences: getSelectedSentences(selectedSentences) })
 	          }).then(parseJson).then(function (json) {
-	            return dispatch({
-	              type: "TOKEN_SELECTED_SENTENCE",
-	              data: json
-	            });
+	            return handleToken(json);
 	          }).catch(function (e) {
 	            console.log('parsing failed', e);
 	          });

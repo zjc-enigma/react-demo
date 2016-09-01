@@ -107,13 +107,13 @@ class NextBtn extends Component{
   }
 
   handler() {
-    this.props.resizeWords(this.props.wordsWidth);
+    // this.props.resizeWords(this.props.wordsWidth);
     this.props.steperNext(this.props.stepIndex, this.props.resTableSelection);
   }
   render(){
 
     if(!this.props.hide){
-      console.log('wordsWidth', this.props.wordsWidth);
+      //console.log('wordsWidth', this.props.wordsWidth);
       return(
           <RaisedButton
         label="Next"
@@ -145,20 +145,22 @@ class SearchGrid extends Component{
   }
 
   render() {
-
+    var stepWidth = 0.35;
     var wordsLayouts = [];
     for (var sentenceIndex in this.props.tokened){
       var demoWords = this.props.tokened[sentenceIndex];
-
+      var sentencePos = 0;
       for (var index in demoWords){
         var wordWidth = this.props.wordsComponentWidth[sentenceIndex.toString() + "_" + index.toString()]
-
-        wordWidth = (wordWidth? wordWidth : 1)*0.5;
+        console.log('sentencePos', sentencePos);
+        //wordWidth = (wordWidth? wordWidth : 1)*stepWidth;
+        var width = wordWidth*stepWidth;
         wordsLayouts.push({i:"word_"+ sentenceIndex.toString() + "_" + index.toString(),
-                           x:parseInt(index),
+                           x:sentencePos,
                            y:(1 + parseInt(sentenceIndex)),
-                           w: wordWidth,
+                           w: width,
                            h:0.2, static:true})
+        sentencePos += width;
       }
     }
 
@@ -450,14 +452,15 @@ class SearchBar extends Component {
   constructor(props, context){
     super(props, context);
 
-    const wordsWidth = {};
-    for (var sentenceIndex in this.props.tokened){
-      var demoWords = this.props.tokened[sentenceIndex];
+    // const wordsWidth = {};
+    // for (var sentenceIndex in this.props.tokened){
+    //   var demoWords = this.props.tokened[sentenceIndex];
 
-      for (var index in demoWords){
-        wordsWidth[sentenceIndex.toString() + "_" + index.toString()] = demoWords[index].length;
-      }
-    }
+    //   for (var index in demoWords){
+    //     wordsWidth[sentenceIndex.toString() + "_" + index.toString()] = demoWords[index].length;
+    //   }
+    // }
+
   }
 
   getChildContext(){
@@ -484,7 +487,10 @@ class SearchBar extends Component {
           key={"word_" + sentenceIndex.toString() + "_" + index.toString()}
           className={this.props.hideWriter ? 'hidden' : ''}>
             {demoWords[index].length === 1? (
-              demoWords[index]
+              <TextField
+              hintText={demoWords[index]}
+              fullWidth={true}
+                />
             ) : (<WordComponent
                  holder={demoWords[index]}
                  value={eval("this.props.selected_" + sentenceIndex.toString() + "_"+ index.toString())}
@@ -510,7 +516,7 @@ class SearchBar extends Component {
         <div key={'searchText'}>
         <SearchTextField
       hide={this.props.hideSearchBar}
-      name={"input your secrets"} /></div>)
+      hint={"input your secrets"} /></div>)
 
     words.push(
         <div key={'searchBtn'}>
@@ -535,11 +541,12 @@ class SearchBar extends Component {
       stepIndex={this.props.stepIndex}
       resTableSelection={this.props.resTableSelection}
       steperNext={this.props.steperNext}
-      wordsWidth={this.wordsWidth}
-      resizeWords={this.props.resizeWords}
       hide={false}/>
         </div>
     )
+    //      wordsWidth={this.wordsWidth}
+    //      resizeWords={this.props.resizeWords}
+
     // words.push(
     //     <div key={'processBtn'}>
     //     <ProcessBtn
@@ -645,6 +652,28 @@ function mapDispatchToProps(dispatch) {
       id: id
     });
   };
+  let handleToken = function(json){
+    
+    let wordsWidth = {};
+    for (var sentenceIndex in json){
+      var demoWords = json[sentenceIndex];
+
+      for (var index in demoWords){
+        wordsWidth[sentenceIndex.toString() + "_" + index.toString()] = demoWords[index].length;
+      }
+    }
+
+    console.log('wordsWidth', wordsWidth);
+    dispatch({
+      type: 'RESIZE_WORDS',
+      data: wordsWidth
+    });
+    dispatch({
+      type: "TOKEN_SELECTED_SENTENCE",
+      data: json
+    });
+
+  }
 
   return {
     hideSearch: function(){
@@ -723,10 +752,7 @@ function mapDispatchToProps(dispatch) {
                body: JSON.stringify({sentences: getSelectedSentences(selectedSentences)})
               })
           .then(parseJson)
-          .then(json => dispatch({
-            type: "TOKEN_SELECTED_SENTENCE",
-            data: json
-          }))
+          .then(json => handleToken(json))
           .catch(function(e){console.log('parsing failed', e)});
 
         dispatch({
