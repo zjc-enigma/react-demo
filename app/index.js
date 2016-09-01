@@ -5,16 +5,29 @@ import ReactDOM from 'react-dom';
 import React  from 'react';
 import SearchBar from './search';
 import { Provider } from 'react-redux';
-import { createStore, combineReducers } from 'redux';
+//import { createStore, combineReducers } from 'redux';
 import reducer from './reducer';
 import Writer from './writer';
+import {
+  combineReducers
+} from 'redux-immutable';
+
+import {
+  createStore
+} from 'redux';
+import Immutable from 'immutable';
+
 //import HorizontalLinearStepper from './search';
 
 //import TButton from './writer';
 //import { Router, Route, hashHistory, browserHistory } from 'react-router';
 //import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
-var store = createStore(reducer);
+const initialState = Immutable.Map();
+//const rootReducer = combineReducers(reducer);
+const store = createStore(reducer, initialState);
+
+//var store = createStore(reducer);
 // const store = createStore(
 //   combineReducers({
 //     ...reducer,

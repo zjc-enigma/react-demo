@@ -10,6 +10,10 @@ import TextField from 'material-ui/TextField';
 import renameBtn from './actions';
 import Select from 'react-select';
 import 'whatwg-fetch';
+import { is } from 'immutable';
+import {EditTable} from 'material-ui-table-edit';
+
+
 import {
   Step,
   Stepper,
@@ -144,8 +148,32 @@ class SearchGrid extends Component{
     super(props, context);
   }
 
+  shouldComponentUpdate (nextProps={}, nextState={}) {
+    const thisProps = this.props || {};
+    //const thisState = this.state || {};
+    //Object.keys(thisState).length !== Object.keys(nextState).length
+    if (Object.keys(thisProps).length !== Object.keys(nextProps).length) {
+      return true;
+    }
+
+    for (const key in nextProps) {
+      if (is(thisProps[key], nextProps[key])) {
+        return true;
+      }
+    }
+
+    // for (const key in nextState) {
+    //   if (thisState[key] !== nextState[key] || is(thisState[key], nextState[key])) {
+    //     return true;
+    //   }
+    // }
+    console.log('no changed');
+    return false;
+  }
+
+
   render() {
-    var stepWidth = 0.35;
+    var stepWidth = 0.4;
     var wordsLayouts = [];
     for (var sentenceIndex in this.props.tokened){
       var demoWords = this.props.tokened[sentenceIndex];
@@ -230,6 +258,30 @@ class SearchBtn extends Component {
   constructor(props, context){
     super(props, context);
   }
+
+  shouldComponentUpdate (nextProps={}, nextState={}) {
+    const thisProps = this.props || {};
+    //const thisState = this.state || {};
+    //Object.keys(thisState).length !== Object.keys(nextState).length
+    if (Object.keys(thisProps).length !== Object.keys(nextProps).length) {
+      return true;
+    }
+
+    for (const key in nextProps) {
+      if (is(thisProps[key], nextProps[key])) {
+        return true;
+      }
+    }
+
+    // for (const key in nextState) {
+    //   if (thisState[key] !== nextState[key] || is(thisState[key], nextState[key])) {
+    //     return true;
+    //   }
+    // }
+    console.log('no changed');
+    return false;
+  }
+
   search(text){
     this.context.searchQuery(text);
   }
@@ -276,6 +328,29 @@ class SearchTextField extends Component {
   constructor(props, context){
     super(props, context);
   }
+  shouldComponentUpdate (nextProps={}, nextState={}) {
+    const thisProps = this.props || {};
+    //const thisState = this.state || {};
+    //Object.keys(thisState).length !== Object.keys(nextState).length
+    if (Object.keys(thisProps).length !== Object.keys(nextProps).length) {
+      return true;
+    }
+
+    for (const key in nextProps) {
+      if (is(thisProps[key], nextProps[key])) {
+        return true;
+      }
+    }
+
+    // for (const key in nextState) {
+    //   if (thisState[key] !== nextState[key] || is(thisState[key], nextState[key])) {
+    //     return true;
+    //   }
+    // }
+    console.log('no changed');
+    return false;
+  }
+
   inputHandler(event){
     this.context.text = event.target.value;
   }
@@ -307,7 +382,6 @@ class GenerateResTable extends Component{
   }
 
   render() {
-    //          <TableRow selected={this.isSelected(searchRes[index])}>
     if(!this.props.hide){
       var generateRes = this.props.generateRes;
       var rows = [];
@@ -344,6 +418,40 @@ class SearchResTable extends Component {
   constructor(props, context){
     super(props, context);
   }
+
+  shouldComponentUpdate (nextProps={}, nextState={}) {
+    const thisProps = this.props || {};
+    //const thisState = this.state || {};
+    //Object.keys(thisState).length !== Object.keys(nextState).length
+    if (Object.keys(thisProps).length !== Object.keys(nextProps).length) {
+      return true;
+    }
+
+    for (const key in nextProps) {
+      if (is(thisProps[key], nextProps[key])) {
+        return true;
+      }
+    }
+
+    // for (const key in nextState) {
+    //   if (thisState[key] !== nextState[key] || is(thisState[key], nextState[key])) {
+    //     return true;
+    //   }
+    // }
+    console.log('no changed');
+    return false;
+  }
+  // shouldComponentUpdate(nextProps, nextState){
+  //   //is(thisProps[key], nextProps[key])
+  //   const thisProps = this.props || {}, thisState = this.state || {};
+  //   if (is(thisProps, nextProps)){
+  //     console.log('changed');
+  //     return true;
+  //   }
+  //   console.log('no changed');
+  //       return false;
+  // }
+
   isSelected (Res) {
 
     for (var index in this.props.resTableSelection){
@@ -422,7 +530,31 @@ class WordComponent extends Component{
 
   constructor(props, context){
     super(props, context);
-    this.props.getSimWords(this.props.holder, this.props.id)
+    if(this.props.holder.length > 1){
+      this.props.getSimWords(this.props.holder, this.props.id)
+    }
+  }
+  shouldComponentUpdate (nextProps={}, nextState={}) {
+    const thisProps = this.props || {};
+    //const thisState = this.state || {};
+    //Object.keys(thisState).length !== Object.keys(nextState).length
+    if (Object.keys(thisProps).length !== Object.keys(nextProps).length) {
+      return true;
+    }
+
+    for (const key in nextProps) {
+      if (is(thisProps[key], nextProps[key])) {
+        return true;
+      }
+    }
+
+    // for (const key in nextState) {
+    //   if (thisState[key] !== nextState[key] || is(thisState[key], nextState[key])) {
+    //     return true;
+    //   }
+    // }
+    console.log('no changed');
+    return false;
   }
 
   handler(val) {
@@ -436,6 +568,7 @@ class WordComponent extends Component{
         <Select
       placeholder={this.props.holder}
       multi={true}
+      disabled={this.props.disabled}
       name="form-field-name"
       value={this.props.value}
       options={this.props.options}
@@ -474,6 +607,18 @@ class SearchBar extends Component {
 
     }
   }
+  // {demoWords[index].length === 1? (
+  //     <TextField
+  //   hintText={demoWords[index]}
+  //   fullWidth={true}
+  //     />
+  // ) : (<WordComponent
+  //      holder={demoWords[index]}
+  //      value={eval("this.props.selected_" + sentenceIndex.toString() + "_"+ index.toString())}
+  //      multiSelect={this.props.multiSelect}
+  //      getSimWords={this.props.getSimWords}
+  //      options={eval('this.props.simWords_' + sentenceIndex.toString() + "_" +index.toString())}
+  //      id={sentenceIndex.toString() + "_" +index.toString()} />)}
 
   render() {
     var words = [];
@@ -486,23 +631,19 @@ class SearchBar extends Component {
             <div
           key={"word_" + sentenceIndex.toString() + "_" + index.toString()}
           className={this.props.hideWriter ? 'hidden' : ''}>
-            {demoWords[index].length === 1? (
-              <TextField
-              hintText={demoWords[index]}
-              fullWidth={true}
-                />
-            ) : (<WordComponent
-                 holder={demoWords[index]}
-                 value={eval("this.props.selected_" + sentenceIndex.toString() + "_"+ index.toString())}
-                 multiSelect={this.props.multiSelect}
-                 getSimWords={this.props.getSimWords}
-                 options={eval('this.props.simWords_' + sentenceIndex.toString() + "_" +index.toString())}
-                 id={sentenceIndex.toString() + "_" +index.toString()} />)}
+            <WordComponent
+          holder={demoWords[index]}
+          disabled={demoWords[index].length<=1}
+          value={eval("this.props.selected_" + sentenceIndex.toString() + "_"+ index.toString())}
+          multiSelect={this.props.multiSelect}
+          getSimWords={this.props.getSimWords}
+          options={eval('this.props.simWords_' + sentenceIndex.toString() + "_" +index.toString())}
+          id={sentenceIndex.toString() + "_" +index.toString()} />
             </div>
         )
       }
     }
-    //
+
 
     words.push(
         <div key={'steper'} ><HorizontalLinearStepper
@@ -591,6 +732,7 @@ class SearchBar extends Component {
         >
 
         {words}
+
         </SearchGrid>
 
         </MuiThemeProvider>
