@@ -44,7 +44,7 @@ export default function reducer(state = [], action) {
 
     var tokened = state.tokened;
     var res = [];
-
+    console.dir(tokened);
     for (var wordsIndex in tokened){
       var words = tokened[wordsIndex]
       var tmpArray = [];
@@ -55,9 +55,6 @@ export default function reducer(state = [], action) {
           let temp = [];
           for (var i in tmpArray){
             for(var j in selected){
-              console.log(j);
-              console.log(selected[j].label);
-
               temp.push(tmpArray[i] + selected[j].label);
             }
           }
@@ -76,8 +73,9 @@ export default function reducer(state = [], action) {
           }
         }
       }
+      res.push(tmpArray)
     }
-    res = tmpArray;
+    //res = tmpArray;
     return  Object.assign({}, state, {
       generateResult: res,
     })
@@ -141,15 +139,33 @@ export default function reducer(state = [], action) {
   case 'SHOW_PREV_BTN':
     return {...state, prevBtnWidth: 1, prevBtnHeight: 0.2, hidePrevBtn: false}
 
+  case 'HIDE_NEXT_BTN':
+    return {...state, nextBtnWidth: 0, nextBtnHeight: 0, hideNextBtn: true}
 
+  case 'SHOW_NEXT_BTN':
+    return {...state, nextBtnWidth: 1, nextBtnHeight: 0.2, hideNextBtn: false}
+
+   
   case 'MOVE_NEXT_BTN_TO_MIDDLE':
-    return {...state, nextBtnX: 7.5}
+    return {...state, nextBtnX: 7}
 
   case 'MOVE_NEXT_BTN_TO_RIGHT':
     return {...state, nextBtnX: 11}
 
+  case 'MOVE_SEARCH_BTN_TO_TOP':
+    return {...state, searchBtnY: 0.5}
+
+  case 'MOVE_SEARCH_TEXT_TO_TOP':
+      return {...state, searchTextY: 0.5}
+
+  case 'MOVE_SEARCH_RES_TO_TOP':
+      return {...state, searchResTableY: 1}
+
   case 'UPDATE_RES_SELECTION':
     return   {...state, resTableSelection: action.data}
+
+  case 'UPDATE_GENERATE_SELECTION':
+    return   {...state, generateTableSelection: action.data}
 
   case 'RESIZE_WORDS':
     console.log("RESIZE");
@@ -167,7 +183,7 @@ export default function reducer(state = [], action) {
       })
 
   default:
-    console.log("unknown action:" + action.type);
+    console.log("unknown action:" ,action.type);
     return state;
 
   }

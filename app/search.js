@@ -12,6 +12,7 @@ import Select from 'react-select';
 import 'whatwg-fetch';
 import { is } from 'immutable';
 import {EditTable} from 'material-ui-table-edit';
+import Checkbox from 'material-ui/Checkbox';
 
 
 import {
@@ -129,6 +130,21 @@ class NextBtn extends Component{
   }
 }
 
+class GenerateRes extends Component {
+  constructor(props, context){
+    super(props, context);
+  }
+  
+  render(){
+
+    return(
+        <div>
+        <Checkbox />
+        <TextField value={this.props.sentence} fullWidth={true}/>
+        </div>)
+  }
+}
+
 
 class SearchGrid extends Component{
   static defaultProps = {
@@ -136,13 +152,15 @@ class SearchGrid extends Component{
     searchTextHeight :0.2,
     searchBtnWidth : 1,
     searchBtnHeight :0.2,
-    searchBtnY: 5,
-    searchTextY: 5,
+    searchBtnY: 4,
+    searchTextY: 4,
     searchResTableY: 8,
     generateResTableWidth: 7,
     generateResTableHeight: 0.5,
     prevBtnWidth: 0,
     prevBtnHeight: 0,
+    nextBtnWidth: 0,
+    nextBtnHeight: 0,
     nextBtnX: 11,
   }
 
@@ -186,23 +204,42 @@ class SearchGrid extends Component{
         sentencePos += width;
       }
     }
+    var totalIndex = 0;
+    for(var baseIndex in this.props.generateResTable){
+      var sentenceArray = this.props.generateResTable[baseIndex];
+      for (var arrayIndex in sentenceArray){
+        wordsLayouts.push({
+          i:"generateResTable_"+  baseIndex.toString() + "_" + arrayIndex.toString(),
+          x:4,
+          y:(1 + parseInt(totalIndex)),
+          w: 6,
+          h:0.2, static:true});
+        totalIndex += 1;
+      }
 
+    }
     var layouts = {lg:wordsLayouts.concat(
       [{i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
-       {i:"searchText", x: 0,
+       {i:"searchText", x: 4,
         y: this.props.searchTextY,
         w: this.props.searchTextWidth,
         h: this.props.searchTextHeight, static:true},
-       {i:"searchBtn", x: 0,
+       {i:"searchBtn", x: 10,
         y: this.props.searchBtnY,
         w: this.props.searchBtnWidth,
         h: this.props.searchBtnHeight, static:true},
 
-       {i:"prevBtn", x: 6.5, y: 0.5,
+       {i:"prevBtn", x: 6, y: 0.5,
         w: this.props.prevBtnWidth,
         h: this.props.prevBtnHeight, static:true},
 
-       {i:"searchNextBtn", x: this.props.nextBtnX, y: 0.5, w: 0.2, h: 0.2, static:true},
+       {i:"searchNextBtn",
+        x: this.props.nextBtnX,
+        y: 0.5,
+        w: this.props.nextBtnWidth,
+        h: this.props.nextBtnHeight,
+        static:true},
+
        {i:"processBtn", x: 0, y: 0, w: 1, h: 0.2, static:true},
        {i:"searchResTable", x: 4,
         y: this.props.searchResTableY,
@@ -380,25 +417,55 @@ class GenerateResTable extends Component{
     super(props, context);
   }
 
+
+  handleRowSelected(slices){
+    if (slices === 'all') {
+      this.props.updateGenerateSelection(this.props.searchRes);
+    } else if  (slices.length === 0) {
+
+      slices = this.props.slices;
+      let selectedItems = slices.map(slice => {
+        return this.props.searchRes[slice];
+
+      });
+      this.props.updateGenerateSelection(selectedItems);
+
+    } else {
+
+      this.props.updateSlices(slices);
+      let selectedItems = slices.map(slice => {
+        return this.props.searchRes[slice];
+
+      });
+      this.props.updateGenerateSelection(selectedItems);
+    }
+
+    //this.props.updateGenerateSelection()
+  }
   render() {
     if(!this.props.hide){
-      var generateRes = this.props.generateRes;
       var rows = [];
-      for (var index in generateRes){
-        rows.push(
-            <TableRow>
-            <TableRowColumn><TextField
-          value={generateRes[index]}
-          fullWidth={true}/>
-            </TableRowColumn>
-            </TableRow>)
+      var generateRes = this.props.generateRes;
+
+      for (var sentenceIndex in generateRes){
+        var res = generateRes[sentenceIndex];
+        for (var index in res){
+          rows.push(
+              <TableRow>
+              <TableRowColumn>
+              <TextField
+            value={res[index]}
+            fullWidth={true}/>
+              </TableRowColumn>
+              </TableRow>)
+        }
       }
 
       return (
           <Table
         selectable={true}
         multiSelectable={true}
-        onRowSelection={(slices) => handleRowSelected(slices)}
+        onRowSelection={(slices) => this.handleRowSelected(slices)}
         onCellClick={() => {}}>
           <TableHeader>
           <TableRow>
@@ -685,7 +752,7 @@ class SearchBar extends Component {
       stepIndex={this.props.stepIndex}
       resTableSelection={this.props.resTableSelection}
       steperNext={this.props.steperNext}
-      hide={false}/>
+      hide={this.props.hideNextBtn}/>
         </div>
     )
     //      wordsWidth={this.wordsWidth}
@@ -707,14 +774,26 @@ class SearchBar extends Component {
       slices={this.props.slices}
         />
         </div>)
+    //   <GenerateResTable
+    // hide={this.props.hideGenerateRes} 
+    // generateRes={this.props.generateResult}
+    // updateGenerateSelection={this.props.updateGenerateSelection}/>
 
-    words.push(
-        <div key={'generateResTable'}>
-        <GenerateResTable
-      hide={this.props.hideGenerateRes} 
-      generateRes={this.props.generateResult}/>
-        </div>
-    )
+    for(var baseIndex in this.props.generateResTable){
+      var sentenceArray = this.props.generateResTable[baseIndex];
+      for (var arrayIndex in sentenceArray){
+        var sentence = sentenceArray[arrayIndex];
+        words.push(
+            <div key={'generateResTable_' + baseIndex.toString() + "_" + arrayIndex.toString()}>
+            <GenerateRes
+          sentence={sentence}
+            />
+            </div>
+        )
+
+      }
+
+    }
 
     return (
         <MuiThemeProvider>
@@ -731,6 +810,9 @@ class SearchBar extends Component {
       prevBtnWidth={this.props.prevBtnWidth}
       prevBtnHeight={this.props.prevBtnHeight}
       nextBtnX={this.props.nextBtnX}
+      searchBtnY={this.props.searchBtnY}
+      searchTextY={this.props.searchTextY}
+      searchResTableY={this.props.searchResTableY}
       wordsComponentWidth={this.props.wordsComponentWidth}
         >
 
@@ -955,6 +1037,18 @@ function mapDispatchToProps(dispatch) {
         });
       }
 
+      dispatch({
+        type: "MOVE_SEARCH_BTN_TO_TOP",
+      });
+      dispatch({
+        type: "MOVE_SEARCH_TEXT_TO_TOP",
+      });
+      dispatch({
+        type: "MOVE_SEARCH_RES_TO_TOP",
+      });
+      dispatch({
+        type: "SHOW_NEXT_BTN",
+      });
     },
     resizeWords: function(wordsWidth){
       dispatch({
@@ -986,6 +1080,14 @@ function mapDispatchToProps(dispatch) {
         data: slices
       });
     },
+
+    updateGenerateSelection: function(selectionItems){
+      dispatch({
+        type: 'UPDATE_GENERATE_SELECTION',
+        data: selectionItems
+      });
+    },
+
     updateSelection: function(selectionItems){
 
       dispatch({
