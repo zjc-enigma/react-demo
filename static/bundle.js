@@ -538,7 +538,6 @@
 
 
 	//import HorizontalLinearStepper from './search';
-
 	//import TButton from './writer';
 	//import { Router, Route, hashHistory, browserHistory } from 'react-router';
 	//import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
@@ -29162,8 +29161,8 @@
 	  _createClass(HorizontalLinearStepper, [{
 	    key: 'handleNext',
 	    value: function handleNext(stepIndex) {
-
-	      this.props.steperNext(stepIndex, this.props.resTableSelection);
+	      var rrr = ['bcasdafaf', 'sidfjaspifajsdf', '2312431'];
+	      this.props.steperNext(stepIndex, this.props.resTableSelection, rrr);
 	    }
 	  }, {
 	    key: 'handlePrev',
@@ -29284,7 +29283,8 @@
 	    key: 'handler',
 	    value: function handler() {
 	      // this.props.resizeWords(this.props.wordsWidth);
-	      this.props.steperNext(this.props.stepIndex, this.props.resTableSelection);
+	      var rrr = ['bcasdafaf', 'sidfjaspifajsdf', '2312431'];
+	      this.props.steperNext(this.props.stepIndex, this.props.resTableSelection, rrr);
 	    }
 	  }, {
 	    key: 'render',
@@ -29294,7 +29294,7 @@
 	      if (!this.props.hide) {
 	        //console.log('wordsWidth', this.props.wordsWidth);
 	        return _react2.default.createElement(_RaisedButton2.default, {
-	          label: 'Next',
+	          label: this.props.label,
 	          onClick: function onClick() {
 	            return _this5.handler();
 	          } });
@@ -29319,19 +29319,21 @@
 	  _createClass(GenerateList, [{
 	    key: 'render',
 	    value: function render() {
-
 	      if (!this.props.hide) {
+	        var sentenceList = [];
 	        var list = [];
 	        for (var index in this.props.sentenceData) {
+	          sentenceList.push(this.props.sentenceData[index].sentence);
 	          console.log('sentence', this.props.sentenceData[index].sentence);
 	          console.log('id', this.props.sentenceData[index].id);
 	          list.push(_react2.default.createElement(GenerateRes, {
 	            changeGenerateText: this.props.changeGenerateText,
 	            sentence: this.props.sentenceData[index].sentence,
 	            init: this.props.sentenceData[index].init,
-	            id: this.props.sentenceData[index].id
-	          }));
+	            id: this.props.sentenceData[index].id }));
 	        }
+
+	        //this.props.updateGenerateList(sentenceList);
 	        return _react2.default.createElement(
 	          'div',
 	          null,
@@ -29352,8 +29354,6 @@
 	  function GenerateRes(props, context) {
 	    _classCallCheck(this, GenerateRes);
 
-	    //console.log('init', this.props.init);
-	    //this.handleChange(this.props.init);
 	    var _this7 = _possibleConstructorReturn(this, Object.getPrototypeOf(GenerateRes).call(this, props, context));
 
 	    _this7.handleChange(_this7.props.init);
@@ -29374,15 +29374,19 @@
 
 	      return _react2.default.createElement(
 	        'li',
-	        null,
-	        _react2.default.createElement(_Checkbox2.default, { defaultChecked: true }),
-	        _react2.default.createElement(_TextField2.default, {
-	          value: this.props.sentence,
-	          fullWidth: true,
-	          onChange: function onChange(event) {
-	            var changeText = event.target.value;
-	            _this8.handleChange(changeText);
-	          } })
+	        { style: { 'list-style-type': 'none' } },
+	        _react2.default.createElement(
+	          'div',
+	          { style: { display: 'inline' } },
+	          _react2.default.createElement(_Checkbox2.default, { defaultChecked: true }),
+	          _react2.default.createElement(_TextField2.default, {
+	            value: this.props.sentence,
+	            fullWidth: true,
+	            onChange: function onChange(event) {
+	              var changeText = event.target.value;
+	              _this8.handleChange(changeText);
+	            } })
+	        )
 	      );
 	    }
 	  }]);
@@ -29488,7 +29492,7 @@
 	        {
 	          className: 'layout',
 	          layouts: layouts,
-	          breakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
+	          breakpoints: { lg: 800, md: 600, sm: 500, xs: 480, xxs: 0 },
 	          cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 } },
 	        this.props.children
 	      );
@@ -29503,8 +29507,8 @@
 	  searchTextHeight: 0.2,
 	  searchBtnWidth: 1,
 	  searchBtnHeight: 0.2,
-	  searchBtnY: 4,
-	  searchTextY: 4,
+	  searchBtnY: 2,
+	  searchTextY: 2,
 	  searchResTableY: 8,
 	  generateResTableWidth: 7,
 	  generateResTableHeight: 0.5,
@@ -30055,6 +30059,7 @@
 	      var _this24 = this;
 
 	      var words = [];
+
 	      for (var sentenceIndex in this.props.tokened) {
 	        var demoWords = this.props.tokened[sentenceIndex];
 
@@ -30076,7 +30081,6 @@
 	          ));
 	        }
 	      }
-
 	      words.push(_react2.default.createElement(
 	        'div',
 	        { key: 'steper' },
@@ -30180,9 +30184,11 @@
 	        _react2.default.createElement(GenerateList, {
 	          sentenceData: sentenceData,
 	          changeGenerateText: this.props.changeGenerateText,
+	          updateGenerateList: this.props.updateGenerateList,
 	          hide: this.props.hideGenerateRes
 	        })
 	      ));
+
 	      return _react2.default.createElement(
 	        _MuiThemeProvider2.default,
 	        null,
@@ -30342,7 +30348,7 @@
 	          stepIndex: step - 1 });
 	      }
 	    },
-	    steperNext: function steperNext(step, selectedSentences) {
+	    steperNext: function steperNext(step, selectedSentences, generatedTextList) {
 	      switch (step) {
 	        case 0:
 	          dispatch({
@@ -30386,6 +30392,14 @@
 	          break;
 
 	        case 2:
+	          // fetch('/download',
+	          //       {method: "POST",
+	          //        headers:{
+	          //          'Accept': 'application/json',
+	          //          'Content-Type': 'application/json'},
+	          //        body: JSON.stringify({key: generateList})
+	          //       })
+	          //   .catch(function(e){console.log('parsing failed', e)});
 	          break;
 
 	        default:
@@ -30397,6 +30411,10 @@
 	        finished: step >= 2
 	      });
 	    },
+	    // .then(parseJson)
+	    // .then(showClick)
+	    //downloadGenerated(generatedTextList){
+	    //},
 	    changeGenerateText: function changeGenerateText(text, id) {
 	      dispatch({
 	        type: "CHANGE_GENERATE_TEXT",
@@ -30472,7 +30490,12 @@
 	        data: selectionItems
 	      });
 	    },
-
+	    updateGenerateList: function updateGenerateList(generateList) {
+	      dispatch({
+	        type: 'UPDATE_GENERATE_LIST',
+	        data: generateList
+	      });
+	    },
 	    updateSelection: function updateSelection(selectionItems) {
 
 	      dispatch({
@@ -74532,7 +74555,6 @@
 	              }
 	            }
 	            tmpArray = temp;
-
 	            // var randWord = selected[Math.floor(Math.random()*selected.length)].label;
 	            // tmp += randWord;
 	          } else {
@@ -74642,6 +74664,9 @@
 
 	    case 'UPDATE_GENERATE_SELECTION':
 	      return _extends({}, state, { generateTableSelection: action.data });
+
+	    case 'UPDATE_GENERATE_LIST':
+	      return _extends({}, state, { generateList: action.data });
 
 	    case 'RESIZE_WORDS':
 	      return _extends({}, state, { wordsComponentWidth: action.data });

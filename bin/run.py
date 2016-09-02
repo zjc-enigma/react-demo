@@ -4,7 +4,9 @@ reload(sys)
 sys.setdefaultencoding('UTF8')
 from os import path
 from flask import Flask
+from flask import redirect
 from flask import jsonify
+from flask import url_for
 from flask import send_from_directory, request, Response
 from flask import render_template
 import json, random
@@ -20,6 +22,7 @@ from utils import myutils
 from data import random_select_titles
 from data import search_title
 from data import random_select_ad
+#from pandas import DataFrame
 import gensim
 word_model = gensim.models.Word2Vec.load_word2vec_format("../data/model2", binary=False)
 
@@ -75,8 +78,27 @@ class Title(Resource):
 
 api.add_resource(Title, '/rand_titles')
 
+def write_csv(data_list, csv_path):
+    wfd = open(csv_path, 'w')
+    for item in data_list:
+        wfd.write(item+"\n")
 
-class TokenSentance(Resource):
+    wfd.close()
+
+
+class Download(Resource):
+
+    def post(self):
+        sentence_list = request.json['sentences']
+        print str(sentence_list)
+        #df.to_excel('/Users/Patrick/Git/react-demo/test.xlsx', sheet_name='sheet1', index=False)
+        #print request
+        write_csv(sentence_list, 'test.csv')
+        return send_from_directory('.', 'test.csv')
+
+api.add_resource(Download, '/download')
+
+class TokenSentence(Resource):
 
     def post(self):
         res = []
@@ -91,7 +113,7 @@ class TokenSentance(Resource):
 
         return res
 
-api.add_resource(TokenSentance, '/token')
+api.add_resource(TokenSentence, '/token')
 
 class Search(Resource):
 

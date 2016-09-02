@@ -36,8 +36,8 @@ class HorizontalLinearStepper extends Component {
 
 
   handleNext (stepIndex) {
-
-    this.props.steperNext(stepIndex, this.props.resTableSelection);
+    var rrr = ['bcasdafaf', 'sidfjaspifajsdf', '2312431'];
+    this.props.steperNext(stepIndex, this.props.resTableSelection, rrr);
   };
 
   handlePrev (stepIndex)  {
@@ -113,7 +113,8 @@ class NextBtn extends Component{
 
   handler() {
     // this.props.resizeWords(this.props.wordsWidth);
-    this.props.steperNext(this.props.stepIndex, this.props.resTableSelection);
+    var rrr = ['bcasdafaf', 'sidfjaspifajsdf', '2312431'];
+    this.props.steperNext(this.props.stepIndex, this.props.resTableSelection, rrr);
   }
   render(){
 
@@ -121,7 +122,7 @@ class NextBtn extends Component{
       //console.log('wordsWidth', this.props.wordsWidth);
       return(
           <RaisedButton
-        label="Next"
+        label={this.props.label}
         onClick={() => this.handler()} />
       )
     } else {
@@ -135,25 +136,25 @@ class GenerateList extends Component {
   constructor(props, context){
     super(props, context);
   }
+
   render() {
-    
     if(!this.props.hide){
+      var sentenceList = [];
       var list = [];
       for(var index in this.props.sentenceData){
+        sentenceList.push(this.props.sentenceData[index].sentence)
         console.log('sentence',this.props.sentenceData[index].sentence);
         console.log('id',this.props.sentenceData[index].id);
         list.push(<GenerateRes
                   changeGenerateText={this.props.changeGenerateText}
                   sentence={this.props.sentenceData[index].sentence}
                   init={this.props.sentenceData[index].init}
-                  id={this.props.sentenceData[index].id}
-                  />)
-      }
-      return (
-        <div>
-          {list}
-        </div>
-      );
+                  id={this.props.sentenceData[index].id} />)}
+
+      //this.props.updateGenerateList(sentenceList);
+      return (<div>
+              {list}
+              </div>);
     } else {
       return null;
     }
@@ -163,8 +164,6 @@ class GenerateRes extends Component {
 
   constructor(props, context){
     super(props, context);
-    //console.log('init', this.props.init);
-    //this.handleChange(this.props.init);
     this.handleChange(this.props.init)
   }
   handleChange(text){
@@ -173,13 +172,15 @@ class GenerateRes extends Component {
   //<li style="list-style-type:none">
   render(){
       return(
-          <li>
+          <li style={{'list-style-type':'none'}}>
+          <div style={{display:'inline'}}>
           <Checkbox defaultChecked={true}/>
           <TextField
         value={this.props.sentence}
         fullWidth={true}
         onChange={event => {var changeText = event.target.value;
                             this.handleChange(changeText)}}/>
+          </div>
           </li>)
   }
 }
@@ -191,8 +192,8 @@ class SearchGrid extends Component{
     searchTextHeight :0.2,
     searchBtnWidth : 1,
     searchBtnHeight :0.2,
-    searchBtnY: 4,
-    searchTextY: 4,
+    searchBtnY: 2,
+    searchTextY: 2,
     searchResTableY: 8,
     generateResTableWidth: 7,
     generateResTableHeight: 0.5,
@@ -324,7 +325,7 @@ class SearchGrid extends Component{
         <ResponsiveReactGridLayout
       className="layout"
       layouts={layouts}
-      breakpoints={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}
+      breakpoints={{lg: 800, md: 600, sm: 500, xs: 480, xxs: 0}}
       cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}>
         {this.props.children}
         </ResponsiveReactGridLayout>
@@ -735,6 +736,7 @@ class SearchBar extends Component {
 
   render() {
     var words = [];
+
     for (var sentenceIndex in this.props.tokened){
       var demoWords = this.props.tokened[sentenceIndex];
 
@@ -756,8 +758,6 @@ class SearchBar extends Component {
         )
       }
     }
-
-
     words.push(
         <div key={'steper'} ><HorizontalLinearStepper
       resTableSelection={this.props.resTableSelection}
@@ -833,7 +833,7 @@ class SearchBar extends Component {
     //   />
 
     //</div>
-    var sentenceData=[];
+    var sentenceData = [];
     for(var baseIndex in this.props.generateResult){
       var sentenceArray = this.props.generateResult[baseIndex];
       for (var arrayIndex in sentenceArray){
@@ -850,9 +850,11 @@ class SearchBar extends Component {
         <GenerateList
       sentenceData={sentenceData}
       changeGenerateText={this.props.changeGenerateText}
+      updateGenerateList={this.props.updateGenerateList}
       hide={this.props.hideGenerateRes}
         /></div>
     )
+    
     return (
         <MuiThemeProvider>
         <SearchGrid
@@ -874,9 +876,7 @@ class SearchBar extends Component {
       wordsComponentWidth={this.props.wordsComponentWidth}
       generateResult={this.props.generateResult}
         >
-
         {words}
-
         </SearchGrid>
 
         </MuiThemeProvider>
@@ -1016,7 +1016,9 @@ function mapDispatchToProps(dispatch) {
       }
 
     },
-    steperNext: function(step, selectedSentences){
+    steperNext: function(step,
+                         selectedSentences,
+                         generatedTextList){
       switch(step){
       case 0:
         dispatch({
@@ -1060,6 +1062,14 @@ function mapDispatchToProps(dispatch) {
         break;
 
       case 2:
+        // fetch('/download',
+        //       {method: "POST",
+        //        headers:{
+        //          'Accept': 'application/json',
+        //          'Content-Type': 'application/json'},
+        //        body: JSON.stringify({key: generateList})
+        //       })
+        //   .catch(function(e){console.log('parsing failed', e)});
         break;
 
       default:
@@ -1072,6 +1082,10 @@ function mapDispatchToProps(dispatch) {
       });
 
     },
+    // .then(parseJson)
+    // .then(showClick)
+    //downloadGenerated(generatedTextList){
+    //},
     changeGenerateText(text, id){
       dispatch({
         type: "CHANGE_GENERATE_TEXT",
@@ -1152,7 +1166,12 @@ function mapDispatchToProps(dispatch) {
         data: selectionItems
       });
     },
-
+    updateGenerateList: function(generateList){
+      dispatch({
+        type: 'UPDATE_GENERATE_LIST',
+        data: generateList
+      });
+    },
     updateSelection: function(selectionItems){
 
       dispatch({

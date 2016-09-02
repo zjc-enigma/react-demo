@@ -59,7 +59,6 @@ export default function reducer(state = [], action) {
             }
           }
           tmpArray = temp;
-
           // var randWord = selected[Math.floor(Math.random()*selected.length)].label;
           // tmp += randWord;
         } else {
@@ -171,6 +170,9 @@ export default function reducer(state = [], action) {
 
   case 'UPDATE_GENERATE_SELECTION':
     return   {...state, generateTableSelection: action.data}
+
+  case 'UPDATE_GENERATE_LIST':
+    return   {...state, generateList: action.data}
 
   case 'RESIZE_WORDS':
     return   {...state, wordsComponentWidth: action.data}
