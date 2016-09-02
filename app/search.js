@@ -58,7 +58,7 @@ class HorizontalLinearStepper extends Component {
   }
 
   render() {
-    
+
     var finished = this.props.finished;
     var stepIndex = this.props.stepIndex;
 
@@ -130,18 +130,57 @@ class NextBtn extends Component{
   }
 }
 
-class GenerateRes extends Component {
+class GenerateList extends Component {
+
   constructor(props, context){
     super(props, context);
   }
-  
-  render(){
-
-    return(
+  render() {
+    
+    if(!this.props.hide){
+      var list = [];
+      for(var index in this.props.sentenceData){
+        console.log('sentence',this.props.sentenceData[index].sentence);
+        console.log('id',this.props.sentenceData[index].id);
+        list.push(<GenerateRes
+                  changeGenerateText={this.props.changeGenerateText}
+                  sentence={this.props.sentenceData[index].sentence}
+                  init={this.props.sentenceData[index].init}
+                  id={this.props.sentenceData[index].id}
+                  />)
+      }
+      return (
         <div>
-        <Checkbox />
-        <TextField value={this.props.sentence} fullWidth={true}/>
-        </div>)
+          {list}
+        </div>
+      );
+    } else {
+      return null;
+    }
+  }
+}
+class GenerateRes extends Component {
+
+  constructor(props, context){
+    super(props, context);
+    //console.log('init', this.props.init);
+    //this.handleChange(this.props.init);
+    this.handleChange(this.props.init)
+  }
+  handleChange(text){
+    this.props.changeGenerateText(text, this.props.id)
+  }
+  //<li style="list-style-type:none">
+  render(){
+      return(
+          <li>
+          <Checkbox defaultChecked={true}/>
+          <TextField
+        value={this.props.sentence}
+        fullWidth={true}
+        onChange={event => {var changeText = event.target.value;
+                            this.handleChange(changeText)}}/>
+          </li>)
   }
 }
 
@@ -193,7 +232,7 @@ class SearchGrid extends Component{
       var sentencePos = 0;
       for (var index in demoWords){
         var wordWidth = this.props.wordsComponentWidth[sentenceIndex.toString() + "_" + index.toString()]
-        console.log('sentencePos', sentencePos);
+        //console.log('sentencePos', sentencePos);
         //wordWidth = (wordWidth? wordWidth : 1)*stepWidth;
         var width = wordWidth*stepWidth;
         wordsLayouts.push({i:"word_"+ sentenceIndex.toString() + "_" + index.toString(),
@@ -204,26 +243,26 @@ class SearchGrid extends Component{
         sentencePos += width;
       }
     }
-    var totalIndex = 0;
-    for(var baseIndex in this.props.generateResTable){
-      var sentenceArray = this.props.generateResTable[baseIndex];
-      for (var arrayIndex in sentenceArray){
-        wordsLayouts.push({
-          i:"generateResTable_"+  baseIndex.toString() + "_" + arrayIndex.toString(),
-          x:4,
-          y:(1 + parseInt(totalIndex)),
-          w: 6,
-          h:0.2, static:true});
-        totalIndex += 1;
-      }
-
-    }
+    // var totalIndex = 0;
+    // for(var baseIndex in this.props.generateResult){
+    //   var sentenceArray = this.props.generateResult[baseIndex];
+    //   for (var arrayIndex in sentenceArray){
+    //     wordsLayouts.push({
+    //       i:"generateResTable_" +  baseIndex.toString() + "_" + arrayIndex.toString(),
+    //       x:4,
+    //       y:(1 + parseInt(totalIndex)),
+    //       w:6,
+    //       h:0.2, static:true});
+    //     totalIndex += 1;
+    //   }
+    // }
     var layouts = {lg:wordsLayouts.concat(
       [{i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
        {i:"searchText", x: 4,
         y: this.props.searchTextY,
         w: this.props.searchTextWidth,
         h: this.props.searchTextHeight, static:true},
+
        {i:"searchBtn", x: 10,
         y: this.props.searchBtnY,
         w: this.props.searchBtnWidth,
@@ -246,10 +285,14 @@ class SearchGrid extends Component{
         w: this.props.searchResWidth,
         h: this.props.searchResHeight, static:true },
 
-       {i:"generateResTable", x: 4,
+       {i:"generateResTable",
+        x: 4,
         y: 1,
         w: this.props.generateResTableWidth,
-        h: this.props.generateResTableHeight, static:true }]),
+        h: this.props.generateResTableHeight,
+        static:true }]),
+        // w: this.props.generateResTableWidth,
+        // h: this.props.generateResTableHeight, static:true }]),
 
      md:wordsLayouts.concat(
        [{i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
@@ -383,7 +426,7 @@ class SearchTextField extends Component {
     //     return true;
     //   }
     // }
-    console.log('no changed');
+    //console.log('no changed');
     return false;
   }
 
@@ -778,23 +821,38 @@ class SearchBar extends Component {
     // hide={this.props.hideGenerateRes} 
     // generateRes={this.props.generateResult}
     // updateGenerateSelection={this.props.updateGenerateSelection}/>
+    //console.log('generateRes', this.props.generateResult);
 
-    for(var baseIndex in this.props.generateResTable){
-      var sentenceArray = this.props.generateResTable[baseIndex];
+    //<div key={'generateResTable_' + baseIndex.toString() + "_" + arrayIndex.toString()}>
+    //   <GenerateRes
+    // sentence={eval("this.props.generateText_" + baseIndex.toString() + "_" + arrayIndex.toString())}
+    // changeGenerateText={this.props.changeGenerateText}
+    // id={baseIndex.toString() + "_" + arrayIndex.toString()}
+    // hide={this.props.hideGenerateRes}
+    // init={sentence}
+    //   />
+
+    //</div>
+    var sentenceData=[];
+    for(var baseIndex in this.props.generateResult){
+      var sentenceArray = this.props.generateResult[baseIndex];
       for (var arrayIndex in sentenceArray){
         var sentence = sentenceArray[arrayIndex];
-        words.push(
-            <div key={'generateResTable_' + baseIndex.toString() + "_" + arrayIndex.toString()}>
-            <GenerateRes
-          sentence={sentence}
-            />
-            </div>
-        )
-
+        sentenceData.push({init:sentence,
+                           id:baseIndex.toString() + "_" + arrayIndex.toString(),
+                           sentence:eval("this.props.generateText_" + baseIndex.toString() + "_" + arrayIndex.toString())
+                          });
       }
-
     }
 
+    words.push(
+        <div key={'generateResTable'}>
+        <GenerateList
+      sentenceData={sentenceData}
+      changeGenerateText={this.props.changeGenerateText}
+      hide={this.props.hideGenerateRes}
+        /></div>
+    )
     return (
         <MuiThemeProvider>
         <SearchGrid
@@ -814,6 +872,7 @@ class SearchBar extends Component {
       searchTextY={this.props.searchTextY}
       searchResTableY={this.props.searchResTableY}
       wordsComponentWidth={this.props.wordsComponentWidth}
+      generateResult={this.props.generateResult}
         >
 
         {words}
@@ -945,7 +1004,7 @@ function mapDispatchToProps(dispatch) {
         dispatch({
           type: "SHOW_WRITER",
         });
-
+        
         break;
       default:
         break;
@@ -1013,7 +1072,13 @@ function mapDispatchToProps(dispatch) {
       });
 
     },
-
+    changeGenerateText(text, id){
+      dispatch({
+        type: "CHANGE_GENERATE_TEXT",
+        data: text,
+        id: id
+      });
+    },
     searchQuery: function(text){
       if(text){
         fetch('/query',

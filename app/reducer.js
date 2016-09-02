@@ -44,7 +44,7 @@ export default function reducer(state = [], action) {
 
     var tokened = state.tokened;
     var res = [];
-    console.dir(tokened);
+
     for (var wordsIndex in tokened){
       var words = tokened[wordsIndex]
       var tmpArray = [];
@@ -103,11 +103,16 @@ export default function reducer(state = [], action) {
     return {...state, searchResWidth: 7, searchResHeight: 0.5 }
 
   case 'HIDE_GENERATE_TABLE':
-    return {...state, generateResTableWidth:0, generateResTableHeight: 0, }
+    return {...state, generateResTableWidth:0, generateResTableHeight: 0, hideGenerateRes: true}
 
   case 'SHOW_GENERATE_TABLE':
-    return {...state, generateResTableWidth:7, generateResTableHeight: 0.5,  }
+    return {...state, generateResTableWidth:7, generateResTableHeight: 0.5, hideGenerateRes: false}
 
+  case "CHANGE_GENERATE_TEXT":
+    var key = "generateText_" + action.id;
+    var s = {...state};
+    s[key] = action.data;
+    return s;
 
   case 'HIDE_SEARCHBAR':
 
@@ -168,8 +173,6 @@ export default function reducer(state = [], action) {
     return   {...state, generateTableSelection: action.data}
 
   case 'RESIZE_WORDS':
-    console.log("RESIZE");
-    console.dir(action.data);
     return   {...state, wordsComponentWidth: action.data}
 
   case 'SEARCHRES':
