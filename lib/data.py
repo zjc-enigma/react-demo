@@ -44,7 +44,8 @@ value2label = {'3c':'3C',
               'yishu':'艺术',
               'youxi':'游戏',
               'yule':'娱乐',
-              'yundong':'运动'}
+               'yundong':'运动',
+               'unknown': '未知'}
 
 def _invert_mapping(mapping):
     return {v: k for k, v in mapping.iteritems()}
@@ -180,13 +181,16 @@ class TitleTagger(object):
         search_res = []
         print "query:", query
         print "class_name_list:", str(class_name_list)
+
         for tag in self.res_dict:
             title_list = self.res_dict[tag]
             for title in title_list:
+                class_name = get_sentence_class(title)
                 if re.search(query, title):
-                    if not class_name_list or get_sentence_class(title) in class_name_list:
+                    if not class_name_list or class_name in class_name_list:
                         search_res.append({"tag": tag,
-                                           "content": title})
+                                           "content": title,
+                                           "label": value2label[class_name]})
         return search_res
 
 

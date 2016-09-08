@@ -29821,6 +29821,11 @@
 	            ),
 	            _react2.default.createElement(
 	              _Table.TableRowColumn,
+	              null,
+	              searchRes[index].label
+	            ),
+	            _react2.default.createElement(
+	              _Table.TableRowColumn,
 	              { style: { width: '60%' } },
 	              searchRes[index].content
 	            )
@@ -29849,6 +29854,11 @@
 	                _Table.TableHeaderColumn,
 	                null,
 	                '来源'
+	              ),
+	              _react2.default.createElement(
+	                _Table.TableHeaderColumn,
+	                null,
+	                '类目'
 	              ),
 	              _react2.default.createElement(
 	                _Table.TableHeaderColumn,

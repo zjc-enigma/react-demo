@@ -137,7 +137,15 @@ class SearchByClass(Resource):
 
     def post(self):
         query = request.json['key']
-        class_name_list = request.json['class_name']
+        try:
+            selectionArray = request.json['class_name']
+        except Exception, e:
+            selectionArray = []
+            
+        class_name_list = []
+        for item in selectionArray:
+            class_name_list.append(item['value'])
+
         return search_title_by_class(query.encode('utf8'), class_name_list)
 
 api.add_resource(SearchByClass, '/query_by_class')

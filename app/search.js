@@ -611,6 +611,7 @@ class SearchResTable extends Component {
             <TableRow selected={this.isSelected(searchRes[index])}>
             <TableRowColumn>{searchRes[index].tag}</TableRowColumn>
             <TableRowColumn>头条</TableRowColumn>
+            <TableRowColumn>{searchRes[index].label}</TableRowColumn>
             <TableRowColumn style={{width: '60%'}}>{searchRes[index].content}</TableRowColumn>
             </TableRow>)
       }
@@ -623,6 +624,7 @@ class SearchResTable extends Component {
           <TableRow>
           <TableHeaderColumn>类别</TableHeaderColumn>
           <TableHeaderColumn>来源</TableHeaderColumn>
+          <TableHeaderColumn>类目</TableHeaderColumn>
           <TableHeaderColumn style={{width: '60%'}}>内容</TableHeaderColumn>
           </TableRow>
           </TableHeader>
