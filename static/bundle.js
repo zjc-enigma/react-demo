@@ -29497,7 +29497,8 @@
 	  }, {
 	    key: 'search',
 	    value: function search(text) {
-	      this.context.searchQuery(text);
+	      //this.context.searchQuery(text);
+	      this.props.searchQueryByClass(text, this.props.classSelection);
 	    }
 	  }, {
 	    key: 'render',
@@ -29954,16 +29955,11 @@
 	  function SearchBar(props, context) {
 	    _classCallCheck(this, SearchBar);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(SearchBar).call(this, props, context));
+	    var _this23 = _possibleConstructorReturn(this, Object.getPrototypeOf(SearchBar).call(this, props, context));
 
-	    // const wordsWidth = {};
-	    // for (var sentenceIndex in this.props.tokened){
-	    //   var demoWords = this.props.tokened[sentenceIndex];
+	    _this23.props.getMultiselectOption();
 
-	    //   for (var index in demoWords){
-	    //     wordsWidth[sentenceIndex.toString() + "_" + index.toString()] = demoWords[index].length;
-	    //   }
-	    // }
+	    return _this23;
 	  }
 
 	  _createClass(SearchBar, [{
@@ -30044,6 +30040,8 @@
 	        { key: 'searchBtn' },
 	        _react2.default.createElement(SearchBtn, {
 	          hide: this.props.hideSearchBtn,
+	          searchQueryByClass: this.props.searchQueryByClass,
+	          classSelection: this.props.classSelection,
 	          name: "Search" })
 	      ));
 
@@ -30128,16 +30126,23 @@
 	        })
 	      ));
 
-	      var testoptions = ["apple", "mango", "grapes", "melon", "strawberry"].map(function (fruit) {
-	        return { label: fruit, value: fruit };
-	      });
+	      // var testoptions = ["apple",
+	      //                    "mango",
+	      //                    "grapes",
+	      //                    "melon",
+	      //                    "strawberry"].map(function(fruit){
+	      //                      return {label: fruit, value: fruit}
+	      // });
 
 	      words.push(_react2.default.createElement(
 	        'div',
 	        { key: 'mt' },
 	        _react2.default.createElement(_reactSelectize.MultiSelect, {
-	          options: testoptions,
-	          placeholder: "Select fruits" })
+	          options: this.props.classOptions,
+	          onValuesChange: function onValuesChange(values) {
+	            return _this24.props.updateClassSelection(values);
+	          },
+	          placeholder: "请选择投放类目" })
 	      ));
 
 	      return _react2.default.createElement(
@@ -30374,6 +30379,40 @@
 	      });
 	    },
 
+
+	    searchQueryByClass: function searchQueryByClass(text, className) {
+	      if (text) {
+	        fetch('/query_by_class', { method: "POST",
+	          headers: {
+	            'Accept': 'application/json',
+	            'Content-Type': 'application/json' },
+	          body: JSON.stringify({ key: text, class_name: className })
+	        }).then(parseJson).then(showClick).catch(function (e) {
+	          console.log('parsing failed', e);
+	        });
+
+	        dispatch({ type: "SHOW_SEARCH_RES" });
+	      } else {
+	        alert("Please input search text");
+	        dispatch({
+	          type: "SEARCHRES",
+	          data: []
+	        });
+	      }
+
+	      dispatch({
+	        type: "MOVE_SEARCH_BTN_TO_TOP"
+	      });
+	      dispatch({
+	        type: "MOVE_SEARCH_TEXT_TO_TOP"
+	      });
+	      dispatch({
+	        type: "MOVE_SEARCH_RES_TO_TOP"
+	      });
+	      dispatch({
+	        type: "SHOW_NEXT_BTN"
+	      });
+	    },
 	    searchQuery: function searchQuery(text) {
 	      if (text) {
 	        fetch('/query', { method: "POST",
@@ -30434,7 +30473,18 @@
 	        data: slices
 	      });
 	    },
-
+	    getMultiselectOption: function getMultiselectOption() {
+	      fetch("/multiselect_options", { method: "GET",
+	        headers: {
+	          'Accept': 'application/json',
+	          'Content-Type': 'application/json' }
+	      }).then(parseJson).then(function (json) {
+	        return dispatch({ type: "UPDATE_MULTISELECT_OPTIONS",
+	          data: json });
+	      }).catch(function (e) {
+	        console.log('parsing failed', e);
+	      });
+	    },
 	    updateGenerateSelection: function updateGenerateSelection(selectionItems) {
 	      dispatch({
 	        type: 'UPDATE_GENERATE_SELECTION',
@@ -30445,6 +30495,12 @@
 	      dispatch({
 	        type: 'UPDATE_GENERATE_LIST',
 	        data: generateList
+	      });
+	    },
+	    updateClassSelection: function updateClassSelection(selectionArray) {
+	      dispatch({
+	        type: 'UPDATE_CLASS_SELECTION',
+	        data: selectionArray
 	      });
 	    },
 	    updateSelection: function updateSelection(selectionItems) {
@@ -80640,6 +80696,13 @@
 	      return Object.assign({}, state, {
 	        tokened: action.data
 	      });
+
+	    case "UPDATE_MULTISELECT_OPTIONS":
+	      return _extends({}, state, { classOptions: action.data });
+
+	    case "UPDATE_CLASS_SELECTION":
+	      return _extends({}, state, { classSelection: action.data });
+
 	    case "INIT":
 	      return Object.assign({}, state, {
 	        stepIndex: action.stepIndex,

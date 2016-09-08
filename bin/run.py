@@ -23,6 +23,8 @@ from data import random_select_titles
 from data import search_title
 from data import search_title_by_class
 from data import random_select_ad
+from data import label2value, value2label
+
 #from pandas import DataFrame
 import gensim
 word_model = gensim.models.Word2Vec.load_word2vec_format("../data/model2", binary=False)
@@ -135,11 +137,23 @@ class SearchByClass(Resource):
 
     def post(self):
         query = request.json['key']
-        class_name = request.json['class_name']
-        return search_title_by_class(query.encode('utf8'), class_name)
+        class_name_list = request.json['class_name']
+        return search_title_by_class(query.encode('utf8'), class_name_list)
 
 api.add_resource(SearchByClass, '/query_by_class')
 
+
+class MultiselectionOptions(Resource):
+
+    def get(self):
+        res = []
+        label_list = label2value.keys()
+        for label in label_list:
+            res.append({"label":label, "value":label2value[label]})
+
+        return res
+
+api.add_resource(MultiselectionOptions, '/multiselect_options')
 
 def nocache(view):
     @wraps(view)

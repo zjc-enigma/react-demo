@@ -9,7 +9,47 @@ import jieba
 import pandas as pd
 class_dict = '../data/words/class_dict'
 class_df = pd.read_csv(class_dict, sep='\t', header=None)
-class_df.columns = ["class", "word", "attr", "score"]
+class_df.columns = ["class_name", "word", "attr", "score"]
+
+
+value2label = {'3c':'3C',
+              'baojian':'保健',
+              'diannao':'电脑',
+              'fang':'房产',
+              'fu_':'服装',
+              'jiadian':'家电',
+              'jiaju':'家居',
+              'jiaoyu':'教育',
+              'jiazhuang':'家装',
+              'jinrong':'金融',
+              'junshi':'军事',
+              'keji':'科技',
+              'lvyou':'旅游',
+              'meizhuang':'化妆品',
+              'muying':'母婴',
+              'qiche':'汽车',
+              'shangwu':'商务',
+              'shechipin':'奢侈品',
+              'shipin':'食品',
+              'shishang': '时尚',
+              'shouji':'手机',
+              'shuma':'数码',
+              'tiyu':'体育',
+              'wenhua':'文化',
+              'wenxue':'文学',
+              'xie_':'鞋',
+              'xiefu':'xiefu',
+              'yiliao':'医疗',
+              'yingshi':'影视',
+              'yishu':'艺术',
+              'youxi':'游戏',
+              'yule':'娱乐',
+              'yundong':'运动'}
+
+def _invert_mapping(mapping):
+    return {v: k for k, v in mapping.iteritems()}
+
+label2value = _invert_mapping(value2label)
 
 #s = u'国内7条适合长线旅行的路线，下半年该好好计划啦'
 
@@ -46,7 +86,7 @@ def get_sentence_class(sentence):
         s_df = pd.DataFrame(s_df.word.apply(lambda x: x.encode('utf8')))
 
         merge_df = pd.merge(s_df, class_df, on='word', how='inner')
-        class_sum_score_df = merge_df.groupby(['class']).sum()
+        class_sum_score_df = merge_df.groupby(['class_name']).sum()
         max_score_class = class_sum_score_df.sort(['score'], ascending=False).iloc[0].name
         return max_score_class
 
@@ -136,14 +176,17 @@ class TitleTagger(object):
 
         return self.res_dict
 
-    def search_title_by_query_and_class(self, query, class_name):
+    def search_title_by_query_and_class(self, query, class_name_list):
         search_res = []
+        print "query:", query
+        print "class_name_list:", str(class_name_list)
         for tag in self.res_dict:
             title_list = self.res_dict[tag]
             for title in title_list:
-                if re.search(query, title) and get_sentence_class(title) == class_name:
-                    search_res.append({"tag": tag,
-                                       "content": title})
+                if re.search(query, title):
+                    if not class_name_list or get_sentence_class(title) in class_name_list:
+                        search_res.append({"tag": tag,
+                                           "content": title})
         return search_res
 
 

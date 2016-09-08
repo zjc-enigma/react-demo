@@ -364,7 +364,8 @@ class SearchBtn extends Component {
   }
 
   search(text){
-    this.context.searchQuery(text);
+    //this.context.searchQuery(text);
+    this.props.searchQueryByClass(text, this.props.classSelection)
   }
   render() {
     //() => this.context.rename(this.context.text)
@@ -699,15 +700,7 @@ class SearchBar extends Component {
 
   constructor(props, context){
     super(props, context);
-
-    // const wordsWidth = {};
-    // for (var sentenceIndex in this.props.tokened){
-    //   var demoWords = this.props.tokened[sentenceIndex];
-
-    //   for (var index in demoWords){
-    //     wordsWidth[sentenceIndex.toString() + "_" + index.toString()] = demoWords[index].length;
-    //   }
-    // }
+    this.props.getMultiselectOption();
 
   }
 
@@ -777,6 +770,8 @@ class SearchBar extends Component {
         <div key={'searchBtn'}>
         <SearchBtn
       hide={this.props.hideSearchBtn}
+      searchQueryByClass={this.props.searchQueryByClass}
+      classSelection={this.props.classSelection}
       name={"Search"} /></div>)
 
 
@@ -856,15 +851,20 @@ class SearchBar extends Component {
         /></div>
     )
 
-    var testoptions = ["apple", "mango", "grapes", "melon", "strawberry"].map(function(fruit){
-      return {label: fruit, value: fruit}
-    });
+    // var testoptions = ["apple",
+    //                    "mango",
+    //                    "grapes",
+    //                    "melon",
+    //                    "strawberry"].map(function(fruit){
+    //                      return {label: fruit, value: fruit}
+    // });
 
     words.push(
         <div key={'mt'}>
         <MultiSelect
-      options={testoptions}
-      placeholder={"Select fruits"}>
+      options={this.props.classOptions}
+      onValuesChange = {values => this.props.updateClassSelection(values)}
+      placeholder={"请选择投放类目"}>
         </MultiSelect></div>)
 
     return (
@@ -1105,6 +1105,44 @@ function mapDispatchToProps(dispatch) {
         id: id
       });
     },
+
+    searchQueryByClass: function(text, className){
+      if(text){
+        fetch('/query_by_class',
+              {method: "POST",
+               headers:{
+                 'Accept': 'application/json',
+                 'Content-Type': 'application/json'},
+               body: JSON.stringify({key: text, class_name: className})
+              })
+          .then(parseJson)
+          .then(showClick)
+          .catch(function(e){console.log('parsing failed', e)});
+
+        dispatch({type: "SHOW_SEARCH_RES"});
+
+      } else {
+        alert("Please input search text");
+        dispatch({
+          type: "SEARCHRES",
+          data: []
+        });
+      }
+
+      dispatch({
+        type: "MOVE_SEARCH_BTN_TO_TOP",
+      });
+      dispatch({
+        type: "MOVE_SEARCH_TEXT_TO_TOP",
+      });
+      dispatch({
+        type: "MOVE_SEARCH_RES_TO_TOP",
+      });
+      dispatch({
+        type: "SHOW_NEXT_BTN",
+      });
+
+    },
     searchQuery: function(text){
       if(text){
         fetch('/query',
@@ -1171,7 +1209,18 @@ function mapDispatchToProps(dispatch) {
         data: slices
       });
     },
-
+    getMultiselectOption: function(){
+      fetch("/multiselect_options",
+            {method: "GET",
+             headers:{
+               'Accept': 'application/json',
+               'Content-Type': 'application/json'},
+            })
+        .then(parseJson)
+        .then(json => dispatch({type: "UPDATE_MULTISELECT_OPTIONS",
+                                data: json}))
+        .catch(function(e){console.log('parsing failed', e)})
+    },
     updateGenerateSelection: function(selectionItems){
       dispatch({
         type: 'UPDATE_GENERATE_SELECTION',
@@ -1182,6 +1231,12 @@ function mapDispatchToProps(dispatch) {
       dispatch({
         type: 'UPDATE_GENERATE_LIST',
         data: generateList
+      });
+    },
+    updateClassSelection: function(selectionArray){
+      dispatch({
+        type: 'UPDATE_CLASS_SELECTION',
+        data: selectionArray
       });
     },
     updateSelection: function(selectionItems){

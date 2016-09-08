@@ -7,6 +7,13 @@ export default function reducer(state = [], action) {
     return  Object.assign({}, state, {
       tokened:action.data
     })
+
+  case "UPDATE_MULTISELECT_OPTIONS":
+    return {...state, classOptions: action.data}
+
+  case "UPDATE_CLASS_SELECTION":
+    return {...state, classSelection: action.data}
+
   case "INIT":
     return  Object.assign({}, state, {
       stepIndex: action.stepIndex,
