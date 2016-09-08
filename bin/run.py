@@ -21,6 +21,7 @@ sys.path.append('/Users/Patrick/Git/')
 from utils import myutils
 from data import random_select_titles
 from data import search_title
+from data import search_title_by_class
 from data import random_select_ad
 #from pandas import DataFrame
 import gensim
@@ -129,6 +130,15 @@ class Search(Resource):
         return search_title(query.encode('utf8'))
 
 api.add_resource(Search, '/query')
+
+class SearchByClass(Resource):
+
+    def post(self):
+        query = request.json['key']
+        class_name = request.json['class_name']
+        return search_title_by_class(query.encode('utf8'), class_name)
+
+api.add_resource(SearchByClass, '/query_by_class')
 
 
 def nocache(view):

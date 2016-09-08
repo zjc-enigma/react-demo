@@ -4,8 +4,56 @@ import sys
 sys.path.append('..')
 import re
 import random
-
+import jieba
 #titles_path = '../data/toutiao.txt'
+import pandas as pd
+class_dict = '../data/words/class_dict'
+class_df = pd.read_csv(class_dict, sep='\t', header=None)
+class_df.columns = ["class", "word", "attr", "score"]
+
+#s = u'国内7条适合长线旅行的路线，下半年该好好计划啦'
+
+def tokenize_zh_line(zh_line, method='jieba'):
+    """
+    zh_line:
+    Chinese string line
+
+    method:
+    tokenize method , default using jieba
+
+    Returns:
+    token Chinese word list
+    """
+    try:
+        zh_line = zh_line.strip()
+        zh_line = " ".join(re.findall(ur'[\u4e00-\u9fff\w\_]+', zh_line))
+
+        tokenized_list = jieba.cut(zh_line, cut_all=False)
+        res = [ word for word in tokenized_list if word != ' ' ]
+        return res
+
+    except AttributeError, attr:
+        print zh_line
+        return []
+
+
+def get_sentence_class(sentence):
+
+    try:
+        s_tokened = tokenize_zh_line(sentence)
+        s_df = pd.DataFrame(s_tokened)
+        s_df.columns = ["word"]
+        s_df = pd.DataFrame(s_df.word.apply(lambda x: x.encode('utf8')))
+
+        merge_df = pd.merge(s_df, class_df, on='word', how='inner')
+        class_sum_score_df = merge_df.groupby(['class']).sum()
+        max_score_class = class_sum_score_df.sort(['score'], ascending=False).iloc[0].name
+        return max_score_class
+
+    except Exception, e:
+        print "get_sentence_class err", str(e)
+        return "unknown"
+
 
 class TitleTagger(object):
 
@@ -83,11 +131,20 @@ class TitleTagger(object):
 
             if tag not in self.res_dict:
                 self.res_dict[tag] = [title]
-
             else:
                 self.res_dict[tag].append(title)
 
         return self.res_dict
+
+    def search_title_by_query_and_class(self, query, class_name):
+        search_res = []
+        for tag in self.res_dict:
+            title_list = self.res_dict[tag]
+            for title in title_list:
+                if re.search(query, title) and get_sentence_class(title) == class_name:
+                    search_res.append({"tag": tag,
+                                       "content": title})
+        return search_res
 
 
     def search_title_by_query(self, query):
@@ -141,5 +198,6 @@ ad_tag = TitleTagger(titles_path='../data/crawled_ad',
 random_select_titles = title_tag.random_select_titles
 random_select_ad = ad_tag.random_select_titles
 search_title = title_tag.search_title_by_query
+search_title_by_class = title_tag.search_title_by_query_and_class
 #res_dict = all_titles_classify(titles_path, rule_path)
 #random_dict = random_select_titles(res_dict, 10)

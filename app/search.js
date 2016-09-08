@@ -13,8 +13,8 @@ import 'whatwg-fetch';
 import { is } from 'immutable';
 import {EditTable} from 'material-ui-table-edit';
 import Checkbox from 'material-ui/Checkbox';
-
-
+import {MultiSelect} from 'react-selectize';
+import '../node_modules/react-selectize/themes/index.css';
 import {
   Step,
   Stepper,
@@ -259,6 +259,7 @@ class SearchGrid extends Component{
     // }
     var layouts = {lg:wordsLayouts.concat(
       [{i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
+       {i:"mt", x: 0, y: 0, w: 1, h: 0.2, static:true},
        {i:"searchText", x: 4,
         y: this.props.searchTextY,
         w: this.props.searchTextWidth,
@@ -854,7 +855,18 @@ class SearchBar extends Component {
       hide={this.props.hideGenerateRes}
         /></div>
     )
-    
+
+    var testoptions = ["apple", "mango", "grapes", "melon", "strawberry"].map(function(fruit){
+      return {label: fruit, value: fruit}
+    });
+
+    words.push(
+        <div key={'mt'}>
+        <MultiSelect
+      options={testoptions}
+      placeholder={"Select fruits"}>
+        </MultiSelect></div>)
+
     return (
         <MuiThemeProvider>
         <SearchGrid
