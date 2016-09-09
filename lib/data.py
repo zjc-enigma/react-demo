@@ -179,14 +179,17 @@ class TitleTagger(object):
 
     def search_title_by_query_and_class(self, query, class_name_list):
         search_res = []
-        print "query:", query
+        print "query :", query
+        print "query repr:", repr(query)
         print "class_name_list:", str(class_name_list)
 
         for tag in self.res_dict:
             title_list = self.res_dict[tag]
+
             for title in title_list:
-                class_name = get_sentence_class(title)
+                #print "get class_name is :", class_name
                 if re.search(query, title):
+                    class_name = get_sentence_class(title)
                     if not class_name_list or class_name in class_name_list:
                         search_res.append({"tag": tag,
                                            "content": title,

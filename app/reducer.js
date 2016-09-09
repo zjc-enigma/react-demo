@@ -3,10 +3,7 @@ export default function reducer(state = [], action) {
   switch(action.type){
 
   case "TOKEN_SELECTED_SENTENCE":
-
-    return  Object.assign({}, state, {
-      tokened:action.data
-    })
+    return {...state, tokened: action.data}
 
   case "UPDATE_MULTISELECT_OPTIONS":
     return {...state, classOptions: action.data}
@@ -30,10 +27,12 @@ export default function reducer(state = [], action) {
       finished: action.finished
     })
   case 'GET_SIM_WORDS':
+    var count = state.updateSim
+    if (!count) { count = 0;}
+    else {count += 1;}
     var ret = {}
-       ret['simWords_' + action.id.toString()] = action.data;
-       return Object.assign({}, state, ret)
-    return state;
+    ret['simWords_' + action.id.toString()] = action.data;
+    return Object.assign({}, state, ret, {updateSimCount: count})
 
   case 'MULTISELECT':
     var ret = {}
@@ -170,7 +169,13 @@ export default function reducer(state = [], action) {
       return {...state, searchTextY: 0.5}
 
   case 'MOVE_SEARCH_RES_TO_TOP':
-      return {...state, searchResTableY: 1}
+    return {...state, searchResTableY: 1}
+
+  case 'UPDATE_WORDS':
+    return   {...state, wordsArray: action.data}
+
+  case 'UPDATE_WORDS_LAYOUTS':
+    return   {...state, wordsLayouts: action.data}
 
   case 'UPDATE_RES_SELECTION':
     return   {...state, resTableSelection: action.data}

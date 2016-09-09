@@ -24,6 +24,7 @@ from data import search_title
 from data import search_title_by_class
 from data import random_select_ad
 from data import label2value, value2label
+import jieba.posseg as pseg
 
 #from pandas import DataFrame
 import gensim
@@ -61,6 +62,7 @@ class SimWords(Resource):
         except Exception, e:
             print e
 
+        print "sim words:", str(sim_words)
         return sim_words
 
 api.add_resource(SimWords, '/simwords')
@@ -101,6 +103,11 @@ class Download(Resource):
 
 api.add_resource(Download, '/download')
 
+
+# 
+# 
+# for word, flag in words:
+
 class TokenSentence(Resource):
 
     def post(self):
@@ -108,7 +115,12 @@ class TokenSentence(Resource):
         sentence_list = request.json['sentences']
         print str(sentence_list)
         for sentence in sentence_list:
-            tokened = myutils.tokenize_zh_line(sentence.decode('utf8'))
+            tokened = []
+            #tokened = myutils.tokenize_zh_line(sentence.decode('utf8'))
+            words = pseg.cut(sentence.decode('utf8'))
+            for word, flag in words:
+                tokened.append({"word": word,
+                                "flag": flag})
             print sentence
             print type(sentence)
             print str(tokened)
@@ -141,9 +153,12 @@ class SearchByClass(Resource):
             selectionArray = request.json['class_name']
         except Exception, e:
             selectionArray = []
-            
+
         class_name_list = []
+        print "selectionArray", str(selectionArray)
+
         for item in selectionArray:
+            print "item:", str(item), type(item)
             class_name_list.append(item['value'])
 
         return search_title_by_class(query.encode('utf8'), class_name_list)
@@ -176,6 +191,8 @@ def nocache(view):
     return update_wrapper(no_cache, view)
 
 
+
+#@app.route("/getchar")
 @app.route("/")
 @nocache
 def index():
