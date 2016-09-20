@@ -1,54 +1,56 @@
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
+
+import { browserHistory, Router, Route } from 'react-router'
+import * as reducers from './reducers'
+import routes from './routes';
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import { createDevTools } from 'redux-devtools'
+import LogMonitor from 'redux-devtools-log-monitor'
+import DockMonitor from 'redux-devtools-dock-monitor'
+
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import ReactDOM from 'react-dom';
 import React  from 'react';
-import SearchBar from './search';
+//import SearchBar from './search';
 import { Provider } from 'react-redux';
-//import { createStore, combineReducers } from 'redux';
-import reducer from './reducer';
+import { createStore, combineReducers } from 'redux';
 import Writer from './writer';
-import {
-  combineReducers
-} from 'redux-immutable';
+import HorizontalLinearStepper from './components/HorizontalLinearStepper';
 
-import {
-  createStore
-} from 'redux';
-import Immutable from 'immutable';
+const DevTools = createDevTools(
+    <DockMonitor toggleVisibilityKey="ctrl-h" changePositionKey="ctrl-q">
+    <LogMonitor theme="tomorrow" preserveScrollTop={false} />
+    </DockMonitor>
+)
+const rootReducer = combineReducers({
+  ...reducers,
+  routing: routerReducer
+});
 
-//import HorizontalLinearStepper from './search';
-//import TButton from './writer';
-//import { Router, Route, hashHistory, browserHistory } from 'react-router';
-//import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
-const initialState = Immutable.Map();
-//const rootReducer = combineReducers(reducer);
-const store = createStore(reducer, initialState);
-
-//var store = createStore(reducer);
-// const store = createStore(
-//   combineReducers({
-//     ...reducer,
-//     routing: routerReducer
-//   })
-// )
-//const history = syncHistoryWithStore(browserHistory, store)
-//Route path="/writer" component={Writer} > </Route>
+const store = createStore(rootReducer,
+                          DevTools.instrument());
+const history = syncHistoryWithStore(browserHistory, store)
 
 ReactDOM.render(
     <Provider store={store}>
-    <MuiThemeProvider>
-    <SearchBar />
-    </MuiThemeProvider>
+    <div>
+    <HorizontalLinearStepper />
+    <Router history={history} routes={routes} />
+    <DevTools />
+    </div>
     </Provider>,
   document.getElementById('demo1'));
-store.dispatch({type: "SHOW_SEARCHBAR" });
-store.dispatch({type:"INIT", finished: false, stepIndex: 0});
-//store.dispatch({type:"HIDE_SEARCHBAR"});
-store.dispatch({type:"HIDE_WRITER"});
-store.dispatch({type:"HIDE_PREV_BTN"});
-store.dispatch({type: "HIDE_GENERATE_TABLE" });
-store.dispatch({type: "HIDE_SEARCH_RES" });
-store.dispatch({type: "HIDE_NEXT_BTN" });
+
+
+// store.dispatch({type: "SHOW_SEARCHBAR" });
+// store.dispatch({type:"INIT", finished: false, stepIndex: 0});
+// //store.dispatch({type:"HIDE_SEARCHBAR"});
+// store.dispatch({type:"HIDE_WRITER"});
+// store.dispatch({type:"HIDE_PREV_BTN"});
+// store.dispatch({type: "HIDE_GENERATE_TABLE" });
+// store.dispatch({type: "HIDE_SEARCH_RES" });
+// store.dispatch({type: "HIDE_NEXT_BTN" });
 

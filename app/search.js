@@ -15,11 +15,7 @@ import {EditTable} from 'material-ui-table-edit';
 import Checkbox from 'material-ui/Checkbox';
 import {MultiSelect} from 'react-selectize';
 import '../node_modules/react-selectize/themes/index.css';
-import {
-  Step,
-  Stepper,
-  StepLabel,
-} from 'material-ui/Stepper';
+import { Step, Stepper, StepLabel} from 'material-ui/Stepper';
 
 import FlatButton from 'material-ui/FlatButton';
 /**

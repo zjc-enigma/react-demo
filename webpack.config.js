@@ -23,7 +23,8 @@ module.exports = {
         test: /\.js?$/,
         loader: 'babel-loader',
         query: {
-          presets: ['es2015', 'react', 'stage-2']
+          presets: ['es2015', 'react', 'stage-0'],
+          plugins: ['transform-runtime', 'transform-decorators-legacy']
         },
         exclude: /node_modules/
       },
