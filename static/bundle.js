@@ -12451,15 +12451,20 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.reducer = undefined;
+	exports.writer = exports.reducer = undefined;
 
 	var _reducer2 = __webpack_require__(131);
 
 	var _reducer3 = _interopRequireDefault(_reducer2);
 
+	var _writer2 = __webpack_require__(789);
+
+	var _writer3 = _interopRequireDefault(_writer2);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.reducer = _reducer3.default;
+	exports.writer = _writer3.default;
 
 /***/ },
 /* 131 */
@@ -12729,6 +12734,10 @@
 
 	var _Selection2 = _interopRequireDefault(_Selection);
 
+	var _Writer = __webpack_require__(788);
+
+	var _Writer2 = _interopRequireDefault(_Writer);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var TestBtn = function TestBtn() {
@@ -12743,7 +12752,8 @@
 	    _reactRouter.Route,
 	    null,
 	    _react2.default.createElement(_reactRouter.Route, { name: 'index', path: '/', component: _Search2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { name: 'selection', path: '/selection', component: _Selection2.default })
+	    _react2.default.createElement(_reactRouter.Route, { name: 'selection', path: '/selection', component: _Selection2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { name: 'writer', path: '/writer', component: _Writer2.default })
 	);
 
 	exports.default = routes;
@@ -69463,6 +69473,16 @@
 	            'div',
 	            { key: 'selectionTable' },
 	            _react2.default.createElement(SelectionTable, null)
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { key: 'nextBtn' },
+	            _react2.default.createElement(NextBtn, { label: 'Next step' })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { key: 'prevBtn' },
+	            _react2.default.createElement(NextBtn, { label: 'Prev step' })
 	          )
 	        )
 	      );
@@ -69471,8 +69491,48 @@
 	  return Selection;
 	}(_react.Component);
 
-	var SelectionGridLayout = function (_Component2) {
-	  (0, _inherits3.default)(SelectionGridLayout, _Component2);
+	var NextBtn = function (_Component2) {
+	  (0, _inherits3.default)(NextBtn, _Component2);
+
+	  function NextBtn(props, context) {
+	    (0, _classCallCheck3.default)(this, NextBtn);
+	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(NextBtn).call(this, props, context));
+	  }
+
+	  (0, _createClass3.default)(NextBtn, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(_RaisedButton2.default, {
+	        fullWidth: true,
+	        label: this.props.label,
+	        onClick: function onClick() {} });
+	    }
+	  }]);
+	  return NextBtn;
+	}(_react.Component);
+
+	var PrevBtn = function (_Component3) {
+	  (0, _inherits3.default)(PrevBtn, _Component3);
+
+	  function PrevBtn(props, context) {
+	    (0, _classCallCheck3.default)(this, PrevBtn);
+	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(PrevBtn).call(this, props, context));
+	  }
+
+	  (0, _createClass3.default)(PrevBtn, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(_RaisedButton2.default, {
+	        fullWidth: true,
+	        label: this.props.label,
+	        onClick: function onClick() {} });
+	    }
+	  }]);
+	  return PrevBtn;
+	}(_react.Component);
+
+	var SelectionGridLayout = function (_Component4) {
+	  (0, _inherits3.default)(SelectionGridLayout, _Component4);
 
 	  function SelectionGridLayout(props, context) {
 	    (0, _classCallCheck3.default)(this, SelectionGridLayout);
@@ -69484,7 +69544,7 @@
 	    value: function render() {
 
 	      var layouts = {
-	        lg: [{ i: "selectionTable", x: 2.5, y: 0.5, w: 6, h: 0.2, static: true }]
+	        lg: [{ i: "selectionTable", x: 2.5, y: 0.5, w: 6, h: 0.2, static: true }, { i: "nextBtn", x: 6, y: 0.2, w: 1, h: 0.2, static: true }, { i: "prevBtn", x: 5, y: 0.2, w: 1, h: 0.2, static: true }]
 	      };
 
 	      return _react2.default.createElement(
@@ -69500,8 +69560,8 @@
 	  return SelectionGridLayout;
 	}(_react.Component);
 
-	var SelectionTable = function (_Component3) {
-	  (0, _inherits3.default)(SelectionTable, _Component3);
+	var SelectionTable = function (_Component5) {
+	  (0, _inherits3.default)(SelectionTable, _Component5);
 
 	  function SelectionTable(props, context) {
 	    (0, _classCallCheck3.default)(this, SelectionTable);
@@ -69535,9 +69595,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this4 = this;
-
-	      //{rows}
+	      var _this6 = this;
 
 	      return _react2.default.createElement(
 	        _MuiThemeProvider2.default,
@@ -69548,7 +69606,7 @@
 	            selectable: true,
 	            multiSelectable: true,
 	            onRowSelection: function onRowSelection(slices) {
-	              return _this4.handleRowSelected(slices);
+	              return _this6.handleRowSelected(slices);
 	            } },
 	          _react2.default.createElement(
 	            _Table.TableHeader,
@@ -69587,6 +69645,457 @@
 	}(_react.Component);
 
 	exports.default = Selection;
+
+/***/ },
+/* 788 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _slicedToArray2 = __webpack_require__(790);
+
+	var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
+	var _getIterator2 = __webpack_require__(628);
+
+	var _getIterator3 = _interopRequireDefault(_getIterator2);
+
+	var _getPrototypeOf = __webpack_require__(656);
+
+	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+	var _classCallCheck2 = __webpack_require__(569);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(663);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(570);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(605);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _stringify = __webpack_require__(683);
+
+	var _stringify2 = _interopRequireDefault(_stringify);
+
+	var _dec, _class, _class2, _temp, _class3, _temp2, _class4, _temp3, _class5, _temp4;
+
+	var _MuiThemeProvider = __webpack_require__(133);
+
+	var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
+
+	var _Stepper = __webpack_require__(741);
+
+	var _reactRedux = __webpack_require__(289);
+
+	var _react = __webpack_require__(46);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _HorizontalLinearStepper = __webpack_require__(740);
+
+	var _HorizontalLinearStepper2 = _interopRequireDefault(_HorizontalLinearStepper);
+
+	var _RaisedButton = __webpack_require__(305);
+
+	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+
+	var _TextField = __webpack_require__(725);
+
+	var _TextField2 = _interopRequireDefault(_TextField);
+
+	var _reactGridLayout = __webpack_require__(685);
+
+	var _Table = __webpack_require__(698);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ResponsiveReactGridLayout = (0, _reactGridLayout.WidthProvider)(_reactGridLayout.Responsive);
+
+
+	// Object.prototype.isEmpty = function() {
+	//   for (var prop in this) if (this.hasOwnProperty(prop)) return false;
+	//   return true;
+	// };
+
+	var select = function select(state) {
+	  return state.writer;
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  var parseJson = function parseJson(response) {
+	    return response.json();
+	  };
+
+	  // let fetchToken = sentence => {
+	  //   fetch('/token',
+	  //         {method: "POST",
+	  //          headers:{
+	  //            'Accept': 'application/json',
+	  //            'Content-Type': 'application/json'},
+	  //          body: JSON.stringify({sentences: sentence})
+	  //         })
+	  //     .then(parseJson)
+	  //     .then(json => handleToken(json))
+	  //     .catch(function(e){console.log('parsing failed', e)})
+
+	  // }
+
+	  var handleToken = function handleToken(json) {
+
+	    dispatch({
+	      type: "TOKENED_SENTENCES",
+	      data: json
+	    });
+	  };
+
+	  return {
+	    updateLayouts: function updateLayouts(layouts) {
+	      dispatch({
+	        type: "UPDATE_LAYOUTS",
+	        data: layouts
+	      });
+	    },
+	    getSentencesTokened: function getSentencesTokened(sentenceArray) {
+	      fetch('/token', { method: "POST",
+	        headers: {
+	          'Accept': 'application/json',
+	          'Content-Type': 'application/json' },
+	        body: (0, _stringify2.default)({ sentences: sentenceArray })
+	      }).then(parseJson).then(function (json) {
+	        return handleToken(json);
+	      }).catch(function (e) {
+	        console.log('parsing failed', e);
+	      });
+	    }
+	  };
+	};
+
+	var Writer = (_dec = (0, _reactRedux.connect)(select, mapDispatchToProps), _dec(_class = (_temp = _class2 = function (_Component) {
+	  (0, _inherits3.default)(Writer, _Component);
+
+	  function Writer(props, context) {
+	    (0, _classCallCheck3.default)(this, Writer);
+	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Writer).call(this, props, context));
+	  }
+
+	  (0, _createClass3.default)(Writer, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var s = ['农夫山泉是一家著名的饮料公司'];
+	      this.props.getSentencesTokened(s);
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+
+	      var tokened = nextProps.tokened;
+	      //console.log('tokened', tokened)
+
+	      if (this.props.layouts === undefined) {
+
+	        var wordsLayout = [];
+
+	        var posY = 3;
+	        var _iteratorNormalCompletion = true;
+	        var _didIteratorError = false;
+	        var _iteratorError = undefined;
+
+	        try {
+	          for (var _iterator = (0, _getIterator3.default)(tokened.entries()), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	            var _step$value = (0, _slicedToArray3.default)(_step.value, 2);
+
+	            var i = _step$value[0];
+	            var sentence = _step$value[1];
+
+	            var posX = 0;
+
+	            var _iteratorNormalCompletion2 = true;
+	            var _didIteratorError2 = false;
+	            var _iteratorError2 = undefined;
+
+	            try {
+	              for (var _iterator2 = (0, _getIterator3.default)(sentence.entries()), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	                var _step2$value = (0, _slicedToArray3.default)(_step2.value, 2);
+
+	                var j = _step2$value[0];
+	                var item = _step2$value[1];
+
+
+	                console.log('word', item.word.length);
+	                wordsLayout.push({
+	                  i: "word_" + i + "_" + j,
+	                  x: posX,
+	                  y: posY,
+	                  w: 1,
+	                  static: true
+	                });
+	                posX += item.word.length;
+	              }
+	            } catch (err) {
+	              _didIteratorError2 = true;
+	              _iteratorError2 = err;
+	            } finally {
+	              try {
+	                if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	                  _iterator2.return();
+	                }
+	              } finally {
+	                if (_didIteratorError2) {
+	                  throw _iteratorError2;
+	                }
+	              }
+	            }
+
+	            posY += 0.2;
+	          }
+	        } catch (err) {
+	          _didIteratorError = true;
+	          _iteratorError = err;
+	        } finally {
+	          try {
+	            if (!_iteratorNormalCompletion && _iterator.return) {
+	              _iterator.return();
+	            }
+	          } finally {
+	            if (_didIteratorError) {
+	              throw _iteratorError;
+	            }
+	          }
+	        }
+
+	        var layouts = { lg: wordsLayout.concat([{ i: "nextBtn", x: 6, y: 0.2, w: 1, h: 0.2, static: true }, { i: "prevBtn", x: 5, y: 0.2, w: 1, h: 0.2, static: true }]) };
+	        this.props.updateLayouts(layouts);
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+
+	      return _react2.default.createElement(
+	        _MuiThemeProvider2.default,
+	        null,
+	        _react2.default.createElement(
+	          WriterGridLayout,
+	          { layouts: this.props.layouts },
+	          _react2.default.createElement(
+	            'div',
+	            { key: 'nextBtn' },
+	            ' ',
+	            _react2.default.createElement(NextBtn, null),
+	            ' '
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { key: 'prevBtn' },
+	            ' ',
+	            _react2.default.createElement(PrevBtn, null),
+	            ' '
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	  return Writer;
+	}(_react.Component), _class2.defaultProps = {}, _temp)) || _class);
+	var NextBtn = (_temp2 = _class3 = function (_Component2) {
+	  (0, _inherits3.default)(NextBtn, _Component2);
+
+	  function NextBtn(props, context) {
+	    (0, _classCallCheck3.default)(this, NextBtn);
+	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(NextBtn).call(this, props, context));
+	  }
+
+	  (0, _createClass3.default)(NextBtn, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(_RaisedButton2.default, {
+	        fullWidth: true,
+	        label: this.props.label,
+	        onClick: function onClick() {} });
+	    }
+	  }]);
+	  return NextBtn;
+	}(_react.Component), _class3.defaultProps = {
+	  label: "Next step"
+	}, _temp2);
+	var PrevBtn = (_temp3 = _class4 = function (_Component3) {
+	  (0, _inherits3.default)(PrevBtn, _Component3);
+
+	  function PrevBtn(props, context) {
+	    (0, _classCallCheck3.default)(this, PrevBtn);
+	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(PrevBtn).call(this, props, context));
+	  }
+
+	  (0, _createClass3.default)(PrevBtn, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(_RaisedButton2.default, {
+	        fullWidth: true,
+	        label: this.props.label,
+	        onClick: function onClick() {} });
+	    }
+	  }]);
+	  return PrevBtn;
+	}(_react.Component), _class4.defaultProps = {
+	  label: "Prev step"
+	}, _temp3);
+	var WriterGridLayout = (_temp4 = _class5 = function (_Component4) {
+	  (0, _inherits3.default)(WriterGridLayout, _Component4);
+
+	  function WriterGridLayout(props, context) {
+	    (0, _classCallCheck3.default)(this, WriterGridLayout);
+	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(WriterGridLayout).call(this, props, context));
+	  }
+
+	  (0, _createClass3.default)(WriterGridLayout, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {}
+	  }, {
+	    key: 'render',
+	    value: function render() {
+
+	      return _react2.default.createElement(
+	        ResponsiveReactGridLayout,
+	        {
+	          layouts: this.props.layouts,
+	          breakpoints: { lg: 800, md: 600, sm: 500, xs: 480, xxs: 0 },
+	          cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 } },
+	        this.props.children
+	      );
+	    }
+	  }]);
+	  return WriterGridLayout;
+	}(_react.Component), _class5.defaultProps = {}, _temp4);
+	exports.default = Writer;
+
+/***/ },
+/* 789 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends2 = __webpack_require__(3);
+
+	var _extends3 = _interopRequireDefault(_extends2);
+
+	exports.default = function () {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+	  var action = arguments[1];
+
+	  switch (action.type) {
+
+	    case "TOKENED_SENTENCES":
+	      return (0, _extends3.default)({}, state, { tokened: action.data });
+
+	    case "UPDATE_LAYOUTS":
+	      return (0, _extends3.default)({}, state, { layouts: action.data });
+
+	    default:
+	      return state;
+
+	  }
+	};
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 790 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _isIterable2 = __webpack_require__(791);
+
+	var _isIterable3 = _interopRequireDefault(_isIterable2);
+
+	var _getIterator2 = __webpack_require__(628);
+
+	var _getIterator3 = _interopRequireDefault(_getIterator2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function () {
+	  function sliceIterator(arr, i) {
+	    var _arr = [];
+	    var _n = true;
+	    var _d = false;
+	    var _e = undefined;
+
+	    try {
+	      for (var _i = (0, _getIterator3.default)(arr), _s; !(_n = (_s = _i.next()).done); _n = true) {
+	        _arr.push(_s.value);
+
+	        if (i && _arr.length === i) break;
+	      }
+	    } catch (err) {
+	      _d = true;
+	      _e = err;
+	    } finally {
+	      try {
+	        if (!_n && _i["return"]) _i["return"]();
+	      } finally {
+	        if (_d) throw _e;
+	      }
+	    }
+
+	    return _arr;
+	  }
+
+	  return function (arr, i) {
+	    if (Array.isArray(arr)) {
+	      return arr;
+	    } else if ((0, _isIterable3.default)(Object(arr))) {
+	      return sliceIterator(arr, i);
+	    } else {
+	      throw new TypeError("Invalid attempt to destructure non-iterable instance");
+	    }
+	  };
+	}();
+
+/***/ },
+/* 791 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(792), __esModule: true };
+
+/***/ },
+/* 792 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(590);
+	__webpack_require__(574);
+	module.exports = __webpack_require__(793);
+
+/***/ },
+/* 793 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var classof   = __webpack_require__(632)
+	  , ITERATOR  = __webpack_require__(587)('iterator')
+	  , Iterators = __webpack_require__(584);
+	module.exports = __webpack_require__(9).isIterable = function(it){
+	  var O = Object(it);
+	  return O[ITERATOR] !== undefined
+	    || '@@iterator' in O
+	    || Iterators.hasOwnProperty(classof(O));
+	};
 
 /***/ }
 /******/ ]);

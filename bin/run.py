@@ -194,6 +194,7 @@ def nocache(view):
 
 
 @app.route("/selection")
+@app.route("/writer")
 @app.route("/")
 @nocache
 def index():

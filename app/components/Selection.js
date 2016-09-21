@@ -25,12 +25,51 @@ class Selection extends Component {
         <div key={'selectionTable'}>
         <SelectionTable />
         </div>
+        <div key={'nextBtn'}>
+        <NextBtn label="Next step"/>
+        </div>
+        <div key={'prevBtn'}>
+        <NextBtn label="Prev step"/>
+        </div>
         </SelectionGridLayout>
         </MuiThemeProvider>
     )
 
   }
 }
+
+class NextBtn extends Component {
+  constructor(props, context){
+    super(props, context);
+  }
+
+  render() {
+    return(
+        <RaisedButton
+      fullWidth={true}
+      label={this.props.label}
+      onClick={() => {}} />
+    )
+  }
+}
+
+
+class PrevBtn extends Component {
+  constructor(props, context){
+    super(props, context);
+  }
+
+  render() {
+    return(
+        <RaisedButton
+      fullWidth={true}
+      label={this.props.label}
+      onClick={() => {}} />
+    )
+  }
+}
+
+
 
 
 class SelectionGridLayout extends Component {
@@ -41,7 +80,10 @@ class SelectionGridLayout extends Component {
   render() {
 
     let layouts = {
-      lg:[{i:"selectionTable", x: 2.5, y: 0.5, w: 6, h: 0.2, static:true}, ]
+      lg:[{i:"selectionTable", x: 2.5, y: 0.5, w: 6, h: 0.2, static:true},
+          {i:"nextBtn", x: 6, y: 0.2, w: 1, h: 0.2, static:true},
+          {i:"prevBtn", x: 5, y: 0.2, w: 1, h: 0.2, static:true}, 
+         ]
     }
 
     return(
@@ -83,7 +125,6 @@ class SelectionTable extends Component {
   }
 
   render() {
-    //{rows}
 
     return (
         <MuiThemeProvider>

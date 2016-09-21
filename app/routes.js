@@ -6,6 +6,7 @@ import { Component } from 'react'
 import RaisedButton from 'material-ui/RaisedButton'
 import Search from './components/Search'
 import SelectionTable from './components/Selection'
+import Writer from './components/Writer'
 
 const TestBtn = () => {
   return (
@@ -19,6 +20,7 @@ const routes = (
     <Route>
     <Route name='index' path='/' component={Search} />
     <Route name='selection' path='/selection' component={SelectionTable} />
+    <Route name='writer' path='/writer' component={Writer} />
     </Route>)
 
 export default routes
