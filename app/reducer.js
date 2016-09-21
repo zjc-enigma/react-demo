@@ -149,7 +149,7 @@ export default function reducer(state = [], action) {
   case 'SHOW_NEXT_BTN':
     return {...state, nextBtnWidth: 1, nextBtnHeight: 0.2, hideNextBtn: false}
 
-   
+
   case 'MOVE_NEXT_BTN_TO_MIDDLE':
     return {...state, nextBtnX: 7}
 
@@ -176,6 +176,13 @@ export default function reducer(state = [], action) {
 
   case 'RESIZE_WORDS':
     return   {...state, wordsComponentWidth: action.data}
+
+  case 'GET_CHAR_CONTENT':
+    console.log('get_char_content', action.data)
+    return   {...state, charContent: action.data}
+
+  case 'UPDATE_SENTENCE_TABLE':
+    return   {...state, sentenceTableRows: action.data}
 
   case 'SEARCHRES':
     return   Object.assign({}, state, {
