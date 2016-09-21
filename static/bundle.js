@@ -12725,6 +12725,10 @@
 
 	var _Search2 = _interopRequireDefault(_Search);
 
+	var _Selection = __webpack_require__(787);
+
+	var _Selection2 = _interopRequireDefault(_Selection);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var TestBtn = function TestBtn() {
@@ -12738,7 +12742,8 @@
 	var routes = _react2.default.createElement(
 	    _reactRouter.Route,
 	    null,
-	    _react2.default.createElement(_reactRouter.Route, { path: '/', component: _Search2.default })
+	    _react2.default.createElement(_reactRouter.Route, { name: 'index', path: '/', component: _Search2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { name: 'selection', path: '/selection', component: _Selection2.default })
 	);
 
 	exports.default = routes;
@@ -63037,6 +63042,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var ResponsiveReactGridLayout = (0, _reactGridLayout.WidthProvider)(_reactGridLayout.Responsive);
+	//import { browserHistory, Router, Route } from 'react-router'
 
 	var Search = function (_Component) {
 	  (0, _inherits3.default)(Search, _Component);
@@ -63049,6 +63055,9 @@
 	  (0, _createClass3.default)(Search, [{
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+
+	      console.log("this.props", this.props);
 	      return _react2.default.createElement(
 	        _MuiThemeProvider2.default,
 	        null,
@@ -63066,7 +63075,11 @@
 	            'div',
 	            { key: 'searchBtn' },
 	            _react2.default.createElement(SearchBtn, {
-	              label: "Search" })
+	              label: "Search",
+	              onClick: function onClick() {
+	                return _this2.props.history.push('/selection');
+	              }
+	            })
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -63166,13 +63179,13 @@
 	  (0, _createClass3.default)(SearchBtn, [{
 	    key: 'render',
 	    value: function render() {
-	      var _this6 = this;
+	      var _this7 = this;
 
 	      return _react2.default.createElement(_RaisedButton2.default, {
 	        fullWidth: true,
 	        label: this.props.label,
 	        onClick: function onClick() {
-	          return _this6.search(_this6.context.text);
+	          return _this7.props.onClick();
 	        } });
 	    }
 	  }]);
@@ -69366,6 +69379,214 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
+
+/***/ },
+/* 787 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _getPrototypeOf = __webpack_require__(656);
+
+	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+	var _classCallCheck2 = __webpack_require__(569);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(663);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(570);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(605);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _MuiThemeProvider = __webpack_require__(133);
+
+	var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
+
+	var _Stepper = __webpack_require__(741);
+
+	var _reactRedux = __webpack_require__(289);
+
+	var _react = __webpack_require__(46);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _HorizontalLinearStepper = __webpack_require__(740);
+
+	var _HorizontalLinearStepper2 = _interopRequireDefault(_HorizontalLinearStepper);
+
+	var _RaisedButton = __webpack_require__(305);
+
+	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+
+	var _TextField = __webpack_require__(725);
+
+	var _TextField2 = _interopRequireDefault(_TextField);
+
+	var _reactGridLayout = __webpack_require__(685);
+
+	var _Table = __webpack_require__(698);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ResponsiveReactGridLayout = (0, _reactGridLayout.WidthProvider)(_reactGridLayout.Responsive);
+
+	var Selection = function (_Component) {
+	  (0, _inherits3.default)(Selection, _Component);
+
+	  function Selection(props, context) {
+	    (0, _classCallCheck3.default)(this, Selection);
+	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Selection).call(this, props, context));
+	  }
+
+	  (0, _createClass3.default)(Selection, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        _MuiThemeProvider2.default,
+	        null,
+	        _react2.default.createElement(
+	          SelectionGridLayout,
+	          null,
+	          _react2.default.createElement(
+	            'div',
+	            { key: 'selectionTable' },
+	            _react2.default.createElement(SelectionTable, null)
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	  return Selection;
+	}(_react.Component);
+
+	var SelectionGridLayout = function (_Component2) {
+	  (0, _inherits3.default)(SelectionGridLayout, _Component2);
+
+	  function SelectionGridLayout(props, context) {
+	    (0, _classCallCheck3.default)(this, SelectionGridLayout);
+	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(SelectionGridLayout).call(this, props, context));
+	  }
+
+	  (0, _createClass3.default)(SelectionGridLayout, [{
+	    key: 'render',
+	    value: function render() {
+
+	      var layouts = {
+	        lg: [{ i: "selectionTable", x: 2.5, y: 0.5, w: 6, h: 0.2, static: true }]
+	      };
+
+	      return _react2.default.createElement(
+	        ResponsiveReactGridLayout,
+	        {
+	          layouts: layouts,
+	          breakpoints: { lg: 800, md: 600, sm: 500, xs: 480, xxs: 0 },
+	          cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 } },
+	        this.props.children
+	      );
+	    }
+	  }]);
+	  return SelectionGridLayout;
+	}(_react.Component);
+
+	var SelectionTable = function (_Component3) {
+	  (0, _inherits3.default)(SelectionTable, _Component3);
+
+	  function SelectionTable(props, context) {
+	    (0, _classCallCheck3.default)(this, SelectionTable);
+	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(SelectionTable).call(this, props, context));
+	  }
+
+	  (0, _createClass3.default)(SelectionTable, [{
+	    key: 'shouldComponentUpdate',
+	    value: function shouldComponentUpdate() {
+
+	      // var rows = [];
+
+	      // for (var sentenceIndex in generateRes){
+	      //   var res = generateRes[sentenceIndex];
+	      //   for (var index in res){
+
+	      //     rows.push(
+	      //         <TableRow>
+	      //         <TableRowColumn>
+	      //         <TextField
+	      //       value={res[index]}
+	      //       fullWidth={true}/>
+	      //         </TableRowColumn>
+	      //         </TableRow>)
+	      //   }
+	      // }
+
+	      var nextProps = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	      var nextState = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this4 = this;
+
+	      //{rows}
+
+	      return _react2.default.createElement(
+	        _MuiThemeProvider2.default,
+	        null,
+	        _react2.default.createElement(
+	          _Table.Table,
+	          {
+	            selectable: true,
+	            multiSelectable: true,
+	            onRowSelection: function onRowSelection(slices) {
+	              return _this4.handleRowSelected(slices);
+	            } },
+	          _react2.default.createElement(
+	            _Table.TableHeader,
+	            null,
+	            _react2.default.createElement(
+	              _Table.TableRow,
+	              null,
+	              _react2.default.createElement(
+	                _Table.TableHeaderColumn,
+	                null,
+	                '类别'
+	              ),
+	              _react2.default.createElement(
+	                _Table.TableHeaderColumn,
+	                null,
+	                '来源'
+	              ),
+	              _react2.default.createElement(
+	                _Table.TableHeaderColumn,
+	                null,
+	                '类目'
+	              ),
+	              _react2.default.createElement(
+	                _Table.TableHeaderColumn,
+	                { style: { width: '60%' } },
+	                '内容'
+	              )
+	            )
+	          ),
+	          _react2.default.createElement(_Table.TableBody, null)
+	        )
+	      );
+	    }
+	  }]);
+	  return SelectionTable;
+	}(_react.Component);
+
+	exports.default = Selection;
 
 /***/ }
 /******/ ]);

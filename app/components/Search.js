@@ -7,6 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import {Responsive, WidthProvider} from 'react-grid-layout';
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
+//import { browserHistory, Router, Route } from 'react-router'
 import {MultiSelect} from 'react-selectize'
 import '../../node_modules/react-selectize/themes/index.css';
 
@@ -17,6 +18,7 @@ class Search extends Component {
   }
 
   render() {
+    console.log("this.props", this.props)
     return (
         <MuiThemeProvider>
         <SearchGridLayout>
@@ -28,8 +30,9 @@ class Search extends Component {
 
         <div key={'searchBtn'}>
         <SearchBtn
-      label={"Search"} /></div>
-
+      label={"Search"}
+      onClick={() => this.props.history.push('/selection')}
+        /></div>
         <div key={'categorySelection'}>
         <CategorySelection />
         </div>
@@ -122,7 +125,7 @@ class SearchBtn extends Component {
           <RaisedButton
         fullWidth={true}
         label={this.props.label}
-        onClick={() => this.search(this.context.text)} />
+        onClick={() => this.props.onClick()} />
       )
   }
 }
