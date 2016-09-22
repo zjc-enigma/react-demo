@@ -50,7 +50,13 @@ const mapDispatchToProps = (dispatch) => {
         type: "UPDATE_LAYOUTS",
         data: layouts
       })
-
+    },
+    updateWordEditors: editors => {
+      //console.log('editors', editors)
+      dispatch({
+        type: "UPDATE_EDITORS",
+        data: editors
+      })
     },
     getSentencesTokened: sentenceArray => {
       fetch('/token',
@@ -67,27 +73,59 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
+class WordEditor extends Component {
+
+  constructor(props, context){
+    super(props, context);
+  }
+
+  render() {
+    return (
+        <MultiSelect
+      options={this.props.options}
+      onValuesChange = {() => {}}
+      placeholder={this.props.default}>
+        </MultiSelect>
+    )
+  }
+}
+
+
+
+
 @connect(select, mapDispatchToProps)
 class Writer extends Component {
   constructor(props, context){
     super(props, context);
   }
   componentDidMount() {
-    let s = ['农夫山泉是一家著名的饮料公司',]
+    //let s = ['农夫山泉是一家著名的饮料公司',]
+    let s = ['农夫山泉公司',]
     this.props.getSentencesTokened(s)
   }
   static defaultProps = {
-
+    
   }
-
   componentWillReceiveProps(nextProps){
 
-    let tokened = nextProps.tokened
-    //console.log('tokened', tokened)
+    // let tokened = nextProps.tokened
+    // //console.log('tokened', tokened)
 
-    if(this.props.layouts === undefined) {
+    // if(this.props.layouts === undefined && nextProps.layouts === undefined) {
 
-      let wordsLayout = []
+
+    //   this.props.updateLayouts(layouts)
+    //   this.props.updateWordEditors(wordsEditors)
+
+    // }
+  }
+
+  render(){
+    let wordsLayout = []
+    let wordsEditors = []
+
+    if(this.props.tokened != undefined) {
+      let tokened = this.props.tokened
 
       let posY = 3
       for(let [i, sentence] of tokened.entries()){
@@ -95,15 +133,24 @@ class Writer extends Component {
 
         for(let [j, item] of sentence.entries()){
 
-          console.log('word', item.word.length)
+          let divKey = "word_" + i + "_" + j
+          let word = item.word
+          let flag = item.flag
+                //<WordEditor default={word}/>
+          wordsEditors.push(<div key={divKey}>
+                            {word}
+                            </div>)
+
+          console.log('word', word.length)
+
           wordsLayout.push({
-            i:"word_" + i + "_" + j,
+            i: divKey,
             x: posX,
             y: posY,
             w: 1,
             static:true
           })
-          posX += item.word.length
+          posX += word.length
         }
         posY += 0.2
       }
@@ -111,17 +158,21 @@ class Writer extends Component {
       let layouts = {lg:wordsLayout.concat([
         {i:"nextBtn", x: 6, y: 0.2, w: 1, h: 0.2, static:true},
         {i:"prevBtn", x: 5, y: 0.2, w: 1, h: 0.2, static:true},])}
-      this.props.updateLayouts(layouts)
     }
-  }
+    //{this.props.editors === undefined ? this.props.editors}
 
-  render(){
+    wordsEditors.push(
+      <div key={'nextBtn'}> <NextBtn /> </div>
+    )
 
-    return (
-        <MuiThemeProvider>
-        <WriterGridLayout layouts={this.props.layouts}>
-        <div key={'nextBtn'}> <NextBtn /> </div>
+    wordsEditors.push(
         <div key={'prevBtn'}> <PrevBtn /> </div>
+    )
+    return (
+
+        <MuiThemeProvider>
+        <WriterGridLayout layouts={wordsLayout}>
+        {wordsEditors}
         </WriterGridLayout>
         </MuiThemeProvider>
 

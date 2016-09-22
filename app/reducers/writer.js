@@ -7,6 +7,9 @@ export default function (state = [], action) {
   case "UPDATE_LAYOUTS":
     return {...state, layouts: action.data}
 
+  case "UPDATE_EDITORS":
+    return {...state, editors: action.data}
+
   default:
     return state
 

@@ -69766,6 +69766,13 @@
 	        data: layouts
 	      });
 	    },
+	    updateWordEditors: function updateWordEditors(editors) {
+	      //console.log('editors', editors)
+	      dispatch({
+	        type: "UPDATE_EDITORS",
+	        data: editors
+	      });
+	    },
 	    getSentencesTokened: function getSentencesTokened(sentenceArray) {
 	      fetch('/token', { method: "POST",
 	        headers: {
@@ -69781,8 +69788,28 @@
 	  };
 	};
 
-	var Writer = (_dec = (0, _reactRedux.connect)(select, mapDispatchToProps), _dec(_class = (_temp = _class2 = function (_Component) {
-	  (0, _inherits3.default)(Writer, _Component);
+	var WordEditor = function (_Component) {
+	  (0, _inherits3.default)(WordEditor, _Component);
+
+	  function WordEditor(props, context) {
+	    (0, _classCallCheck3.default)(this, WordEditor);
+	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(WordEditor).call(this, props, context));
+	  }
+
+	  (0, _createClass3.default)(WordEditor, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(MultiSelect, {
+	        options: this.props.options,
+	        onValuesChange: function onValuesChange() {},
+	        placeholder: this.props.default });
+	    }
+	  }]);
+	  return WordEditor;
+	}(_react.Component);
+
+	var Writer = (_dec = (0, _reactRedux.connect)(select, mapDispatchToProps), _dec(_class = (_temp = _class2 = function (_Component2) {
+	  (0, _inherits3.default)(Writer, _Component2);
 
 	  function Writer(props, context) {
 	    (0, _classCallCheck3.default)(this, Writer);
@@ -69792,19 +69819,33 @@
 	  (0, _createClass3.default)(Writer, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var s = ['农夫山泉是一家著名的饮料公司'];
+	      //let s = ['农夫山泉是一家著名的饮料公司',]
+	      var s = ['农夫山泉公司'];
 	      this.props.getSentencesTokened(s);
 	    }
 	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
 
-	      var tokened = nextProps.tokened;
-	      //console.log('tokened', tokened)
+	      // let tokened = nextProps.tokened
+	      // //console.log('tokened', tokened)
 
-	      if (this.props.layouts === undefined) {
+	      // if(this.props.layouts === undefined && nextProps.layouts === undefined) {
 
-	        var wordsLayout = [];
+
+	      //   this.props.updateLayouts(layouts)
+	      //   this.props.updateWordEditors(wordsEditors)
+
+	      // }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var wordsLayout = [];
+	      var wordsEditors = [];
+
+	      if (this.props.tokened != undefined) {
+	        var tokened = this.props.tokened;
 
 	        var posY = 3;
 	        var _iteratorNormalCompletion = true;
@@ -69832,15 +69873,26 @@
 	                var item = _step2$value[1];
 
 
-	                console.log('word', item.word.length);
+	                var divKey = "word_" + i + "_" + j;
+	                var word = item.word;
+	                var flag = item.flag;
+	                //<WordEditor default={word}/>
+	                wordsEditors.push(_react2.default.createElement(
+	                  'div',
+	                  { key: divKey },
+	                  word
+	                ));
+
+	                console.log('word', word.length);
+
 	                wordsLayout.push({
-	                  i: "word_" + i + "_" + j,
+	                  i: divKey,
 	                  x: posX,
 	                  y: posY,
 	                  w: 1,
 	                  static: true
 	                });
-	                posX += item.word.length;
+	                posX += word.length;
 	              }
 	            } catch (err) {
 	              _didIteratorError2 = true;
@@ -69875,41 +69927,39 @@
 	        }
 
 	        var layouts = { lg: wordsLayout.concat([{ i: "nextBtn", x: 6, y: 0.2, w: 1, h: 0.2, static: true }, { i: "prevBtn", x: 5, y: 0.2, w: 1, h: 0.2, static: true }]) };
-	        this.props.updateLayouts(layouts);
 	      }
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
+	      //{this.props.editors === undefined ? this.props.editors}
 
+	      wordsEditors.push(_react2.default.createElement(
+	        'div',
+	        { key: 'nextBtn' },
+	        ' ',
+	        _react2.default.createElement(NextBtn, null),
+	        ' '
+	      ));
+
+	      wordsEditors.push(_react2.default.createElement(
+	        'div',
+	        { key: 'prevBtn' },
+	        ' ',
+	        _react2.default.createElement(PrevBtn, null),
+	        ' '
+	      ));
 	      return _react2.default.createElement(
 	        _MuiThemeProvider2.default,
 	        null,
 	        _react2.default.createElement(
 	          WriterGridLayout,
-	          { layouts: this.props.layouts },
-	          _react2.default.createElement(
-	            'div',
-	            { key: 'nextBtn' },
-	            ' ',
-	            _react2.default.createElement(NextBtn, null),
-	            ' '
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { key: 'prevBtn' },
-	            ' ',
-	            _react2.default.createElement(PrevBtn, null),
-	            ' '
-	          )
+	          { layouts: wordsLayout },
+	          wordsEditors
 	        )
 	      );
 	    }
 	  }]);
 	  return Writer;
 	}(_react.Component), _class2.defaultProps = {}, _temp)) || _class);
-	var NextBtn = (_temp2 = _class3 = function (_Component2) {
-	  (0, _inherits3.default)(NextBtn, _Component2);
+	var NextBtn = (_temp2 = _class3 = function (_Component3) {
+	  (0, _inherits3.default)(NextBtn, _Component3);
 
 	  function NextBtn(props, context) {
 	    (0, _classCallCheck3.default)(this, NextBtn);
@@ -69929,8 +69979,8 @@
 	}(_react.Component), _class3.defaultProps = {
 	  label: "Next step"
 	}, _temp2);
-	var PrevBtn = (_temp3 = _class4 = function (_Component3) {
-	  (0, _inherits3.default)(PrevBtn, _Component3);
+	var PrevBtn = (_temp3 = _class4 = function (_Component4) {
+	  (0, _inherits3.default)(PrevBtn, _Component4);
 
 	  function PrevBtn(props, context) {
 	    (0, _classCallCheck3.default)(this, PrevBtn);
@@ -69950,8 +70000,8 @@
 	}(_react.Component), _class4.defaultProps = {
 	  label: "Prev step"
 	}, _temp3);
-	var WriterGridLayout = (_temp4 = _class5 = function (_Component4) {
-	  (0, _inherits3.default)(WriterGridLayout, _Component4);
+	var WriterGridLayout = (_temp4 = _class5 = function (_Component5) {
+	  (0, _inherits3.default)(WriterGridLayout, _Component5);
 
 	  function WriterGridLayout(props, context) {
 	    (0, _classCallCheck3.default)(this, WriterGridLayout);
@@ -70004,6 +70054,9 @@
 
 	    case "UPDATE_LAYOUTS":
 	      return (0, _extends3.default)({}, state, { layouts: action.data });
+
+	    case "UPDATE_EDITORS":
+	      return (0, _extends3.default)({}, state, { editors: action.data });
 
 	    default:
 	      return state;
