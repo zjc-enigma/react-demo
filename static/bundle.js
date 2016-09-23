@@ -69656,6 +69656,10 @@
 	  value: true
 	});
 
+	var _extends2 = __webpack_require__(3);
+
+	var _extends3 = _interopRequireDefault(_extends2);
+
 	var _slicedToArray2 = __webpack_require__(790);
 
 	var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
@@ -69739,20 +69743,6 @@
 	    return response.json();
 	  };
 
-	  // let fetchToken = sentence => {
-	  //   fetch('/token',
-	  //         {method: "POST",
-	  //          headers:{
-	  //            'Accept': 'application/json',
-	  //            'Content-Type': 'application/json'},
-	  //          body: JSON.stringify({sentences: sentence})
-	  //         })
-	  //     .then(parseJson)
-	  //     .then(json => handleToken(json))
-	  //     .catch(function(e){console.log('parsing failed', e)})
-
-	  // }
-
 	  var handleToken = function handleToken(json) {
 
 	    dispatch({
@@ -69760,8 +69750,29 @@
 	      data: json
 	    });
 	  };
+	  var updateSimWords = function updateSimWords(json, key) {
+	    console.log(key);
+	    dispatch({
+	      type: "GET_SIM_WORDS",
+	      data: json,
+	      id: key
+	    });
+	  };
 
 	  return {
+
+	    getSimWords: function getSimWords(word, key) {
+	      fetch("/simwords", { method: "POST",
+	        headers: {
+	          'Accept': 'application/json',
+	          'Content-Type': 'application/json' },
+	        body: (0, _stringify2.default)({ base_word: word })
+	      }).then(parseJson).then(function (json) {
+	        return updateSimWords(json, key);
+	      }).catch(function (e) {
+	        console.log('/simwords parsing failed', e);
+	      });
+	    },
 	    updateLayouts: function updateLayouts(layouts) {
 	      dispatch({
 	        type: "UPDATE_LAYOUTS",
@@ -69799,10 +69810,19 @@
 	  }
 
 	  (0, _createClass3.default)(WordEditor, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+
+	      this.props.getSimWords(this.props.default, this.props.divKey);
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {}
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var width = this.props.wordWidth * 100;
-
+	      console.log("props", this.props);
 	      return _react2.default.createElement(_reactSelectize.MultiSelect, {
 	        options: this.props.options,
 	        onValuesChange: function onValuesChange() {},
@@ -69825,8 +69845,7 @@
 	  (0, _createClass3.default)(Writer, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      //let s = ['农夫山泉是一家著名的饮料公司',]
-	      var s = ['农夫山泉公司'];
+	      var s = ['农夫山泉是一家著名的饮料公司'];
 	      this.props.getSentencesTokened(s);
 	    }
 	  }, {
@@ -69870,20 +69889,28 @@
 	                var flag = item.flag;
 	                var wordWidth = word.length * widthStep;
 
+	                word.length === 1 ? wordsEditors.push(_react2.default.createElement(
+	                  'div',
+	                  { key: divKey },
+	                  word
+	                )) :
+	                //getSimWords={this.props.getSimWords}
 	                wordsEditors.push(_react2.default.createElement(
 	                  'div',
 	                  { key: divKey },
-	                  _react2.default.createElement(WordEditor, { 'default': word,
-	                    wordWidth: wordWidth })
+	                  _react2.default.createElement(WordEditor, (0, _extends3.default)({
+	                    'default': word,
+	                    wordWidth: wordWidth,
+	                    divKey: divKey
+	                  }, this.props))
 	                ));
-
-	                //console.log('word', word.length)
 
 	                wordsLayout.push({
 	                  i: divKey,
 	                  x: posX,
 	                  y: posY,
 	                  w: wordWidth,
+	                  h: 0.05,
 	                  static: true
 	                });
 	                posX += wordWidth;
@@ -69925,23 +69952,11 @@
 	        this.props.updateLayouts(layouts);
 	        this.props.updateWordEditors(wordsEditors);
 	      }
-
-	      // let tokened = nextProps.tokened
-	      // //console.log('tokened', tokened)
-
-	      // if(this.props.layouts === undefined && nextProps.layouts === undefined) {
-
-
-	      //   this.props.updateLayouts(layouts)
-
-
-	      // }
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      //{this.props.editors === undefined ? this.props.editors}
-
+	      //let layouts = this.props.layouts
 	      var wordsEditors = this.props.editors;
 
 	      wordsEditors.push(_react2.default.createElement(
@@ -69959,14 +69974,12 @@
 	        _react2.default.createElement(PrevBtn, null),
 	        ' '
 	      ));
+	      //        {wordsEditors}
+	      // {React.cloneElement(wordsEditors, {...this.props})}
 	      return _react2.default.createElement(
 	        _MuiThemeProvider2.default,
 	        null,
-	        _react2.default.createElement(
-	          WriterGridLayout,
-	          { layouts: this.props.layouts },
-	          wordsEditors
-	        )
+	        _react2.default.createElement(WriterGridLayout, { layouts: this.props.layouts })
 	      );
 	    }
 	  }]);
@@ -70055,9 +70068,13 @@
 	  value: true
 	});
 
-	var _extends2 = __webpack_require__(3);
+	var _defineProperty2 = __webpack_require__(794);
 
-	var _extends3 = _interopRequireDefault(_extends2);
+	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+	var _extends3 = __webpack_require__(3);
+
+	var _extends4 = _interopRequireDefault(_extends3);
 
 	exports.default = function () {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
@@ -70066,13 +70083,20 @@
 	  switch (action.type) {
 
 	    case "TOKENED_SENTENCES":
-	      return (0, _extends3.default)({}, state, { tokened: action.data });
+	      return (0, _extends4.default)({}, state, { tokened: action.data });
 
 	    case "UPDATE_LAYOUTS":
-	      return (0, _extends3.default)({}, state, { layouts: action.data });
+	      return (0, _extends4.default)({}, state, { layouts: action.data });
 
 	    case "UPDATE_EDITORS":
-	      return (0, _extends3.default)({}, state, { editors: action.data });
+	      return (0, _extends4.default)({}, state, { editors: action.data });
+
+	    case "GET_SIM_WORDS":
+	      // let ret = {}
+	      // ret['simWords_' + action.id] = action.data
+	      // console.log('ret', ret)
+	      //let stateKey = action.id
+	      return (0, _extends4.default)({}, state, (0, _defineProperty3.default)({}, action.id, action.data));
 
 	    default:
 	      return state;
@@ -70164,6 +70188,35 @@
 	  return O[ITERATOR] !== undefined
 	    || '@@iterator' in O
 	    || Iterators.hasOwnProperty(classof(O));
+	};
+
+/***/ },
+/* 794 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _defineProperty = __webpack_require__(664);
+
+	var _defineProperty2 = _interopRequireDefault(_defineProperty);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (obj, key, value) {
+	  if (key in obj) {
+	    (0, _defineProperty2.default)(obj, key, {
+	      value: value,
+	      enumerable: true,
+	      configurable: true,
+	      writable: true
+	    });
+	  } else {
+	    obj[key] = value;
+	  }
+
+	  return obj;
 	};
 
 /***/ }

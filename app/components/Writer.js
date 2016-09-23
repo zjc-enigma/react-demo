@@ -22,20 +22,6 @@ const mapDispatchToProps = (dispatch) => {
     return response.json()
   }
 
-  // let fetchToken = sentence => {
-  //   fetch('/token',
-  //         {method: "POST",
-  //          headers:{
-  //            'Accept': 'application/json',
-  //            'Content-Type': 'application/json'},
-  //          body: JSON.stringify({sentences: sentence})
-  //         })
-  //     .then(parseJson)
-  //     .then(json => handleToken(json))
-  //     .catch(function(e){console.log('parsing failed', e)})
-
-  // }
-
   let handleToken = json => {
 
     dispatch({
@@ -43,8 +29,29 @@ const mapDispatchToProps = (dispatch) => {
       data: json
     })
   }
+  let updateSimWords = function(json, key) {
+    console.log(key)
+    dispatch({
+      type: "GET_SIM_WORDS",
+      data: json,
+      id: key
+    })
+  }
 
   return {
+
+    getSimWords: (word, key) => {
+      fetch("/simwords",
+            {method: "POST",
+             headers:{
+               'Accept': 'application/json',
+               'Content-Type': 'application/json'},
+             body: JSON.stringify({base_word: word})
+            })
+        .then(parseJson)
+        .then(json => updateSimWords(json, key))
+        .catch(function(e){console.log('/simwords parsing failed', e)})
+    },
     updateLayouts: layouts => {
       dispatch({
         type: "UPDATE_LAYOUTS",
@@ -78,12 +85,20 @@ class WordEditor extends Component {
   constructor(props, context){
     super(props, context);
   }
+  componentDidMount() {
+
+    this.props.getSimWords(this.props.default, this.props.divKey)
+  }
+
+  componentWillReceiveProps(nextProps){
+
+
+  }
 
   render() {
     let width = this.props.wordWidth*100
-
+    console.log("props", this.props)
     return (
-
         <MultiSelect
       options={this.props.options}
       onValuesChange = {() => {}}
@@ -104,8 +119,7 @@ class Writer extends Component {
     super(props, context);
   }
   componentDidMount() {
-    //let s = ['农夫山泉是一家著名的饮料公司',]
-    let s = ['农夫山泉公司',]
+    let s = ['农夫山泉是一家著名的饮料公司',]
     this.props.getSentencesTokened(s)
   }
   static defaultProps = {
@@ -130,18 +144,27 @@ class Writer extends Component {
           let flag = item.flag
           let wordWidth = word.length*widthStep
 
-          wordsEditors.push(<div key={divKey}>
-                            <WordEditor default={word}
-                            wordWidth={wordWidth}/>
-                            </div>)
 
-          //console.log('word', word.length)
+
+          word.length === 1 ? wordsEditors.push(<div key={divKey}>
+                                                {word}
+                                                </div> ) :
+          //getSimWords={this.props.getSimWords}
+            wordsEditors.push(<div key={divKey}>
+                              <WordEditor
+                              default={word}
+                              wordWidth={wordWidth}
+                              divKey={divKey}
+                              {...this.props}
+                              />
+                              </div>)
 
           wordsLayout.push({
             i: divKey,
             x: posX,
             y: posY,
             w: wordWidth,
+            h: 0.05,
             static:true
           })
           posX += wordWidth
@@ -156,22 +179,10 @@ class Writer extends Component {
       this.props.updateLayouts(layouts)
       this.props.updateWordEditors(wordsEditors)
     }
-
-    // let tokened = nextProps.tokened
-    // //console.log('tokened', tokened)
-
-    // if(this.props.layouts === undefined && nextProps.layouts === undefined) {
-
-
-    //   this.props.updateLayouts(layouts)
-    
-
-    // }
   }
 
   render(){
-    //{this.props.editors === undefined ? this.props.editors}
-
+    //let layouts = this.props.layouts
     let wordsEditors = this.props.editors
 
     wordsEditors.push(
@@ -181,11 +192,13 @@ class Writer extends Component {
     wordsEditors.push(
         <div key={'prevBtn'}> <PrevBtn /> </div>
     )
+    //        {wordsEditors}
+    // {React.cloneElement(wordsEditors, {...this.props})}
     return (
 
         <MuiThemeProvider>
         <WriterGridLayout layouts={this.props.layouts}>
-        {wordsEditors}
+        
         </WriterGridLayout>
         </MuiThemeProvider>
 
@@ -264,4 +277,14 @@ class WriterGridLayout extends Component {
 
 
 export default Writer
+
+
+
+
+
+
+
+
+
+
 
