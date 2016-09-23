@@ -3,12 +3,12 @@ import { Step, Stepper, StepLabel } from 'material-ui/Stepper'
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import HorizontalLinearStepper from './HorizontalLinearStepper'
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import {Responsive, WidthProvider} from 'react-grid-layout';
-const ResponsiveReactGridLayout = WidthProvider(Responsive);
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
-
+import RaisedButton from 'material-ui/RaisedButton'
+import TextField from 'material-ui/TextField'
+import {Responsive, WidthProvider} from 'react-grid-layout'
+const ResponsiveReactGridLayout = WidthProvider(Responsive)
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
+import {MultiSelect} from 'react-selectize'
 
 // Object.prototype.isEmpty = function() {
 //   for (var prop in this) if (this.hasOwnProperty(prop)) return false;
@@ -80,11 +80,16 @@ class WordEditor extends Component {
   }
 
   render() {
+    let width = this.props.wordWidth*100
+
     return (
+
         <MultiSelect
       options={this.props.options}
       onValuesChange = {() => {}}
-      placeholder={this.props.default}>
+      placeholder={this.props.default}
+      theme={"material"}
+      style={{width: width}}>
         </MultiSelect>
     )
   }
@@ -104,30 +109,17 @@ class Writer extends Component {
     this.props.getSentencesTokened(s)
   }
   static defaultProps = {
-    
+    editors : []
   }
   componentWillReceiveProps(nextProps){
-
-    // let tokened = nextProps.tokened
-    // //console.log('tokened', tokened)
-
-    // if(this.props.layouts === undefined && nextProps.layouts === undefined) {
-
-
-    //   this.props.updateLayouts(layouts)
-    //   this.props.updateWordEditors(wordsEditors)
-
-    // }
-  }
-
-  render(){
     let wordsLayout = []
     let wordsEditors = []
 
-    if(this.props.tokened != undefined) {
-      let tokened = this.props.tokened
+    if(nextProps.tokened != undefined && this.props.layouts == undefined) {
+      let tokened = nextProps.tokened
+      let widthStep = 0.5
+      let posY = 2
 
-      let posY = 3
       for(let [i, sentence] of tokened.entries()){
         let posX = 0
 
@@ -136,21 +128,23 @@ class Writer extends Component {
           let divKey = "word_" + i + "_" + j
           let word = item.word
           let flag = item.flag
-                //<WordEditor default={word}/>
+          let wordWidth = word.length*widthStep
+
           wordsEditors.push(<div key={divKey}>
-                            {word}
+                            <WordEditor default={word}
+                            wordWidth={wordWidth}/>
                             </div>)
 
-          console.log('word', word.length)
+          //console.log('word', word.length)
 
           wordsLayout.push({
             i: divKey,
             x: posX,
             y: posY,
-            w: 1,
+            w: wordWidth,
             static:true
           })
-          posX += word.length
+          posX += wordWidth
         }
         posY += 0.2
       }
@@ -158,8 +152,27 @@ class Writer extends Component {
       let layouts = {lg:wordsLayout.concat([
         {i:"nextBtn", x: 6, y: 0.2, w: 1, h: 0.2, static:true},
         {i:"prevBtn", x: 5, y: 0.2, w: 1, h: 0.2, static:true},])}
+
+      this.props.updateLayouts(layouts)
+      this.props.updateWordEditors(wordsEditors)
     }
+
+    // let tokened = nextProps.tokened
+    // //console.log('tokened', tokened)
+
+    // if(this.props.layouts === undefined && nextProps.layouts === undefined) {
+
+
+    //   this.props.updateLayouts(layouts)
+    
+
+    // }
+  }
+
+  render(){
     //{this.props.editors === undefined ? this.props.editors}
+
+    let wordsEditors = this.props.editors
 
     wordsEditors.push(
       <div key={'nextBtn'}> <NextBtn /> </div>
@@ -171,7 +184,7 @@ class Writer extends Component {
     return (
 
         <MuiThemeProvider>
-        <WriterGridLayout layouts={wordsLayout}>
+        <WriterGridLayout layouts={this.props.layouts}>
         {wordsEditors}
         </WriterGridLayout>
         </MuiThemeProvider>

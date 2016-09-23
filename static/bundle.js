@@ -69718,6 +69718,8 @@
 
 	var _Table = __webpack_require__(698);
 
+	var _reactSelectize = __webpack_require__(753);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var ResponsiveReactGridLayout = (0, _reactGridLayout.WidthProvider)(_reactGridLayout.Responsive);
@@ -69799,10 +69801,14 @@
 	  (0, _createClass3.default)(WordEditor, [{
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement(MultiSelect, {
+	      var width = this.props.wordWidth * 100;
+
+	      return _react2.default.createElement(_reactSelectize.MultiSelect, {
 	        options: this.props.options,
 	        onValuesChange: function onValuesChange() {},
-	        placeholder: this.props.default });
+	        placeholder: this.props.default,
+	        theme: "material",
+	        style: { width: width } });
 	    }
 	  }]);
 	  return WordEditor;
@@ -69826,28 +69832,14 @@
 	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
-
-	      // let tokened = nextProps.tokened
-	      // //console.log('tokened', tokened)
-
-	      // if(this.props.layouts === undefined && nextProps.layouts === undefined) {
-
-
-	      //   this.props.updateLayouts(layouts)
-	      //   this.props.updateWordEditors(wordsEditors)
-
-	      // }
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
 	      var wordsLayout = [];
 	      var wordsEditors = [];
 
-	      if (this.props.tokened != undefined) {
-	        var tokened = this.props.tokened;
+	      if (nextProps.tokened != undefined && this.props.layouts == undefined) {
+	        var tokened = nextProps.tokened;
+	        var widthStep = 0.5;
+	        var posY = 2;
 
-	        var posY = 3;
 	        var _iteratorNormalCompletion = true;
 	        var _didIteratorError = false;
 	        var _iteratorError = undefined;
@@ -69876,23 +69868,25 @@
 	                var divKey = "word_" + i + "_" + j;
 	                var word = item.word;
 	                var flag = item.flag;
-	                //<WordEditor default={word}/>
+	                var wordWidth = word.length * widthStep;
+
 	                wordsEditors.push(_react2.default.createElement(
 	                  'div',
 	                  { key: divKey },
-	                  word
+	                  _react2.default.createElement(WordEditor, { 'default': word,
+	                    wordWidth: wordWidth })
 	                ));
 
-	                console.log('word', word.length);
+	                //console.log('word', word.length)
 
 	                wordsLayout.push({
 	                  i: divKey,
 	                  x: posX,
 	                  y: posY,
-	                  w: 1,
+	                  w: wordWidth,
 	                  static: true
 	                });
-	                posX += word.length;
+	                posX += wordWidth;
 	              }
 	            } catch (err) {
 	              _didIteratorError2 = true;
@@ -69927,8 +69921,28 @@
 	        }
 
 	        var layouts = { lg: wordsLayout.concat([{ i: "nextBtn", x: 6, y: 0.2, w: 1, h: 0.2, static: true }, { i: "prevBtn", x: 5, y: 0.2, w: 1, h: 0.2, static: true }]) };
+
+	        this.props.updateLayouts(layouts);
+	        this.props.updateWordEditors(wordsEditors);
 	      }
+
+	      // let tokened = nextProps.tokened
+	      // //console.log('tokened', tokened)
+
+	      // if(this.props.layouts === undefined && nextProps.layouts === undefined) {
+
+
+	      //   this.props.updateLayouts(layouts)
+
+
+	      // }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
 	      //{this.props.editors === undefined ? this.props.editors}
+
+	      var wordsEditors = this.props.editors;
 
 	      wordsEditors.push(_react2.default.createElement(
 	        'div',
@@ -69950,14 +69964,16 @@
 	        null,
 	        _react2.default.createElement(
 	          WriterGridLayout,
-	          { layouts: wordsLayout },
+	          { layouts: this.props.layouts },
 	          wordsEditors
 	        )
 	      );
 	    }
 	  }]);
 	  return Writer;
-	}(_react.Component), _class2.defaultProps = {}, _temp)) || _class);
+	}(_react.Component), _class2.defaultProps = {
+	  editors: []
+	}, _temp)) || _class);
 	var NextBtn = (_temp2 = _class3 = function (_Component3) {
 	  (0, _inherits3.default)(NextBtn, _Component3);
 
