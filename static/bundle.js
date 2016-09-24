@@ -69751,7 +69751,7 @@
 	    });
 	  };
 	  var updateSimWords = function updateSimWords(json, key) {
-	    console.log(key);
+	    //console.log(key)
 	    dispatch({
 	      type: "GET_SIM_WORDS",
 	      data: json,
@@ -69812,7 +69812,6 @@
 	  (0, _createClass3.default)(WordEditor, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-
 	      this.props.getSimWords(this.props.default, this.props.divKey);
 	    }
 	  }, {
@@ -69822,7 +69821,9 @@
 	    key: 'render',
 	    value: function render() {
 	      var width = this.props.wordWidth * 100;
-	      console.log("props", this.props);
+	      //console.log(this.props.divKey + "_props", this.props)
+	      //console.log(this.props[this.props.divKey])
+
 	      return _react2.default.createElement(_reactSelectize.MultiSelect, {
 	        options: this.props.options,
 	        onValuesChange: function onValuesChange() {},
@@ -69857,7 +69858,7 @@
 	      if (nextProps.tokened != undefined && this.props.layouts == undefined) {
 	        var tokened = nextProps.tokened;
 	        var widthStep = 0.5;
-	        var posY = 2;
+	        var posY = 1;
 
 	        var _iteratorNormalCompletion = true;
 	        var _didIteratorError = false;
@@ -69974,12 +69975,16 @@
 	        _react2.default.createElement(PrevBtn, null),
 	        ' '
 	      ));
-	      //        {wordsEditors}
+
 	      // {React.cloneElement(wordsEditors, {...this.props})}
 	      return _react2.default.createElement(
 	        _MuiThemeProvider2.default,
 	        null,
-	        _react2.default.createElement(WriterGridLayout, { layouts: this.props.layouts })
+	        _react2.default.createElement(
+	          WriterGridLayout,
+	          { layouts: this.props.layouts },
+	          wordsEditors
+	        )
 	      );
 	    }
 	  }]);
@@ -70092,10 +70097,6 @@
 	      return (0, _extends4.default)({}, state, { editors: action.data });
 
 	    case "GET_SIM_WORDS":
-	      // let ret = {}
-	      // ret['simWords_' + action.id] = action.data
-	      // console.log('ret', ret)
-	      //let stateKey = action.id
 	      return (0, _extends4.default)({}, state, (0, _defineProperty3.default)({}, action.id, action.data));
 
 	    default:

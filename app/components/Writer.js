@@ -30,7 +30,7 @@ const mapDispatchToProps = (dispatch) => {
     })
   }
   let updateSimWords = function(json, key) {
-    console.log(key)
+    //console.log(key)
     dispatch({
       type: "GET_SIM_WORDS",
       data: json,
@@ -86,7 +86,6 @@ class WordEditor extends Component {
     super(props, context);
   }
   componentDidMount() {
-
     this.props.getSimWords(this.props.default, this.props.divKey)
   }
 
@@ -97,7 +96,9 @@ class WordEditor extends Component {
 
   render() {
     let width = this.props.wordWidth*100
-    console.log("props", this.props)
+    //console.log(this.props.divKey + "_props", this.props)
+    //console.log(this.props[this.props.divKey])
+
     return (
         <MultiSelect
       options={this.props.options}
@@ -132,7 +133,7 @@ class Writer extends Component {
     if(nextProps.tokened != undefined && this.props.layouts == undefined) {
       let tokened = nextProps.tokened
       let widthStep = 0.5
-      let posY = 2
+      let posY = 1
 
       for(let [i, sentence] of tokened.entries()){
         let posX = 0
@@ -192,13 +193,13 @@ class Writer extends Component {
     wordsEditors.push(
         <div key={'prevBtn'}> <PrevBtn /> </div>
     )
-    //        {wordsEditors}
+    
     // {React.cloneElement(wordsEditors, {...this.props})}
     return (
 
         <MuiThemeProvider>
         <WriterGridLayout layouts={this.props.layouts}>
-        
+        {wordsEditors}
         </WriterGridLayout>
         </MuiThemeProvider>
 
