@@ -23,19 +23,21 @@ module.exports = {
         test: /\.js?$/,
         loader: 'babel-loader',
         query: {
-          presets: ['es2015', 'react', 'stage-2']
+          presets: ['es2015', 'react', 'stage-0'],
+          plugins: ['transform-runtime', 'transform-decorators-legacy']
         },
         exclude: /node_modules/
       },
       {
           test: /(\.scss|\.css)$/,
-          loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass')
+        //loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass')
+        loaders:["style", "css", "sass"]
       }
     ]
   },
-  sassLoader: {
-      data: '@import "' + path.resolve(__dirname, './theme/theme.scss') + '";'
-  },
+  // sassLoader: {
+  //     data: '@import "' + path.resolve(__dirname, './theme/theme.scss') + '";'
+  // },
 
   plugins: [
       new ExtractTextPlugin('theme.css', { allChunks: true }),

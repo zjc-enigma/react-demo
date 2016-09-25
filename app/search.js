@@ -13,13 +13,9 @@ import 'whatwg-fetch';
 import { is } from 'immutable';
 import {EditTable} from 'material-ui-table-edit';
 import Checkbox from 'material-ui/Checkbox';
-
-
-import {
-  Step,
-  Stepper,
-  StepLabel,
-} from 'material-ui/Stepper';
+import {MultiSelect} from 'react-selectize';
+import '../node_modules/react-selectize/themes/index.css';
+import { Step, Stepper, StepLabel} from 'material-ui/Stepper';
 
 import FlatButton from 'material-ui/FlatButton';
 /**
@@ -228,22 +224,11 @@ class SearchGrid extends Component{
   render() {
     var stepWidth = 0.4;
     var wordsLayouts = [];
-    for (var sentenceIndex in this.props.tokened){
-      var demoWords = this.props.tokened[sentenceIndex];
-      var sentencePos = 0;
-      for (var index in demoWords){
-        var wordWidth = this.props.wordsComponentWidth[sentenceIndex.toString() + "_" + index.toString()]
-        //console.log('sentencePos', sentencePos);
-        //wordWidth = (wordWidth? wordWidth : 1)*stepWidth;
-        var width = wordWidth*stepWidth;
-        wordsLayouts.push({i:"word_"+ sentenceIndex.toString() + "_" + index.toString(),
-                           x:sentencePos,
-                           y:(1 + parseInt(sentenceIndex)),
-                           w: width,
-                           h:0.2, static:true})
-        sentencePos += width;
-      }
+    if(this.props.wordsLayouts){
+      console.log('using wordslayouts', this.props.wordsLayouts)
+      wordsLayouts = this.props.wordsLayouts;
     }
+
     // var totalIndex = 0;
     // for(var baseIndex in this.props.generateResult){
     //   var sentenceArray = this.props.generateResult[baseIndex];
@@ -259,6 +244,7 @@ class SearchGrid extends Component{
     // }
     var layouts = {lg:wordsLayouts.concat(
       [{i:"steper", x: 5, y: 0, w: 4, h: 0.2, static:true},
+       {i:"mt", x: 0, y: 0, w: 1, h: 0.2, static:true},
        {i:"searchText", x: 4,
         y: this.props.searchTextY,
         w: this.props.searchTextWidth,
@@ -301,7 +287,7 @@ class SearchGrid extends Component{
         {i:"searchBtn", x: 9, y: 2, w: 1, h: 0.2, static:true},
         {i:"searchNextBtn", x: 10, y: 2, w: 1, h: 0.2, static:true},
         {i:"processBtn", x: 10, y: 2, w: 1, h: 0.2, static:true},
-        {i:"searchResTable", x: 3, y: 0.8, w: 6, h: 1, static:true },
+        {i:"searchResTable", x: 3, y: 0.8, w: 8, h: 1, static:true },
         {i:"generateResTable", x: 4, y: 5, w: 7, h: 0.5, static:true}
        ]),
 
@@ -321,6 +307,7 @@ class SearchGrid extends Component{
       {i:"processBtn", x: 2, y: 2, w: 1, h: 0.2, static:true},
       {i:"searchResTable", x: 0, y: 3, w: 6, h: 1, static:true }]),}
 
+    console.log('updated layouts', layouts);
     return (
         <ResponsiveReactGridLayout
       className="layout"
@@ -363,7 +350,8 @@ class SearchBtn extends Component {
   }
 
   search(text){
-    this.context.searchQuery(text);
+    //this.context.searchQuery(text);
+    this.props.searchQueryByClass(text, this.props.classSelection)
   }
   render() {
     //() => this.context.rename(this.context.text)
@@ -609,6 +597,7 @@ class SearchResTable extends Component {
             <TableRow selected={this.isSelected(searchRes[index])}>
             <TableRowColumn>{searchRes[index].tag}</TableRowColumn>
             <TableRowColumn>头条</TableRowColumn>
+            <TableRowColumn>{searchRes[index].label}</TableRowColumn>
             <TableRowColumn style={{width: '60%'}}>{searchRes[index].content}</TableRowColumn>
             </TableRow>)
       }
@@ -621,6 +610,7 @@ class SearchResTable extends Component {
           <TableRow>
           <TableHeaderColumn>类别</TableHeaderColumn>
           <TableHeaderColumn>来源</TableHeaderColumn>
+          <TableHeaderColumn>类目</TableHeaderColumn>
           <TableHeaderColumn style={{width: '60%'}}>内容</TableHeaderColumn>
           </TableRow>
           </TableHeader>
@@ -644,10 +634,13 @@ class WordComponent extends Component{
 
   constructor(props, context){
     super(props, context);
+  }
+  componentDidMount() {
     if(this.props.holder.length > 1){
       this.props.getSimWords(this.props.holder, this.props.id)
     }
   }
+
   shouldComponentUpdate (nextProps={}, nextState={}) {
     const thisProps = this.props || {};
     //const thisState = this.state || {};
@@ -698,15 +691,7 @@ class SearchBar extends Component {
 
   constructor(props, context){
     super(props, context);
-
-    // const wordsWidth = {};
-    // for (var sentenceIndex in this.props.tokened){
-    //   var demoWords = this.props.tokened[sentenceIndex];
-
-    //   for (var index in demoWords){
-    //     wordsWidth[sentenceIndex.toString() + "_" + index.toString()] = demoWords[index].length;
-    //   }
-    // }
+    this.props.getMultiselectOption();
 
   }
 
@@ -733,31 +718,113 @@ class SearchBar extends Component {
   //      getSimWords={this.props.getSimWords}
   //      options={eval('this.props.simWords_' + sentenceIndex.toString() + "_" +index.toString())}
   //      id={sentenceIndex.toString() + "_" +index.toString()} />)}
+  // static defaultProps = {
+  //   wordsLayouts:[],
+  // }
 
-  render() {
-    var words = [];
+  componentWillReceiveProps(nextProps){
 
-    for (var sentenceIndex in this.props.tokened){
-      var demoWords = this.props.tokened[sentenceIndex];
 
-      for (var index in demoWords){
+    if(!this.props.wordsLayouts && this.props.stepIndex==1 && this.props.tokened != nextProps.tokened ){
 
-        words.push(
-            <div
-          key={"word_" + sentenceIndex.toString() + "_" + index.toString()}
-          className={this.props.hideWriter ? 'hidden' : ''}>
-            <WordComponent
-          holder={demoWords[index]}
-          disabled={demoWords[index].length<=1}
-          value={eval("this.props.selected_" + sentenceIndex.toString() + "_"+ index.toString())}
-          multiSelect={this.props.multiSelect}
-          getSimWords={this.props.getSimWords}
-          options={eval('this.props.simWords_' + sentenceIndex.toString() + "_" +index.toString())}
-          id={sentenceIndex.toString() + "_" +index.toString()} />
-            </div>
-        )
+      console.log(nextProps.tokened);
+      var tokened = nextProps.tokened;
+      var wordsArray = [];
+      var wordsLayouts = [];
+      for (var sentenceIndex in tokened){
+
+        var demoWords = tokened[sentenceIndex];
+        console.log("demowords", demoWords)
+        var tmpStr = "";
+        var xPos = 0;
+
+        for (var index in demoWords){
+          //console.log("tmpStr", tmpStr);
+          var X = xPos;
+          var Y = 1 + parseInt(sentenceIndex);
+
+          if(demoWords[index].flag != "n"){
+            tmpStr += demoWords[index].word
+          } else {
+            var wordComponentKey = "word_" + sentenceIndex.toString() + "_" + index.toString();
+            var textKey = "text_" + sentenceIndex.toString() + "_" + index.toString();
+            var wordComponentWidth = demoWords[index].word.length;
+            var textWidth = tmpStr.length*0.2;
+
+            wordsLayouts.push({i:textKey,
+                               x: X,
+                               y: Y,
+                               w: textWidth,
+                               h:0.2, static:true});
+
+            wordsLayouts.push({i:wordComponentKey,
+                               x: X + textWidth,
+                               y: Y,
+                               w: wordComponentWidth,
+                               h:0.2, static:true});
+
+            xPos += textWidth;
+            xPos += wordComponentWidth;
+            wordsArray.push(
+                <div key={textKey} className={this.props.hideWriter ? 'hidden' : ''}>{tmpStr}</div>
+            )
+            wordsArray.push(
+                <div key={wordComponentKey}
+              className={this.props.hideWriter ? 'hidden' : ''}>
+              <WordComponent
+            holder={demoWords[index].word}
+            disabled={demoWords[index].word.length<=1}
+            value={eval("this.props.selected_" + sentenceIndex.toString() + "_"+ index.toString())}
+            multiSelect={this.props.multiSelect}
+            getSimWords={this.props.getSimWords}
+            options={eval('this.props.simWords_' + sentenceIndex.toString() + "_" +index.toString())}
+            id={sentenceIndex.toString() + "_" +index.toString()} /></div>)
+            tmpStr = "";
+          }
+
+          if(index == demoWords.length - 1 && tmpStr.length>0){
+            var textWidth = tmpStr.length*0.2;
+            var textKey = "text_" + sentenceIndex.toString() + "_" + index.toString();
+            wordsLayouts.push({i:textKey,
+                               x: X,
+                               y: Y,
+                               w: textWidth,
+                               h:0.2, static:true});
+            wordsArray.push(
+                <div key={textKey} className={this.props.hideWriter ? 'hidden' : ''}>{tmpStr}</div>
+            )
+          }
+        }
       }
+      console.log('words', wordsArray);
+      console.log('wordslayouts', wordsLayouts);
+      this.props.updateWords(wordsArray);
+      this.props.updateWordsLayouts(wordsLayouts);
     }
+  }
+  render() {
+    
+    var words = [];
+    if(this.props.wordsArray){
+      //console.log("using wordsArray");
+      words = this.props.wordsArray;
+    }
+    // for (var sentenceIndex in this.props.tokened){
+    //   var demoWords = this.props.tokened[sentenceIndex];
+    //   var sentencePos = 0;
+    //   for (var index in demoWords){
+    //     var wordWidth = this.props.wordsComponentWidth[sentenceIndex.toString() + "_" + index.toString()]
+    //     //console.log('sentencePos', sentencePos);
+    //     //wordWidth = (wordWidth? wordWidth : 1)*stepWidth;
+    //     var width = wordWidth*stepWidth;
+    //     wordsLayouts.push({i:"word_"+ sentenceIndex.toString() + "_" + index.toString(),
+    //                        x:sentencePos,
+    //                        y:(1 + parseInt(sentenceIndex)),
+    //                        w: width,
+    //                        h:0.2, static:true})
+    //     sentencePos += width;
+    //   }
+    // }
     words.push(
         <div key={'steper'} ><HorizontalLinearStepper
       resTableSelection={this.props.resTableSelection}
@@ -776,6 +843,8 @@ class SearchBar extends Component {
         <div key={'searchBtn'}>
         <SearchBtn
       hide={this.props.hideSearchBtn}
+      searchQueryByClass={this.props.searchQueryByClass}
+      classSelection={this.props.classSelection}
       name={"Search"} /></div>)
 
 
@@ -854,7 +923,23 @@ class SearchBar extends Component {
       hide={this.props.hideGenerateRes}
         /></div>
     )
-    
+
+    // var testoptions = ["apple",
+    //                    "mango",
+    //                    "grapes",
+    //                    "melon",
+    //                    "strawberry"].map(function(fruit){
+    //                      return {label: fruit, value: fruit}
+    // });
+
+    words.push(
+        <div key={'mt'}>
+        <MultiSelect
+      options={this.props.classOptions}
+      onValuesChange = {values => this.props.updateClassSelection(values)}
+      placeholder={"请选择投放类目"}>
+        </MultiSelect></div>)
+
     return (
         <MuiThemeProvider>
         <SearchGrid
@@ -875,6 +960,7 @@ class SearchBar extends Component {
       searchResTableY={this.props.searchResTableY}
       wordsComponentWidth={this.props.wordsComponentWidth}
       generateResult={this.props.generateResult}
+      wordsLayouts={this.props.wordsLayouts}
         >
         {words}
         </SearchGrid>
@@ -945,11 +1031,11 @@ function mapDispatchToProps(dispatch) {
       var demoWords = json[sentenceIndex];
 
       for (var index in demoWords){
-        wordsWidth[sentenceIndex.toString() + "_" + index.toString()] = demoWords[index].length;
+        wordsWidth[sentenceIndex.toString() + "_" + index.toString()] = demoWords[index].word.length;
       }
     }
 
-    console.log('wordsWidth', wordsWidth);
+    //console.log('wordsWidth', wordsWidth);
     dispatch({
       type: 'RESIZE_WORDS',
       data: wordsWidth
@@ -1093,6 +1179,44 @@ function mapDispatchToProps(dispatch) {
         id: id
       });
     },
+
+    searchQueryByClass: function(text, className){
+      if(text){
+        fetch('/query_by_class',
+              {method: "POST",
+               headers:{
+                 'Accept': 'application/json',
+                 'Content-Type': 'application/json'},
+               body: JSON.stringify({key: text, class_name: className})
+              })
+          .then(parseJson)
+          .then(showClick)
+          .catch(function(e){console.log('parsing failed', e)});
+
+        dispatch({type: "SHOW_SEARCH_RES"});
+
+      } else {
+        alert("Please input search text");
+        dispatch({
+          type: "SEARCHRES",
+          data: []
+        });
+      }
+
+      dispatch({
+        type: "MOVE_SEARCH_BTN_TO_TOP",
+      });
+      dispatch({
+        type: "MOVE_SEARCH_TEXT_TO_TOP",
+      });
+      dispatch({
+        type: "MOVE_SEARCH_RES_TO_TOP",
+      });
+      dispatch({
+        type: "SHOW_NEXT_BTN",
+      });
+
+    },
     searchQuery: function(text){
       if(text){
         fetch('/query',
@@ -1159,7 +1283,18 @@ function mapDispatchToProps(dispatch) {
         data: slices
       });
     },
-
+    getMultiselectOption: function(){
+      fetch("/multiselect_options",
+            {method: "GET",
+             headers:{
+               'Accept': 'application/json',
+               'Content-Type': 'application/json'},
+            })
+        .then(parseJson)
+        .then(json => dispatch({type: "UPDATE_MULTISELECT_OPTIONS",
+                                data: json}))
+        .catch(function(e){console.log('parsing failed', e)})
+    },
     updateGenerateSelection: function(selectionItems){
       dispatch({
         type: 'UPDATE_GENERATE_SELECTION',
@@ -1172,6 +1307,12 @@ function mapDispatchToProps(dispatch) {
         data: generateList
       });
     },
+    updateClassSelection: function(selectionArray){
+      dispatch({
+        type: 'UPDATE_CLASS_SELECTION',
+        data: selectionArray
+      });
+    },
     updateSelection: function(selectionItems){
 
       dispatch({
@@ -1181,6 +1322,12 @@ function mapDispatchToProps(dispatch) {
     },
     multiSelect: (val, id) => {
       dispatch({type:"MULTISELECT", data:val, id:id});
+    },
+    updateWords: (words) => {
+      dispatch({type:"UPDATE_WORDS", data: words});
+    },
+    updateWordsLayouts: (layouts) => {
+      dispatch({type:"UPDATE_WORDS_LAYOUTS", data: layouts});
     },
     getSimWords: (word, id) => {
 
