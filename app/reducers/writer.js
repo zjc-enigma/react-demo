@@ -10,8 +10,16 @@ export default function (state = [], action) {
   case "UPDATE_EDITORS":
     return {...state, editors: action.data}
 
-  case "GET_SIM_WORDS":
-    return {...state, [action.id] : action.data}
+  case "UPDATE_SENTENCE_ARRAY":
+    return {...state, sentenceArray: action.data}
+
+  case "UPDATE_SIM_WORDS":
+    //console.log('get sim words')
+    //let ret = {}
+    //ret[action.word] = action.data
+    //return {...state, [action.word] : action.data}
+    //console.log('ret',ret)
+    return {...state, [action.word]: action.data}
 
 
   default:

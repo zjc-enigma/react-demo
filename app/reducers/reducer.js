@@ -26,13 +26,13 @@ export default function reducer(state = [], action) {
       stepIndex: action.stepIndex,
       finished: action.finished
     })
-  case 'GET_SIM_WORDS':
-    var count = state.updateSim
-    if (!count) { count = 0;}
-    else {count += 1;}
-    var ret = {}
-    ret['simWords_' + action.id.toString()] = action.data;
-    return Object.assign({}, state, ret, {updateSimCount: count})
+  // case 'GET_SIM_WORDS':
+  //   var count = state.updateSim
+  //   if (!count) { count = 0;}
+  //   else {count += 1;}
+  //   var ret = {}
+  //   ret['simWords_' + action.id.toString()] = action.data;
+  //   return Object.assign({}, state, ret, {updateSimCount: count})
 
   case 'MULTISELECT':
     var ret = {}
