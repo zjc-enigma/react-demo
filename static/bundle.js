@@ -86048,6 +86048,10 @@
 	  value: true
 	});
 
+	var _extends2 = __webpack_require__(3);
+
+	var _extends3 = _interopRequireDefault(_extends2);
+
 	var _slicedToArray2 = __webpack_require__(790);
 
 	var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
@@ -86110,6 +86114,8 @@
 
 	var _Table = __webpack_require__(698);
 
+	var _reactSelectize = __webpack_require__(753);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var ResponsiveReactGridLayout = (0, _reactGridLayout.WidthProvider)(_reactGridLayout.Responsive);
@@ -86129,20 +86135,6 @@
 	    return response.json();
 	  };
 
-	  // let fetchToken = sentence => {
-	  //   fetch('/token',
-	  //         {method: "POST",
-	  //          headers:{
-	  //            'Accept': 'application/json',
-	  //            'Content-Type': 'application/json'},
-	  //          body: JSON.stringify({sentences: sentence})
-	  //         })
-	  //     .then(parseJson)
-	  //     .then(json => handleToken(json))
-	  //     .catch(function(e){console.log('parsing failed', e)})
-
-	  // }
-
 	  var handleToken = function handleToken(json) {
 
 	    dispatch({
@@ -86150,12 +86142,40 @@
 	      data: json
 	    });
 	  };
+	  var updateSimWords = function updateSimWords(json, key) {
+	    //console.log(key)
+	    dispatch({
+	      type: "GET_SIM_WORDS",
+	      data: json,
+	      id: key
+	    });
+	  };
 
 	  return {
+
+	    getSimWords: function getSimWords(word, key) {
+	      fetch("/simwords", { method: "POST",
+	        headers: {
+	          'Accept': 'application/json',
+	          'Content-Type': 'application/json' },
+	        body: (0, _stringify2.default)({ base_word: word })
+	      }).then(parseJson).then(function (json) {
+	        return updateSimWords(json, key);
+	      }).catch(function (e) {
+	        console.log('/simwords parsing failed', e);
+	      });
+	    },
 	    updateLayouts: function updateLayouts(layouts) {
 	      dispatch({
 	        type: "UPDATE_LAYOUTS",
 	        data: layouts
+	      });
+	    },
+	    updateWordEditors: function updateWordEditors(editors) {
+	      //console.log('editors', editors)
+	      dispatch({
+	        type: "UPDATE_EDITORS",
+	        data: editors
 	      });
 	    },
 	    getSentencesTokened: function getSentencesTokened(sentenceArray) {
@@ -86173,8 +86193,42 @@
 	  };
 	};
 
-	var Writer = (_dec = (0, _reactRedux.connect)(select, mapDispatchToProps), _dec(_class = (_temp = _class2 = function (_Component) {
-	  (0, _inherits3.default)(Writer, _Component);
+	var WordEditor = function (_Component) {
+	  (0, _inherits3.default)(WordEditor, _Component);
+
+	  function WordEditor(props, context) {
+	    (0, _classCallCheck3.default)(this, WordEditor);
+	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(WordEditor).call(this, props, context));
+	  }
+
+	  (0, _createClass3.default)(WordEditor, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.props.getSimWords(this.props.default, this.props.divKey);
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {}
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var width = this.props.wordWidth * 100;
+	      //console.log(this.props.divKey + "_props", this.props)
+	      //console.log(this.props[this.props.divKey])
+
+	      return _react2.default.createElement(_reactSelectize.MultiSelect, {
+	        options: this.props.options,
+	        onValuesChange: function onValuesChange() {},
+	        placeholder: this.props.default,
+	        theme: "material",
+	        style: { width: width } });
+	    }
+	  }]);
+	  return WordEditor;
+	}(_react.Component);
+
+	var Writer = (_dec = (0, _reactRedux.connect)(select, mapDispatchToProps), _dec(_class = (_temp = _class2 = function (_Component2) {
+	  (0, _inherits3.default)(Writer, _Component2);
 
 	  function Writer(props, context) {
 	    (0, _classCallCheck3.default)(this, Writer);
@@ -86190,15 +86244,14 @@
 	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
+	      var wordsLayout = [];
+	      var wordsEditors = [];
 
-	      var tokened = nextProps.tokened;
-	      //console.log('tokened', tokened)
+	      if (nextProps.tokened != undefined && this.props.layouts == undefined) {
+	        var tokened = nextProps.tokened;
+	        var widthStep = 0.5;
+	        var posY = 1;
 
-	      if (this.props.layouts === undefined) {
-
-	        var wordsLayout = [];
-
-	        var posY = 3;
 	        var _iteratorNormalCompletion = true;
 	        var _didIteratorError = false;
 	        var _iteratorError = undefined;
@@ -86224,15 +86277,36 @@
 	                var item = _step2$value[1];
 
 
-	                console.log('word', item.word.length);
+	                var divKey = "word_" + i + "_" + j;
+	                var word = item.word;
+	                var flag = item.flag;
+	                var wordWidth = word.length * widthStep;
+
+	                word.length === 1 ? wordsEditors.push(_react2.default.createElement(
+	                  'div',
+	                  { key: divKey },
+	                  word
+	                )) :
+	                //getSimWords={this.props.getSimWords}
+	                wordsEditors.push(_react2.default.createElement(
+	                  'div',
+	                  { key: divKey },
+	                  _react2.default.createElement(WordEditor, (0, _extends3.default)({
+	                    'default': word,
+	                    wordWidth: wordWidth,
+	                    divKey: divKey
+	                  }, this.props))
+	                ));
+
 	                wordsLayout.push({
-	                  i: "word_" + i + "_" + j,
+	                  i: divKey,
 	                  x: posX,
 	                  y: posY,
-	                  w: 1,
+	                  w: wordWidth,
+	                  h: 0.05,
 	                  static: true
 	                });
-	                posX += item.word.length;
+	                posX += wordWidth;
 	              }
 	            } catch (err) {
 	              _didIteratorError2 = true;
@@ -86267,41 +86341,51 @@
 	        }
 
 	        var layouts = { lg: wordsLayout.concat([{ i: "nextBtn", x: 6, y: 0.2, w: 1, h: 0.2, static: true }, { i: "prevBtn", x: 5, y: 0.2, w: 1, h: 0.2, static: true }]) };
+
 	        this.props.updateLayouts(layouts);
+	        this.props.updateWordEditors(wordsEditors);
 	      }
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      //let layouts = this.props.layouts
+	      var wordsEditors = this.props.editors;
 
+	      wordsEditors.push(_react2.default.createElement(
+	        'div',
+	        { key: 'nextBtn' },
+	        ' ',
+	        _react2.default.createElement(NextBtn, null),
+	        ' '
+	      ));
+
+	      wordsEditors.push(_react2.default.createElement(
+	        'div',
+	        { key: 'prevBtn' },
+	        ' ',
+	        _react2.default.createElement(PrevBtn, null),
+	        ' '
+	      ));
+
+	      // {React.cloneElement(wordsEditors, {...this.props})}
 	      return _react2.default.createElement(
 	        _MuiThemeProvider2.default,
 	        null,
 	        _react2.default.createElement(
 	          WriterGridLayout,
 	          { layouts: this.props.layouts },
-	          _react2.default.createElement(
-	            'div',
-	            { key: 'nextBtn' },
-	            ' ',
-	            _react2.default.createElement(NextBtn, null),
-	            ' '
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { key: 'prevBtn' },
-	            ' ',
-	            _react2.default.createElement(PrevBtn, null),
-	            ' '
-	          )
+	          wordsEditors
 	        )
 	      );
 	    }
 	  }]);
 	  return Writer;
-	}(_react.Component), _class2.defaultProps = {}, _temp)) || _class);
-	var NextBtn = (_temp2 = _class3 = function (_Component2) {
-	  (0, _inherits3.default)(NextBtn, _Component2);
+	}(_react.Component), _class2.defaultProps = {
+	  editors: []
+	}, _temp)) || _class);
+	var NextBtn = (_temp2 = _class3 = function (_Component3) {
+	  (0, _inherits3.default)(NextBtn, _Component3);
 
 	  function NextBtn(props, context) {
 	    (0, _classCallCheck3.default)(this, NextBtn);
@@ -86321,8 +86405,8 @@
 	}(_react.Component), _class3.defaultProps = {
 	  label: "Next step"
 	}, _temp2);
-	var PrevBtn = (_temp3 = _class4 = function (_Component3) {
-	  (0, _inherits3.default)(PrevBtn, _Component3);
+	var PrevBtn = (_temp3 = _class4 = function (_Component4) {
+	  (0, _inherits3.default)(PrevBtn, _Component4);
 
 	  function PrevBtn(props, context) {
 	    (0, _classCallCheck3.default)(this, PrevBtn);
@@ -86342,8 +86426,8 @@
 	}(_react.Component), _class4.defaultProps = {
 	  label: "Prev step"
 	}, _temp3);
-	var WriterGridLayout = (_temp4 = _class5 = function (_Component4) {
-	  (0, _inherits3.default)(WriterGridLayout, _Component4);
+	var WriterGridLayout = (_temp4 = _class5 = function (_Component5) {
+	  (0, _inherits3.default)(WriterGridLayout, _Component5);
 
 	  function WriterGridLayout(props, context) {
 	    (0, _classCallCheck3.default)(this, WriterGridLayout);
@@ -86381,9 +86465,13 @@
 	  value: true
 	});
 
-	var _extends2 = __webpack_require__(3);
+	var _defineProperty2 = __webpack_require__(794);
 
-	var _extends3 = _interopRequireDefault(_extends2);
+	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+	var _extends3 = __webpack_require__(3);
+
+	var _extends4 = _interopRequireDefault(_extends3);
 
 	exports.default = function () {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
@@ -86392,10 +86480,16 @@
 	  switch (action.type) {
 
 	    case "TOKENED_SENTENCES":
-	      return (0, _extends3.default)({}, state, { tokened: action.data });
+	      return (0, _extends4.default)({}, state, { tokened: action.data });
 
 	    case "UPDATE_LAYOUTS":
-	      return (0, _extends3.default)({}, state, { layouts: action.data });
+	      return (0, _extends4.default)({}, state, { layouts: action.data });
+
+	    case "UPDATE_EDITORS":
+	      return (0, _extends4.default)({}, state, { editors: action.data });
+
+	    case "GET_SIM_WORDS":
+	      return (0, _extends4.default)({}, state, (0, _defineProperty3.default)({}, action.id, action.data));
 
 	    default:
 	      return state;
@@ -86489,6 +86583,38 @@
 	    || Iterators.hasOwnProperty(classof(O));
 	};
 
+<<<<<<< HEAD
 >>>>>>> 416b1e4d84aa33d6b694eeb495f7714cff0bfdc2
+=======
+/***/ },
+/* 794 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _defineProperty = __webpack_require__(664);
+
+	var _defineProperty2 = _interopRequireDefault(_defineProperty);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (obj, key, value) {
+	  if (key in obj) {
+	    (0, _defineProperty2.default)(obj, key, {
+	      value: value,
+	      enumerable: true,
+	      configurable: true,
+	      writable: true
+	    });
+	  } else {
+	    obj[key] = value;
+	  }
+
+	  return obj;
+	};
+
+>>>>>>> d8b7acd2556ee23d23825e7668782445a3197bec
 /***/ }
 /******/ ]);
