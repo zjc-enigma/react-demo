@@ -56,6 +56,7 @@ const mapDispatchToProps = (dispatch) => {
         .catch(function(e){console.log('/simwords parsing failed', e)})
     },
     updateLayouts: layouts => {
+      console.log('update layouts', layouts)
       dispatch({
         type: "UPDATE_LAYOUTS",
         data: layouts
@@ -96,7 +97,7 @@ class WordEditor extends Component {
     super(props, context);
   }
   componentDidMount() {
-    this.props.getSimWords(this.props.default, this.props.divKey)
+    //this.props.getSimWords(this.props.default, this.props.divKey)
   }
 
   componentWillReceiveProps(nextProps){
@@ -130,15 +131,15 @@ class SentenceEditorArray extends Component {
     super(props, context);
   }
   componentDidMount() {
-    let layouts = {lg:[
-      {i:"nextBtn", x: 6, y: 0.2, w: 1, h: 0.2, static:true},
-      {i:"prevBtn", x: 5, y: 0.2, w: 1, h: 0.2, static:true},]}
-    this.props.updateLayouts(layouts)
+    // let layouts = {lg:[
+    //   {i:"nextBtn", x: 6, y: 0.2, w: 1, h: 0.2, static:true},
+    //   {i:"prevBtn", x: 5, y: 0.2, w: 1, h: 0.2, static:true},]}
+    // this.props.updateLayouts(layouts)
 
   }
 
   componentWillReceiveProps(nextProps){
-    
+
     if(this.props.tokened != nextProps.tokened) {
       let sentenceArray = []
       for(let [i, sentence] of nextProps.tokened.entries()){
@@ -149,13 +150,15 @@ class SentenceEditorArray extends Component {
     }
   }
   render() {
-    ///    {this.props.sentenceArray}
+
     return(
-        <div key={"sentenceArray"}>
-        {this.props.tokened.map(sentence =>
-                                <SentenceEditor sentence={sentence} {...this.props} />)}
-        </div>
-    )
+      <div>
+        {this.props.tokened.map((sentence, index) =>
+                                <SentenceEditor
+                                sentence={sentence}
+                                index={index}
+                                {...this.props} />)}
+    </div>)
   }
 
 
@@ -168,39 +171,60 @@ class SentenceEditor extends Component {
     super(props, context);
   }
   componentDidMount() {
-    let word = this.props.sentence[6]['word']
-    this.props.getSimWords(word)
 
-    //console.log("sentenceeditor", this.props.sentence[0]['word'])
-    //console.log("index", this.props.index)
+    for(let [j, item] of this.props.sentence.entries()) {
+      // let divKey = "word_" + this.props.index + "_" + j
+      let word = item.word
+      let flag = item.flag
+      // let wordWidth = word.length*widthStep
+      this.props.getSimWords(word)
 
-    //console.log('word', word)
-  
-    // let posY = 1
-    // for(let [i, sentence] of this.props.tokened.entries()){
-    //   let posX = 0
+      //posX += wordWidth
+    }
 
-    //   for(let [j, item] of sentence.entries()){
-
-    //     let divKey = "word_" + i + "_" + j
-    //     let word = item.word
-    //     let flag = item.flag
-    //     console.log(word)
-    //   }
-
-    // }
-
-
+    //this.props.updateLayouts(wordsLayout)
   }
   componentWillReceiveProps(nextProps){
 
   }
 
+  generateLayouts(){
+    //return this.props.sentence.map((wordItem) => {x: i * 2 % 12, y: Math.floor(i / 6) * y, w: 2, h: y, i: i.toString()})
+    let wordsLayout = []
+    let widthStep = 0.5
+    let posY = this.props.index
+    let posX = 0
+
+    for(let [j, item] of this.props.sentence.entries()) {
+      let divKey = "word_" + this.props.index + "_" + j
+      let word = item.word
+      let flag = item.flag
+      let wordWidth = word.length*widthStep
+      wordsLayout.push({
+        i: divKey,
+        x: posX,
+        y: posY,
+        w: wordWidth,
+        h: 0.05,
+        static:true})
+      posX += wordWidth
+    }
+
+    return {lg:wordsLayout}
+  }
+
   render() {
-    console.log(this.props)
+
     return(
-        <p> hello </p>
-    )
+        <ResponsiveReactGridLayout
+      layouts={this.generateLayouts()}
+      breakpoints={{lg: 800, md: 600, sm: 500, xs: 480, xxs: 0}}
+      cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}} >
+        {this.props.sentence.map((wordItem, index) =>
+                                 <div key={"word_" + this.props.index + "_" + index}>
+                                 <WordEditor default={wordItem.word} wordWidth={wordItem.word.length*0.5}/>
+                                 </div>)}
+      </ResponsiveReactGridLayout>)
   }
 }
 
@@ -215,7 +239,8 @@ class Writer extends Component {
     this.props.getSentencesTokened(s)
   }
   static defaultProps = {
-    editors : []
+    editors : [],
+    layouts : []
   }
   componentWillReceiveProps(nextProps){
     let wordsLayout = []
@@ -265,28 +290,29 @@ class Writer extends Component {
       //   }
       //   posY += 0.2
       // }
-
-      // let layouts = {lg:wordsLayout.concat([
-      //   {i:"nextBtn", x: 6, y: 0.2, w: 1, h: 0.2, static:true},
-      //   {i:"prevBtn", x: 5, y: 0.2, w: 1, h: 0.2, static:true},])}
-
-      // this.props.updateLayouts(layouts)
+      // let wordsLayout = []
       // this.props.updateWordEditors(wordsEditors)
     }
   }
 
+  generateDom(){
+    return (
+        <div key={'sentenceArray'}>
+        <SentenceEditorArray {...this.props} />
+        </div>)
+
+  }
   render(){
     //let layouts = this.props.layouts
     let wordsEditors = this.props.editors
 
-    wordsEditors.push(
-      <div key={'nextBtn'}> <NextBtn /> </div>
-    )
+    let layouts = {lg:this.props.layouts.concat([
+      {i:"nextBtn", x: 6, y: 0.2, w: 1, h: 0.2, static:true},
+      {i:"prevBtn", x: 5, y: 0.2, w: 1, h: 0.2, static:true},
+      {i:"sentenceArray", x: 0, y:0.8, w: 12, h: 0.2, static:true}])}
 
-    wordsEditors.push(
-        <div key={'prevBtn'}> <PrevBtn /> </div>
-    )
-    
+    // this.props.updateLayouts(layouts)
+
     // {React.cloneElement(wordsEditors, {...this.props})}
     //console.log('tokened', this.props.tokened)
     //{wordsEditors}
@@ -298,11 +324,10 @@ class Writer extends Component {
     // sentenceArray={this.props.sentenceArray}
     return (
         <MuiThemeProvider>
-        <WriterGridLayout layouts={this.props.layouts}>
-        <div key={'prevBtn'}>
-        <SentenceEditorArray
-      {...this.props}/>
-        </div>
+        <WriterGridLayout layouts={layouts}>
+        <div key={'nextBtn'}> <NextBtn /> </div>
+        <div key={'prevBtn'}> <PrevBtn /> </div>
+        {this.generateDom()}
         </WriterGridLayout>
         </MuiThemeProvider>
 
