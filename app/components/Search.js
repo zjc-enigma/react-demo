@@ -11,27 +11,68 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 import {MultiSelect} from 'react-selectize'
 import '../../node_modules/react-selectize/themes/index.css';
 
+
+let select = state => {return state.search}
+const mapDispatchToProps = dispatch => {
+  let parseJson = function(response){
+    return response.json()
+  }
+  return {
+    updateSearchText: text => {
+      dispatch({
+        type: "UPDATE_SEARCH_TEXT",
+        data: text
+      })
+    },
+    searchQuery: function(text){
+      if(text){
+        fetch('/query',
+              {method: "POST",
+               headers:{
+                 'Accept': 'application/json',
+                 'Content-Type': 'application/json'},
+               body: JSON.stringify({key: text})
+              })
+          .then(parseJson)
+          .then(json => dispatch({type: "SEARCH_QUERY", data: json}))
+          .catch(function(e){console.log('parsing failed', e)})
+
+      } else {
+        alert("Please input search text");
+      }
+    }
+  }
+}
+
+@connect(select, mapDispatchToProps)
 class Search extends Component {
 
   constructor(props, context){
     super(props, context);
   }
 
+  search(text){
+    //console.log('search Query:', text)
+    //TODO: add assert of text===""
+    this.props.searchQuery(text)
+    this.props.history.push('/selection')
+  }
   render() {
-    console.log("this.props", this.props)
+    //console.log("this.props", this.props)
     return (
         <MuiThemeProvider>
         <SearchGridLayout>
         <div key={'searchText'}>
         <SearchTextField
       hint={"input your secrets"}
-      text={"hehehe"} />
+      text={this.props.searchText}
+      updateSearchText={this.props.updateSearchText}/>
         </div>
 
         <div key={'searchBtn'}>
         <SearchBtn
       label={"Search"}
-      onClick={() => this.props.history.push('/selection')}
+      onClick={() => this.search(this.props.searchText)}
         /></div>
         <div key={'categorySelection'}>
         <CategorySelection />
@@ -75,12 +116,16 @@ class SearchTextField extends Component {
     super(props, context);
   }
 
+  handleInput(event){
+    this.props.updateSearchText(event.target.value)
+  }
+
   render() {
     return (
         <TextField
       hintText={this.props.hint}
       value={this.props.text}
-      onChange={() => {}}
+      onChange={event => this.handleInput(event)}
       fullWidth={true} />
     )
   }

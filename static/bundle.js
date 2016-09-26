@@ -12451,7 +12451,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.writer = exports.reducer = undefined;
+	exports.search = exports.writer = exports.reducer = undefined;
 
 	var _reducer2 = __webpack_require__(131);
 
@@ -12461,10 +12461,15 @@
 
 	var _writer3 = _interopRequireDefault(_writer2);
 
+	var _search2 = __webpack_require__(794);
+
+	var _search3 = _interopRequireDefault(_search2);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.reducer = _reducer3.default;
 	exports.writer = _writer3.default;
+	exports.search = _search3.default;
 
 /***/ },
 /* 131 */
@@ -39374,6 +39379,12 @@
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
+	var _stringify = __webpack_require__(779);
+
+	var _stringify2 = _interopRequireDefault(_stringify);
+
+	var _dec, _class;
+
 	var _MuiThemeProvider = __webpack_require__(137);
 
 	var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
@@ -39409,7 +39420,41 @@
 	var ResponsiveReactGridLayout = (0, _reactGridLayout.WidthProvider)(_reactGridLayout.Responsive);
 	//import { browserHistory, Router, Route } from 'react-router'
 
-	var Search = function (_Component) {
+
+	var select = function select(state) {
+	  return state.search;
+	};
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  var parseJson = function parseJson(response) {
+	    return response.json();
+	  };
+	  return {
+	    updateSearchText: function updateSearchText(text) {
+	      dispatch({
+	        type: "UPDATE_SEARCH_TEXT",
+	        data: text
+	      });
+	    },
+	    searchQuery: function searchQuery(text) {
+	      if (text) {
+	        fetch('/query', { method: "POST",
+	          headers: {
+	            'Accept': 'application/json',
+	            'Content-Type': 'application/json' },
+	          body: (0, _stringify2.default)({ key: text })
+	        }).then(parseJson).then(function (json) {
+	          return dispatch({ type: "SEARCH_QUERY", data: json });
+	        }).catch(function (e) {
+	          console.log('parsing failed', e);
+	        });
+	      } else {
+	        alert("Please input search text");
+	      }
+	    }
+	  };
+	};
+
+	var Search = (_dec = (0, _reactRedux.connect)(select, mapDispatchToProps), _dec(_class = function (_Component) {
 	  (0, _inherits3.default)(Search, _Component);
 
 	  function Search(props, context) {
@@ -39418,11 +39463,19 @@
 	  }
 
 	  (0, _createClass3.default)(Search, [{
+	    key: 'search',
+	    value: function search(text) {
+	      //console.log('search Query:', text)
+	      //TODO: add assert of text===""
+	      this.props.searchQuery(text);
+	      this.props.history.push('/selection');
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
 
-	      console.log("this.props", this.props);
+	      //console.log("this.props", this.props)
 	      return _react2.default.createElement(
 	        _MuiThemeProvider2.default,
 	        null,
@@ -39434,7 +39487,8 @@
 	            { key: 'searchText' },
 	            _react2.default.createElement(SearchTextField, {
 	              hint: "input your secrets",
-	              text: "hehehe" })
+	              text: this.props.searchText,
+	              updateSearchText: this.props.updateSearchText })
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -39442,7 +39496,7 @@
 	            _react2.default.createElement(SearchBtn, {
 	              label: "Search",
 	              onClick: function onClick() {
-	                return _this2.props.history.push('/selection');
+	                return _this2.search(_this2.props.searchText);
 	              }
 	            })
 	          ),
@@ -39456,7 +39510,7 @@
 	    }
 	  }]);
 	  return Search;
-	}(_react.Component);
+	}(_react.Component)) || _class);
 
 	var SearchGridLayout = function (_Component2) {
 	  (0, _inherits3.default)(SearchGridLayout, _Component2);
@@ -39496,12 +39550,21 @@
 	  }
 
 	  (0, _createClass3.default)(SearchTextField, [{
+	    key: 'handleInput',
+	    value: function handleInput(event) {
+	      this.props.updateSearchText(event.target.value);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this5 = this;
+
 	      return _react2.default.createElement(_TextField2.default, {
 	        hintText: this.props.hint,
 	        value: this.props.text,
-	        onChange: function onChange() {},
+	        onChange: function onChange(event) {
+	          return _this5.handleInput(event);
+	        },
 	        fullWidth: true });
 	    }
 	  }]);
@@ -39544,13 +39607,13 @@
 	  (0, _createClass3.default)(SearchBtn, [{
 	    key: 'render',
 	    value: function render() {
-	      var _this7 = this;
+	      var _this8 = this;
 
 	      return _react2.default.createElement(_RaisedButton2.default, {
 	        fullWidth: true,
 	        label: this.props.label,
 	        onClick: function onClick() {
-	          return _this7.props.onClick();
+	          return _this8.props.onClick();
 	        } });
 	    }
 	  }]);
@@ -55528,6 +55591,12 @@
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
+	var _extends2 = __webpack_require__(3);
+
+	var _extends3 = _interopRequireDefault(_extends2);
+
+	var _dec, _class;
+
 	var _MuiThemeProvider = __webpack_require__(137);
 
 	var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
@@ -55560,7 +55629,17 @@
 
 	var ResponsiveReactGridLayout = (0, _reactGridLayout.WidthProvider)(_reactGridLayout.Responsive);
 
-	var Selection = function (_Component) {
+
+	var mapStateToProps = function mapStateToProps(state) {
+	  return (0, _extends3.default)({}, state.selection, { searchRes: state.search.searchRes });
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+
+	  return {};
+	};
+
+	var Selection = (_dec = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps), _dec(_class = function (_Component) {
 	  (0, _inherits3.default)(Selection, _Component);
 
 	  function Selection(props, context) {
@@ -55571,6 +55650,7 @@
 	  (0, _createClass3.default)(Selection, [{
 	    key: 'render',
 	    value: function render() {
+	      console.log('selection props', this.props.searchRes);
 	      return _react2.default.createElement(
 	        _MuiThemeProvider2.default,
 	        null,
@@ -55597,7 +55677,7 @@
 	    }
 	  }]);
 	  return Selection;
-	}(_react.Component);
+	}(_react.Component)) || _class);
 
 	var NextBtn = function (_Component2) {
 	  (0, _inherits3.default)(NextBtn, _Component2);
@@ -55701,9 +55781,14 @@
 	      var nextState = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 	    }
 	  }, {
+	    key: 'generateRows',
+	    value: function generateRows() {}
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this6 = this;
+
+	      //this.generateRows()
 
 	      return _react2.default.createElement(
 	        _MuiThemeProvider2.default,
@@ -59013,14 +59098,18 @@
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {}
 	  }, {
+	    key: 'getOptions',
+	    value: function getOptions() {
+	      var simArray = this.props[this.props.default];
+	      return simArray;
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var width = this.props.wordWidth * 100;
-	      //console.log(this.props.divKey + "_props", this.props)
-	      //console.log(this.props[this.props.divKey])
 
 	      return _react2.default.createElement(_reactSelectize.MultiSelect, {
-	        options: this.props.options,
+	        options: this.getOptions(),
 	        onValuesChange: function onValuesChange() {},
 	        placeholder: this.props.default,
 	        theme: "material",
@@ -59222,7 +59311,10 @@
 	          return _react2.default.createElement(
 	            'div',
 	            { key: "word_" + _this5.props.index + "_" + index },
-	            _react2.default.createElement(WordEditor, { 'default': wordItem.word, wordWidth: wordItem.word.length * 0.5 })
+	            wordItem.word.length === 1 ? wordItem.word : _react2.default.createElement(WordEditor, (0, _extends3.default)({
+	              'default': wordItem.word,
+	              wordWidth: wordItem.word.length * 0.5
+	            }, _this5.props))
 	          );
 	        })
 	      );
@@ -70403,6 +70495,39 @@
 	    || '@@iterator' in O
 	    || Iterators.hasOwnProperty(classof(O));
 	};
+
+/***/ },
+/* 794 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends2 = __webpack_require__(3);
+
+	var _extends3 = _interopRequireDefault(_extends2);
+
+	exports.default = function () {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case "UPDATE_SEARCH_TEXT":
+	      return (0, _extends3.default)({}, state, { searchText: action.data });
+
+	    case "SEARCH_QUERY":
+	      return (0, _extends3.default)({}, state, { searchRes: action.data });
+
+	    default:
+	      return state;
+
+	  }
+	};
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }
 /******/ ]);

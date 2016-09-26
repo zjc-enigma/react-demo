@@ -105,14 +105,18 @@ class WordEditor extends Component {
 
   }
 
+  getOptions(){
+    let simArray = this.props[this.props.default]
+    return simArray
+  }
+
   render() {
     let width = this.props.wordWidth*100
-    //console.log(this.props.divKey + "_props", this.props)
-    //console.log(this.props[this.props.divKey])
+
 
     return (
         <MultiSelect
-      options={this.props.options}
+      options={this.getOptions()}
       onValuesChange = {() => {}}
       placeholder={this.props.default}
       theme={"material"}
@@ -222,7 +226,11 @@ class SentenceEditor extends Component {
       cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}} >
         {this.props.sentence.map((wordItem, index) =>
                                  <div key={"word_" + this.props.index + "_" + index}>
-                                 <WordEditor default={wordItem.word} wordWidth={wordItem.word.length*0.5}/>
+                                 {wordItem.word.length === 1? wordItem.word : (
+                                     <WordEditor
+                                   default={wordItem.word}
+                                   wordWidth={wordItem.word.length*0.5}
+                                   {...this.props}  />)}
                                  </div>)}
       </ResponsiveReactGridLayout>)
   }

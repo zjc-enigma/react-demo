@@ -5,7 +5,7 @@ export default function (state = [], action) {
     return {...state, tokened: action.data}
 
   case "UPDATE_LAYOUTS":
-    
+
     return {...state, layouts: action.data}
 
   case "UPDATE_EDITORS":

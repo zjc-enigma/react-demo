@@ -10,8 +10,18 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 
 
+let mapStateToProps = state => ({...state.selection, searchRes: state.search.searchRes })
+
+const mapDispatchToProps = dispatch => {
+
+  return {
 
 
+  }
+}
+
+
+@connect(mapStateToProps, mapDispatchToProps)
 class Selection extends Component {
 
   constructor(props, context){
@@ -19,6 +29,7 @@ class Selection extends Component {
   }
 
   render() {
+    console.log('selection props', this.props.searchRes)
     return (
         <MuiThemeProvider>
         <SelectionGridLayout>
@@ -123,9 +134,14 @@ class SelectionTable extends Component {
     // }
 
   }
+  generateRows(){
+
+
+  }
 
   render() {
-
+    //this.generateRows()
+    
     return (
         <MuiThemeProvider>
         <Table
