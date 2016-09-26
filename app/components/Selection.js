@@ -10,13 +10,18 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 
 
-let mapStateToProps = state => ({...state.selection, searchRes: state.search.searchRes })
+let mapStateToProps = state => ({state: state.selection,
+                                 searchRes: state.search.searchRes })
 
 const mapDispatchToProps = dispatch => {
 
   return {
-
-
+    updateSelection: selection => {
+      dispatch({
+        type: "UPDATE_SELECTION",
+        data: selection
+      })
+    }
   }
 }
 
@@ -28,16 +33,23 @@ class Selection extends Component {
     super(props, context);
   }
 
+
+  nextStep(){
+    this.props.history.push('/writer')
+  }
+
   render() {
-    console.log('selection props', this.props.searchRes)
+    //console.log('selection props', this.props.searchRes)
     return (
         <MuiThemeProvider>
         <SelectionGridLayout>
         <div key={'selectionTable'}>
-        <SelectionTable />
+        <SelectionTable
+      searchRes={this.props.searchRes}
+      updateSelection={this.props.updateSelection} />
         </div>
         <div key={'nextBtn'}>
-        <NextBtn label="Next step"/>
+        <NextBtn label="Next step" onClick={() => this.nextStep()}/>
         </div>
         <div key={'prevBtn'}>
         <NextBtn label="Prev step"/>
@@ -59,7 +71,7 @@ class NextBtn extends Component {
         <RaisedButton
       fullWidth={true}
       label={this.props.label}
-      onClick={() => {}} />
+      onClick={() => this.props.onClick()} />
     )
   }
 }
@@ -91,7 +103,7 @@ class SelectionGridLayout extends Component {
   render() {
 
     let layouts = {
-      lg:[{i:"selectionTable", x: 2.5, y: 0.5, w: 6, h: 0.2, static:true},
+      lg:[{i:"selectionTable", x: 2, y: 0.5, w: 8, h: 0.2, static:true},
           {i:"nextBtn", x: 6, y: 0.2, w: 1, h: 0.2, static:true},
           {i:"prevBtn", x: 5, y: 0.2, w: 1, h: 0.2, static:true}, 
          ]
@@ -114,40 +126,38 @@ class SelectionTable extends Component {
   constructor(props, context){
     super(props, context);
   }
-  shouldComponentUpdate (nextProps={}, nextState={}) {
+  componentWillReceiveProps(nextProps){
 
-    // var rows = [];
+  }
 
-    // for (var sentenceIndex in generateRes){
-    //   var res = generateRes[sentenceIndex];
-    //   for (var index in res){
-
-    //     rows.push(
-    //         <TableRow>
-    //         <TableRowColumn>
-    //         <TextField
-    //       value={res[index]}
-    //       fullWidth={true}/>
-    //         </TableRowColumn>
-    //         </TableRow>)
-    //   }
-    // }
+  shouldComponentUpdate (nextProps, nextState) {
+    return nextProps.searchRes !== this.props.searchRes
 
   }
   generateRows(){
+    return this.props.searchRes===undefined ?
+      null : this.props.searchRes.map(item => <TableRow>
+                                      <TableRowColumn>{item.tag}</TableRowColumn>
+                                      <TableRowColumn>{'头条'}</TableRowColumn>
+                                      <TableRowColumn>{'测试'}</TableRowColumn>
+                                      <TableRowColumn style={{width:'60%'}}>{item.content}</TableRowColumn>
+                                      </TableRow>)
+  }
 
+  handleSelection(slices) {
+    let selection = slices.map(index => {return this.props.searchRes[index]})
+    this.props.updateSelection(selection)
 
   }
 
   render() {
-    //this.generateRows()
-    
+
     return (
         <MuiThemeProvider>
         <Table
       selectable={true}
       multiSelectable={true}
-      onRowSelection={(slices) => this.handleRowSelected(slices)}>
+      onRowSelection={slices => this.handleSelection(slices)}>
         <TableHeader>
         <TableRow>
         <TableHeaderColumn>类别</TableHeaderColumn>
@@ -156,7 +166,9 @@ class SelectionTable extends Component {
         <TableHeaderColumn style={{width: '60%'}}>内容</TableHeaderColumn>
         </TableRow>
         </TableHeader>
-        <TableBody>
+        <TableBody deselectOnClickaway={false}
+>
+        {this.generateRows()}
         </TableBody>
         </Table>
         </MuiThemeProvider>

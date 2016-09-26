@@ -15,7 +15,9 @@ import {MultiSelect} from 'react-selectize'
 //   return true;
 // };
 
-let select = state => {return state.writer};
+let select = state => ({ state:state.writer,
+                         selectionRes: state.selection.selectionRes})
+
 
 const mapDispatchToProps = (dispatch) => {
   let parseJson = response => {

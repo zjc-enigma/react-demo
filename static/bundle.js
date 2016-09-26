@@ -12451,7 +12451,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.search = exports.writer = exports.reducer = undefined;
+	exports.selection = exports.search = exports.writer = exports.reducer = undefined;
 
 	var _reducer2 = __webpack_require__(131);
 
@@ -12465,11 +12465,16 @@
 
 	var _search3 = _interopRequireDefault(_search2);
 
+	var _selection2 = __webpack_require__(795);
+
+	var _selection3 = _interopRequireDefault(_selection2);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.reducer = _reducer3.default;
 	exports.writer = _writer3.default;
 	exports.search = _search3.default;
+	exports.selection = _selection3.default;
 
 /***/ },
 /* 131 */
@@ -55591,10 +55596,6 @@
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
-	var _extends2 = __webpack_require__(3);
-
-	var _extends3 = _interopRequireDefault(_extends2);
-
 	var _dec, _class;
 
 	var _MuiThemeProvider = __webpack_require__(137);
@@ -55631,12 +55632,20 @@
 
 
 	var mapStateToProps = function mapStateToProps(state) {
-	  return (0, _extends3.default)({}, state.selection, { searchRes: state.search.searchRes });
+	  return { state: state.selection,
+	    searchRes: state.search.searchRes };
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 
-	  return {};
+	  return {
+	    updateSelection: function updateSelection(selection) {
+	      dispatch({
+	        type: "UPDATE_SELECTION",
+	        data: selection
+	      });
+	    }
+	  };
 	};
 
 	var Selection = (_dec = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps), _dec(_class = function (_Component) {
@@ -55648,9 +55657,16 @@
 	  }
 
 	  (0, _createClass3.default)(Selection, [{
+	    key: 'nextStep',
+	    value: function nextStep() {
+	      this.props.history.push('/writer');
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log('selection props', this.props.searchRes);
+	      var _this2 = this;
+
+	      //console.log('selection props', this.props.searchRes)
 	      return _react2.default.createElement(
 	        _MuiThemeProvider2.default,
 	        null,
@@ -55660,12 +55676,16 @@
 	          _react2.default.createElement(
 	            'div',
 	            { key: 'selectionTable' },
-	            _react2.default.createElement(SelectionTable, null)
+	            _react2.default.createElement(SelectionTable, {
+	              searchRes: this.props.searchRes,
+	              updateSelection: this.props.updateSelection })
 	          ),
 	          _react2.default.createElement(
 	            'div',
 	            { key: 'nextBtn' },
-	            _react2.default.createElement(NextBtn, { label: 'Next step' })
+	            _react2.default.createElement(NextBtn, { label: 'Next step', onClick: function onClick() {
+	                return _this2.nextStep();
+	              } })
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -55690,10 +55710,14 @@
 	  (0, _createClass3.default)(NextBtn, [{
 	    key: 'render',
 	    value: function render() {
+	      var _this4 = this;
+
 	      return _react2.default.createElement(_RaisedButton2.default, {
 	        fullWidth: true,
 	        label: this.props.label,
-	        onClick: function onClick() {} });
+	        onClick: function onClick() {
+	          return _this4.props.onClick();
+	        } });
 	    }
 	  }]);
 	  return NextBtn;
@@ -55732,7 +55756,7 @@
 	    value: function render() {
 
 	      var layouts = {
-	        lg: [{ i: "selectionTable", x: 2.5, y: 0.5, w: 6, h: 0.2, static: true }, { i: "nextBtn", x: 6, y: 0.2, w: 1, h: 0.2, static: true }, { i: "prevBtn", x: 5, y: 0.2, w: 1, h: 0.2, static: true }]
+	        lg: [{ i: "selectionTable", x: 2, y: 0.5, w: 8, h: 0.2, static: true }, { i: "nextBtn", x: 6, y: 0.2, w: 1, h: 0.2, static: true }, { i: "prevBtn", x: 5, y: 0.2, w: 1, h: 0.2, static: true }]
 	      };
 
 	      return _react2.default.createElement(
@@ -55757,38 +55781,57 @@
 	  }
 
 	  (0, _createClass3.default)(SelectionTable, [{
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {}
+	  }, {
 	    key: 'shouldComponentUpdate',
-	    value: function shouldComponentUpdate() {
-
-	      // var rows = [];
-
-	      // for (var sentenceIndex in generateRes){
-	      //   var res = generateRes[sentenceIndex];
-	      //   for (var index in res){
-
-	      //     rows.push(
-	      //         <TableRow>
-	      //         <TableRowColumn>
-	      //         <TextField
-	      //       value={res[index]}
-	      //       fullWidth={true}/>
-	      //         </TableRowColumn>
-	      //         </TableRow>)
-	      //   }
-	      // }
-
-	      var nextProps = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	      var nextState = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	    value: function shouldComponentUpdate(nextProps, nextState) {
+	      return nextProps.searchRes !== this.props.searchRes;
 	    }
 	  }, {
 	    key: 'generateRows',
-	    value: function generateRows() {}
+	    value: function generateRows() {
+	      return this.props.searchRes === undefined ? null : this.props.searchRes.map(function (item) {
+	        return _react2.default.createElement(
+	          _Table.TableRow,
+	          null,
+	          _react2.default.createElement(
+	            _Table.TableRowColumn,
+	            null,
+	            item.tag
+	          ),
+	          _react2.default.createElement(
+	            _Table.TableRowColumn,
+	            null,
+	            '头条'
+	          ),
+	          _react2.default.createElement(
+	            _Table.TableRowColumn,
+	            null,
+	            '测试'
+	          ),
+	          _react2.default.createElement(
+	            _Table.TableRowColumn,
+	            { style: { width: '60%' } },
+	            item.content
+	          )
+	        );
+	      });
+	    }
+	  }, {
+	    key: 'handleSelection',
+	    value: function handleSelection(slices) {
+	      var _this8 = this;
+
+	      var selection = slices.map(function (index) {
+	        return _this8.props.searchRes[index];
+	      });
+	      this.props.updateSelection(selection);
+	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this6 = this;
-
-	      //this.generateRows()
+	      var _this9 = this;
 
 	      return _react2.default.createElement(
 	        _MuiThemeProvider2.default,
@@ -55799,7 +55842,7 @@
 	            selectable: true,
 	            multiSelectable: true,
 	            onRowSelection: function onRowSelection(slices) {
-	              return _this6.handleRowSelected(slices);
+	              return _this9.handleSelection(slices);
 	            } },
 	          _react2.default.createElement(
 	            _Table.TableHeader,
@@ -55829,7 +55872,12 @@
 	              )
 	            )
 	          ),
-	          _react2.default.createElement(_Table.TableBody, null)
+	          _react2.default.createElement(
+	            _Table.TableBody,
+	            { deselectOnClickaway: false
+	            },
+	            this.generateRows()
+	          )
 	        )
 	      );
 	    }
@@ -59005,7 +59053,8 @@
 	// };
 
 	var select = function select(state) {
-	  return state.writer;
+	  return { state: state.writer,
+	    selectionRes: state.selection.selectionRes };
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
@@ -70524,6 +70573,36 @@
 	    default:
 	      return state;
 
+	  }
+	};
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 795 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends2 = __webpack_require__(3);
+
+	var _extends3 = _interopRequireDefault(_extends2);
+
+	exports.default = function () {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+	  var action = arguments[1];
+
+	  switch (action.type) {
+
+	    case "UPDATE_SELECTION":
+	      return (0, _extends3.default)({}, state, { selectionRes: action.data });
+
+	    default:
+	      return state;
 	  }
 	};
 
