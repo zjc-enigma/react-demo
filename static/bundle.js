@@ -39530,7 +39530,7 @@
 	    value: function render() {
 
 	      var layouts = {
-	        lg: [{ i: "searchText", x: 3, y: 2, w: 6, h: 0.2, static: true }, { i: "searchBtn", x: 9, y: 2, w: 1, h: 0.2, static: true }, { i: "categorySelection", x: 3, y: 1, w: 3, h: 0.2, static: true }]
+	        lg: [{ i: "searchText", x: 3, y: 2, w: 5, h: 0.2, static: true }, { i: "searchBtn", x: 8, y: 2, w: 1, h: 0.2, static: true }, { i: "categorySelection", x: 3, y: 1, w: 3, h: 0.2, static: true }]
 	      };
 
 	      return _react2.default.createElement(
@@ -59298,7 +59298,7 @@
 	  }, {
 	    key: 'generateLayouts',
 	    value: function generateLayouts() {
-	      //return this.props.sentence.map((wordItem) => {x: i * 2 % 12, y: Math.floor(i / 6) * y, w: 2, h: y, i: i.toString()})
+
 	      var wordsLayout = [];
 	      var widthStep = 0.5;
 	      var posY = this.props.index;
@@ -59383,8 +59383,7 @@
 	  (0, _createClass3.default)(Writer, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var s = ['农夫山泉是一家著名的饮料公司'];
-	      this.props.getSentencesTokened(s);
+	      this.props.getSentencesTokened(this.props.selectionRes);
 	    }
 	  }, {
 	    key: 'componentWillReceiveProps',
@@ -59450,7 +59449,7 @@
 	    key: 'render',
 	    value: function render() {
 	      //let layouts = this.props.layouts
-	      var wordsEditors = this.props.editors;
+	      //let wordsEditors = this.props.editors
 
 	      var layouts = { lg: this.props.layouts.concat([{ i: "nextBtn", x: 6, y: 0.2, w: 1, h: 0.2, static: true }, { i: "prevBtn", x: 5, y: 0.2, w: 1, h: 0.2, static: true }, { i: "sentenceArray", x: 0, y: 0.8, w: 12, h: 0.2, static: true }]) };
 
@@ -70599,7 +70598,9 @@
 	  switch (action.type) {
 
 	    case "UPDATE_SELECTION":
-	      return (0, _extends3.default)({}, state, { selectionRes: action.data });
+	      return (0, _extends3.default)({}, state, { selectionRes: action.data.map(function (selection) {
+	          return selection.content;
+	        }) });
 
 	    default:
 	      return state;

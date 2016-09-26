@@ -156,7 +156,7 @@ class SentenceEditorArray extends Component {
     }
   }
   render() {
-
+    
     return(
       <div>
         {this.props.tokened.map((sentence, index) =>
@@ -177,7 +177,7 @@ class SentenceEditor extends Component {
     super(props, context);
   }
   componentDidMount() {
-
+   
     for(let [j, item] of this.props.sentence.entries()) {
       // let divKey = "word_" + this.props.index + "_" + j
       let word = item.word
@@ -195,7 +195,7 @@ class SentenceEditor extends Component {
   }
 
   generateLayouts(){
-    //return this.props.sentence.map((wordItem) => {x: i * 2 % 12, y: Math.floor(i / 6) * y, w: 2, h: y, i: i.toString()})
+
     let wordsLayout = []
     let widthStep = 0.5
     let posY = this.props.index
@@ -245,8 +245,7 @@ class Writer extends Component {
     super(props, context);
   }
   componentDidMount() {
-    let s = ['农夫山泉是一家著名的饮料公司',]
-    this.props.getSentencesTokened(s)
+    this.props.getSentencesTokened(this.props.selectionRes)
   }
   static defaultProps = {
     editors : [],
@@ -314,8 +313,8 @@ class Writer extends Component {
   }
   render(){
     //let layouts = this.props.layouts
-    let wordsEditors = this.props.editors
-
+    //let wordsEditors = this.props.editors
+    
     let layouts = {lg:this.props.layouts.concat([
       {i:"nextBtn", x: 6, y: 0.2, w: 1, h: 0.2, static:true},
       {i:"prevBtn", x: 5, y: 0.2, w: 1, h: 0.2, static:true},

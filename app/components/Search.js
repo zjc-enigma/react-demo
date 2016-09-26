@@ -93,8 +93,8 @@ class SearchGridLayout extends Component {
   render() {
 
     let layouts = {
-      lg:[{i:"searchText", x: 3, y: 2, w: 6, h: 0.2, static:true},
-          {i:"searchBtn", x: 9, y: 2, w: 1, h: 0.2, static:true},
+      lg:[{i:"searchText", x: 3, y: 2, w: 5, h: 0.2, static:true},
+          {i:"searchBtn", x: 8, y: 2, w: 1, h: 0.2, static:true},
           {i:"categorySelection", x: 3, y: 1, w: 3, h: 0.2, static:true},]
     }
 
