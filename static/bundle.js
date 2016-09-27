@@ -55666,7 +55666,6 @@
 	    value: function render() {
 	      var _this2 = this;
 
-	      //console.log('selection props', this.props.searchRes)
 	      return _react2.default.createElement(
 	        _MuiThemeProvider2.default,
 	        null,
@@ -58974,10 +58973,6 @@
 	  value: true
 	});
 
-	var _extends2 = __webpack_require__(3);
-
-	var _extends3 = _interopRequireDefault(_extends2);
-
 	var _slicedToArray2 = __webpack_require__(790);
 
 	var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
@@ -59009,6 +59004,10 @@
 	var _stringify = __webpack_require__(779);
 
 	var _stringify2 = _interopRequireDefault(_stringify);
+
+	var _extends2 = __webpack_require__(3);
+
+	var _extends3 = _interopRequireDefault(_extends2);
 
 	var _class, _temp, _dec, _class2, _class3, _temp2, _class4, _temp3, _class5, _temp4, _class6, _temp5;
 
@@ -59053,8 +59052,8 @@
 	// };
 
 	var select = function select(state) {
-	  return { state: state.writer,
-	    selectionRes: state.selection.selectionRes };
+	  return (0, _extends3.default)({}, state.writer, {
+	    selectionRes: state.selection.selectionRes });
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
@@ -59301,7 +59300,7 @@
 
 	      var wordsLayout = [];
 	      var widthStep = 0.5;
-	      var posY = this.props.index;
+	      var posY = this.props.index * 0.2;
 	      var posX = 0;
 
 	      var _iteratorNormalCompletion3 = true;
@@ -59318,14 +59317,24 @@
 	          var divKey = "word_" + this.props.index + "_" + j;
 	          var word = item.word;
 	          var flag = item.flag;
+
 	          var wordWidth = word.length * widthStep;
+	          var fixX = 0;
+	          var fixY = 0;
+	          var fixWidth = -0.01;
+	          if (word.length === 1) {
+	            wordWidth = 0.12;
+	            fixX = 0;
+	            fixY = 0.06;
+	          }
 	          wordsLayout.push({
 	            i: divKey,
-	            x: posX,
-	            y: posY,
-	            w: wordWidth,
+	            x: posX + fixX,
+	            y: posY + fixY,
+	            w: wordWidth + fixWidth,
 	            h: 0.05,
 	            static: true });
+
 	          posX += wordWidth;
 	        }
 	      } catch (err) {
@@ -59383,6 +59392,8 @@
 	  (0, _createClass3.default)(Writer, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      //let s = ["农夫山泉是一家饮料公司", ]
+	      //this.props.getSentencesTokened(s)
 	      this.props.getSentencesTokened(this.props.selectionRes);
 	    }
 	  }, {
@@ -59405,8 +59416,6 @@
 	        //     let word = item.word
 	        //     let flag = item.flag
 	        //     let wordWidth = word.length*widthStep
-
-
 	        //     word.length === 1 ? wordsEditors.push(<div key={divKey}>
 	        //                                           {word}
 	        //                                           </div> ) :
@@ -59419,7 +59428,6 @@
 	        //                         {...this.props}
 	        //                         />
 	        //                         </div>)
-
 	        //     wordsLayout.push({
 	        //       i: divKey,
 	        //       x: posX,
@@ -59442,7 +59450,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { key: 'sentenceArray' },
-	        _react2.default.createElement(SentenceEditorArray, this.props)
+	        this.props.tokened === undefined ? null : _react2.default.createElement(SentenceEditorArray, this.props)
 	      );
 	    }
 	  }, {
@@ -59464,6 +59472,8 @@
 	      // updateLayouts={this.props.updateLayouts}
 	      // updateSentenceArray={this.props.updateSentenceArray}
 	      // sentenceArray={this.props.sentenceArray}
+	      //console.log('token', this.props)
+
 	      return _react2.default.createElement(
 	        _MuiThemeProvider2.default,
 	        null,

@@ -39,7 +39,7 @@ class Selection extends Component {
   }
 
   render() {
-    //console.log('selection props', this.props.searchRes)
+    
     return (
         <MuiThemeProvider>
         <SelectionGridLayout>
@@ -132,8 +132,8 @@ class SelectionTable extends Component {
 
   shouldComponentUpdate (nextProps, nextState) {
     return nextProps.searchRes !== this.props.searchRes
-
   }
+  
   generateRows(){
     return this.props.searchRes===undefined ?
       null : this.props.searchRes.map(item => <TableRow>
@@ -147,7 +147,6 @@ class SelectionTable extends Component {
   handleSelection(slices) {
     let selection = slices.map(index => {return this.props.searchRes[index]})
     this.props.updateSelection(selection)
-
   }
 
   render() {

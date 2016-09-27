@@ -15,7 +15,7 @@ import {MultiSelect} from 'react-selectize'
 //   return true;
 // };
 
-let select = state => ({ state:state.writer,
+let select = state => ({ ...state.writer,
                          selectionRes: state.selection.selectionRes})
 
 
@@ -164,7 +164,7 @@ class SentenceEditorArray extends Component {
                                 sentence={sentence}
                                 index={index}
                                 {...this.props} />)}
-    </div>)
+      </div>)
   }
 
 
@@ -198,21 +198,31 @@ class SentenceEditor extends Component {
 
     let wordsLayout = []
     let widthStep = 0.5
-    let posY = this.props.index
+    let posY = this.props.index*0.2
     let posX = 0
 
     for(let [j, item] of this.props.sentence.entries()) {
       let divKey = "word_" + this.props.index + "_" + j
       let word = item.word
       let flag = item.flag
+
       let wordWidth = word.length*widthStep
+      let fixX = 0
+      let fixY = 0
+      let fixWidth = -0.01
+      if(word.length === 1) {
+        wordWidth=0.12
+        fixX = 0
+        fixY = 0.06
+      }
       wordsLayout.push({
         i: divKey,
-        x: posX,
-        y: posY,
-        w: wordWidth,
+        x: posX + fixX,
+        y: posY + fixY,
+        w: wordWidth + fixWidth,
         h: 0.05,
         static:true})
+
       posX += wordWidth
     }
 
@@ -245,6 +255,8 @@ class Writer extends Component {
     super(props, context);
   }
   componentDidMount() {
+    //let s = ["农夫山泉是一家饮料公司", ]
+    //this.props.getSentencesTokened(s)
     this.props.getSentencesTokened(this.props.selectionRes)
   }
   static defaultProps = {
@@ -271,9 +283,6 @@ class Writer extends Component {
       //     let word = item.word
       //     let flag = item.flag
       //     let wordWidth = word.length*widthStep
-
-
-
       //     word.length === 1 ? wordsEditors.push(<div key={divKey}>
       //                                           {word}
       //                                           </div> ) :
@@ -286,7 +295,6 @@ class Writer extends Component {
       //                         {...this.props}
       //                         />
       //                         </div>)
-
       //     wordsLayout.push({
       //       i: divKey,
       //       x: posX,
@@ -307,14 +315,13 @@ class Writer extends Component {
   generateDom(){
     return (
         <div key={'sentenceArray'}>
-        <SentenceEditorArray {...this.props} />
-        </div>)
-
+        {this.props.tokened === undefined ? null : (<SentenceEditorArray {...this.props} />)}
+      </div>)
   }
   render(){
     //let layouts = this.props.layouts
     //let wordsEditors = this.props.editors
-    
+
     let layouts = {lg:this.props.layouts.concat([
       {i:"nextBtn", x: 6, y: 0.2, w: 1, h: 0.2, static:true},
       {i:"prevBtn", x: 5, y: 0.2, w: 1, h: 0.2, static:true},
@@ -331,7 +338,10 @@ class Writer extends Component {
     // updateLayouts={this.props.updateLayouts}
     // updateSentenceArray={this.props.updateSentenceArray}
     // sentenceArray={this.props.sentenceArray}
+    //console.log('token', this.props)
+
     return (
+      
         <MuiThemeProvider>
         <WriterGridLayout layouts={layouts}>
         <div key={'nextBtn'}> <NextBtn /> </div>
