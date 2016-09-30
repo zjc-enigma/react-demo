@@ -165,8 +165,7 @@ class SelectionTable extends Component {
         <TableHeaderColumn style={{width: '60%'}}>内容</TableHeaderColumn>
         </TableRow>
         </TableHeader>
-        <TableBody deselectOnClickaway={false}
->
+        <TableBody deselectOnClickaway={false}>
         {this.generateRows()}
         </TableBody>
         </Table>

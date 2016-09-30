@@ -55873,8 +55873,7 @@
 	          ),
 	          _react2.default.createElement(
 	            _Table.TableBody,
-	            { deselectOnClickaway: false
-	            },
+	            { deselectOnClickaway: false },
 	            this.generateRows()
 	          )
 	        )
