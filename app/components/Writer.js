@@ -39,7 +39,7 @@ const mapDispatchToProps = (dispatch) => {
       word: word
 
     })
-    
+
   }
 
   return {

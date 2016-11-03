@@ -57,8 +57,7 @@ class SimWords(Resource):
             base_word = request.json['base_word']
 
             for item in word_model.most_similar(base_word):
-                sim_words.append({"value": item[0],
-                                 "label": item[0]})
+                sim_words.append({"value": item[0], "label": item[0]})
         except Exception, e:
             print e
 
@@ -119,8 +118,7 @@ class TokenSentence(Resource):
             #tokened = myutils.tokenize_zh_line(sentence.decode('utf8'))
             words = pseg.cut(sentence.decode('utf8'))
             for word, flag in words:
-                tokened.append({"word": word,
-                                "flag": flag})
+                tokened.append({"word": word, "flag": flag})
             print sentence
             print type(sentence)
             print str(tokened)
@@ -220,5 +218,5 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+    app.run(debug=True, host="0.0.0.0", port=7777, threaded=True)
 
