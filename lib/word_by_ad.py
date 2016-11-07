@@ -33,9 +33,9 @@ def get_word_dict(word_json, raw_word_json):
 
 def get_word_from_ad(in_ad):
     print '正在爬取该文案的文本:' + in_ad + "\n"
-    doc = search.main_Baidu(in_ad)    
+    doc = search.main_Baidu(in_ad)
 
-    word_tag2weight = simrule.tag2dict()    
+    word_tag2weight = simrule.tag2dict()
     tag_json, word_json, raw_word_json = \
                     simrule.doc2vect(doc, word_tag2weight)
     outline = [in_ad, tag_json, word_json, raw_word_json, doc]
@@ -53,10 +53,12 @@ def get_transfor_ad(in_ad, ad_dict, doc_dict):
         mix_dict[i] = doc_dict[i]
 
     mix_sort = sorted(mix_dict.iteritems(), key=lambda d:d[1], reverse = True)[:3]
-    print json.dumps(mix_sort, ensure_ascii=False)
+    # print json.dumps(mix_sort, ensure_ascii=False)
 
     transfor_ad = in_ad
-    for i,j in mix_sort:
+    res_dict = {}
+    for i, j in mix_sort:
+        pdb.set_trace()
         trans_str = " [" + i + "] "
         transfor_ad = transfor_ad.replace(i, trans_str)
 
