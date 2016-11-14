@@ -58,7 +58,6 @@ def get_transfor_ad(in_ad, ad_dict, doc_dict):
     transfor_ad = in_ad
     res_dict = {}
     for i, j in mix_sort:
-        pdb.set_trace()
         trans_str = " [" + i + "] "
         transfor_ad = transfor_ad.replace(i, trans_str)
 
@@ -81,13 +80,14 @@ def get_keywords(sentence):
         tag_json, word_json, raw_word_json = ad_vect[sentence]
     else:
         tag_json, word_json, raw_word_json = get_word_from_ad(sentence)
+
+    pdb.set_trace()
     doc_word_dict = get_word_dict(word_json, raw_word_json)
     doc_word_json = json.dumps(doc_word_dict, ensure_ascii=False)
 
-    ad_word_dict = {}
-    word.allword_by_pynlpir(sentence, ad_word_dict)
+    ad_word_dict = word.allword_by_pynlpir_ordered(sentence)
     ad_word_json = json.dumps(ad_word_dict, ensure_ascii=False)
-    
+
     processed_sentence = get_transfor_ad(sentence, ad_word_dict, doc_word_dict)
     print processed_sentence
     return ad_word_json

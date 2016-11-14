@@ -24,6 +24,8 @@ from data import search_title
 from data import search_title_by_class
 from data import random_select_ad
 from data import label2value, value2label
+from lib import word_by_ad
+
 import jieba.posseg as pseg
 
 #from pandas import DataFrame
@@ -102,11 +104,7 @@ class Download(Resource):
 
 api.add_resource(Download, '/download')
 
-
-# 
-# 
 # for word, flag in words:
-
 class TokenSentence(Resource):
 
     def post(self):
