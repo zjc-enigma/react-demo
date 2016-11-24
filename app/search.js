@@ -27,12 +27,11 @@ import FlatButton from 'material-ui/FlatButton';
 class HorizontalLinearStepper extends Component {
 
   constructor(props, context){
-    super(props, context);
+    super(props, context)
   }
 
 
   handleNext (stepIndex) {
-    var rrr = ['bcasdafaf', 'sidfjaspifajsdf', '2312431'];
     this.props.steperNext(stepIndex, this.props.resTableSelection, rrr);
   };
 
@@ -441,7 +440,7 @@ SearchTextField.contextTypes = {
   text: React.PropTypes.any,
   textInput: React.PropTypes.any,
 
-};
+}
 
 
 class GenerateResTable extends Component{

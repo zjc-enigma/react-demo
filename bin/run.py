@@ -1,7 +1,7 @@
 #coding=utf-8
 import sys
-reload(sys)
-sys.setdefaultencoding('UTF8')
+#reload(sys)
+#sys.setdefaultencoding('UTF8')
 from os import path
 from flask import Flask
 from flask import redirect
@@ -15,10 +15,10 @@ from flask import make_response
 from functools import wraps, update_wrapper
 from datetime import datetime
 from wtforms import Form, BooleanField, StringField, PasswordField, validators, IntegerField, FloatField
-from flask.ext.restful import Resource, Api, fields, marshal_with, reqparse
+from flask_restful import Resource, Api, fields, marshal_with, reqparse
 sys.path.append('../lib')
 sys.path.append('/Users/Patrick/Git/')
-from utils import myutils
+from utils import myutils3
 from data import random_select_titles
 from data import search_title
 from data import search_title_by_class
@@ -60,10 +60,10 @@ class SimWords(Resource):
 
             for item in word_model.most_similar(base_word):
                 sim_words.append({"value": item[0], "label": item[0]})
-        except Exception, e:
-            print e
+        except Exception as e:
+            print(e)
 
-        print "sim words:", str(sim_words)
+        print("sim words:", sim_words)
         return sim_words
 
 api.add_resource(SimWords, '/simwords')
@@ -96,7 +96,7 @@ class Download(Resource):
 
     def post(self):
         sentence_list = request.json['sentences']
-        print str(sentence_list)
+        print(sentence_list)
         #df.to_excel('/Users/Patrick/Git/react-demo/test.xlsx', sheet_name='sheet1', index=False)
         #print request
         write_csv(sentence_list, 'test.csv')
@@ -110,16 +110,16 @@ class TokenSentence(Resource):
     def post(self):
         res = []
         sentence_list = request.json['sentences']
-        print str(sentence_list)
+        print(sentence_list)
         for sentence in sentence_list:
             tokened = []
             #tokened = myutils.tokenize_zh_line(sentence.decode('utf8'))
-            words = pseg.cut(sentence.decode('utf8'))
+            words = pseg.cut(sentence.encode('utf8'))
             for word, flag in words:
                 tokened.append({"word": word, "flag": flag})
-            print sentence
-            print type(sentence)
-            print str(tokened)
+            print(sentence)
+            print(type(sentence))
+            print(tokened)
             res.append(tokened)
 
         return res
@@ -147,14 +147,14 @@ class SearchByClass(Resource):
         query = request.json['key']
         try:
             selectionArray = request.json['class_name']
-        except Exception, e:
+        except Exception as e:
             selectionArray = []
 
         class_name_list = []
-        print "selectionArray", str(selectionArray)
+        print("selectionArray", selectionArray)
 
         for item in selectionArray:
-            print "item:", str(item), type(item)
+            print("item:", item, type(item))
             class_name_list.append(item['value'])
 
         return search_title_by_class(query.encode('utf8'), class_name_list)

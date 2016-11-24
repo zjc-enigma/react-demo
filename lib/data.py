@@ -48,7 +48,7 @@ value2label = {'3c':'3C',
                'unknown': '未知'}
 
 def _invert_mapping(mapping):
-    return {v: k for k, v in mapping.iteritems()}
+    return {v: k for k, v in mapping.items()}
 
 label2value = _invert_mapping(value2label)
 
@@ -67,14 +67,14 @@ def tokenize_zh_line(zh_line, method='jieba'):
     """
     try:
         zh_line = zh_line.strip()
-        zh_line = " ".join(re.findall(ur'[\u4e00-\u9fff\w\_]+', zh_line))
+        zh_line = " ".join(re.findall(r'[\u4e00-\u9fff\w\_]+', zh_line))
 
         tokenized_list = jieba.cut(zh_line, cut_all=False)
         res = [ word for word in tokenized_list if word != ' ' ]
         return res
 
-    except AttributeError, attr:
-        print zh_line
+    except AttributeError as attr:
+        print(zh_line)
         return []
 
 
@@ -91,8 +91,8 @@ def get_sentence_class(sentence):
         max_score_class = class_sum_score_df.sort(['score'], ascending=False).iloc[0].name
         return max_score_class
 
-    except Exception, e:
-        print "get_sentence_class err", str(e)
+    except Exception as e:
+        print("get_sentence_class err", e)
         return "unknown"
 
 
@@ -127,8 +127,8 @@ class TitleTagger(object):
 
             for regex in regex_list:
 
-                if re.search(re.escape(regex), title.decode('utf8')):
-                    return tag.encode('utf8')
+                if re.search(re.escape(regex), title.encode('utf8')):
+                    return tag
 
         return "未知体"
 
@@ -137,7 +137,7 @@ class TitleTagger(object):
 
         for line in open(self.rule_path):
 
-            line = line.decode('utf8')
+            #line = line.decode('utf8')
             line = line.strip()
             line = line.split('\t')
 
@@ -179,9 +179,9 @@ class TitleTagger(object):
 
     def search_title_by_query_and_class(self, query, class_name_list):
         search_res = []
-        print "query :", query
-        print "query repr:", repr(query)
-        print "class_name_list:", str(class_name_list)
+        print ("query :", query)
+        print ("query repr:", repr(query))
+        print ("class_name_list:", class_name_list)
 
         for tag in self.res_dict:
             title_list = self.res_dict[tag]
