@@ -122,12 +122,12 @@ class TitleTagger(object):
         """
         for rule in self.rule_list:
 
-            tag = rule.keys()[0]
+            tag = list(rule.keys())[0]
             regex_list = rule[tag]
 
             for regex in regex_list:
 
-                if re.search(re.escape(regex), title.encode('utf8')):
+                if re.search(re.escape(regex), title):
                     return tag
 
         return "未知体"

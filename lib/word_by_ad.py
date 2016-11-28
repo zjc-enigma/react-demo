@@ -32,7 +32,7 @@ def get_word_dict(word_json, raw_word_json):
     return doc_word_dict
 
 def get_word_from_ad(in_ad):
-    print '正在爬取该文案的文本:' + in_ad + "\n"
+    print('正在爬取该文案的文本:' + in_ad + "\n")
     doc = search.main_Baidu(in_ad)
 
     word_tag2weight = simrule.tag2dict()
@@ -81,7 +81,7 @@ def get_keywords(sentence):
     else:
         tag_json, word_json, raw_word_json = get_word_from_ad(sentence)
 
-    pdb.set_trace()
+    #pdb.set_trace()
     doc_word_dict = get_word_dict(word_json, raw_word_json)
     doc_word_json = json.dumps(doc_word_dict, ensure_ascii=False)
 
@@ -89,7 +89,7 @@ def get_keywords(sentence):
     ad_word_json = json.dumps(ad_word_dict, ensure_ascii=False)
 
     processed_sentence = get_transfor_ad(sentence, ad_word_dict, doc_word_dict)
-    print processed_sentence
+    print(processed_sentence)
     return ad_word_json
 
 
@@ -97,7 +97,7 @@ def get_keywords(sentence):
 if __name__ == "__main__":
 
     in_ad = '联想YOGA平板999元 更多优惠尽在联想粉丝节'
-    print get_keywords(in_ad)
+    print(get_keywords(in_ad))
     # if len(sys.argv) == 2:
     #     in_ad = sys.argv[1]
     # print '\n' + '原始文案：' + in_ad
