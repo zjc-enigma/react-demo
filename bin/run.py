@@ -28,7 +28,7 @@ from lib import word_by_ad
 
 import jieba.posseg as pseg
 
-#from pandas import DataFrame
+
 import gensim
 word_model = gensim.models.Word2Vec.load_word2vec_format("../data/model2", binary=False)
 
