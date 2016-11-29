@@ -13,11 +13,12 @@ import time
 import json
 sys.path.append('.')
 sys.path.append('..')
-from mob_autotag import search, simrule, word
+from mob_autotag import search3 as search
+from mob_autotag import simrule, word
 from util.util import exec_cmd, set_logging_config
 import pdb
-reload(sys)
-sys.setdefaultencoding('UTF8')
+#reload(sys)
+#sys.setdefaultencoding('UTF8')
 vect_ad_file = 'data/rule/vect_ad'
 
 def get_word_dict(word_json, raw_word_json):
