@@ -137,7 +137,7 @@ class Search(Resource):
 
     def post(self):
         query = request.json['key']
-        return search_title(query.encode('utf8'))
+        return search_title(query)
 
 api.add_resource(Search, '/query')
 
