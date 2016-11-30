@@ -39,7 +39,7 @@ class Selection extends Component {
   }
 
   render() {
-    
+
     return (
         <MuiThemeProvider>
         <SelectionGridLayout>

@@ -11,7 +11,7 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import {MultiSelect} from 'react-selectize'
 
 
-let mapStateToProps = state => ({ ...state.writer,
+let select = state => ({ ...state.writer,
                          selectionRes: state.selection.selectionRes})
 
 
@@ -67,14 +67,7 @@ const mapDispatchToProps = (dispatch) => {
         data: editors
       })
     },
-    updateSelection: (selected, wordIndex, sentenceIndex) => {
-      dispatch({
-        type: "UPDATE_SELECTION",
-        data: selected.map(item => {return item.value}),
-        sentenceIndex: sentenceIndex,
-        wordIndex: wordIndex
-      })
-    },
+
     updateSentenceArray: sentenceArray => {
       dispatch({
         type: "UPDATE_SENTENCE_ARRAY",
@@ -101,47 +94,32 @@ class WordEditor extends Component {
   constructor(props, context){
     super(props, context);
   }
-  // static defaultProps = {
-  //   default: '',
-  // }
-
   componentDidMount() {
     //this.props.getSimWords(this.props.default, this.props.divKey)
-    let defaultOption =  [{label:this.props.default, value:this.props.default}]
-    this.props.updateSelection(defaultOption, this.props.wordIndex, this.props.sentenceIndex)
   }
 
   componentWillReceiveProps(nextProps){
 
 
   }
-  
+
   getOptions(){
-    let simArray = []
-    if(this.props[this.props.default] != undefined && this.props.default.length > 1){
-      simArray = this.props[this.props.default]
-    }
+    let simArray = this.props[this.props.default]
     return simArray
   }
 
   render() {
     let width = this.props.wordWidth*100
-    let optionArray = this.getOptions()
-    //(this.props.default ==undefined ? null : this.props.default)
-    let disableSelection = false
-    if(optionArray.length == 0){
-      disableSelection = true
-    }
+
+
     return (
-          <MultiSelect
-          options={optionArray}
-          disabled={disableSelection}
-          onValuesChange={selected => {this.props.updateSelection(selected, this.props.wordIndex, this.props.sentenceIndex)}}
-          defaultValues={[{label:this.props.default, value:this.props.default}]}
-          placeholder={this.props.default}
-          theme={"material"}
-          style={{width: width}}>
-          </MultiSelect>
+        <MultiSelect
+      options={this.getOptions()}
+      onValuesChange = {() => {}}
+      placeholder={this.props.default}
+      theme={"material"}
+      style={{width: width}}>
+        </MultiSelect>
     )
   }
 }
@@ -163,7 +141,7 @@ class SentenceEditorArray extends Component {
     if(this.props.tokened != nextProps.tokened) {
       let sentenceArray = []
       for(let [i, sentence] of nextProps.tokened.entries()){
-        sentenceArray.push(<SentenceEditor sentence={sentence} sentenceIndex={i} {...this.props} />)
+        sentenceArray.push(<SentenceEditor sentence={sentence} index={i} {...this.props} />)
       }
       this.props.updateSentenceArray(sentenceArray)
 
@@ -175,7 +153,7 @@ class SentenceEditorArray extends Component {
         {this.props.tokened.map((sentence, index) =>
                                 <SentenceEditor
                                 sentence={sentence}
-                                sentenceIndex={index}
+                                index={index}
                                 {...this.props} />)}
       </div>)
   }
@@ -210,25 +188,24 @@ class SentenceEditor extends Component {
   generateLayouts(){
 
     let wordsLayout = []
-    let widthStep = 0.4
-    let posY = this.props.sentenceIndex*0.2
+    let widthStep = 0.5
+    let posY = this.props.index*0.2
     let posX = 0
 
     for(let [j, item] of this.props.sentence.entries()) {
-      let divKey = "word_" + this.props.sentenceIndex + "_" + j
+      let divKey = "word_" + this.props.index + "_" + j
       let word = item.word
       let flag = item.flag
 
       let wordWidth = word.length*widthStep
       let fixX = 0
       let fixY = 0
-      let fixWidth = 0
-      //let fixWidth = -0.01
-      // if(word.length === 1) {
-      //   wordWidth=0.12
-      //   fixX = 0
-      //   fixY = 0.06
-      // }
+      let fixWidth = -0.01
+      if(word.length === 1) {
+        wordWidth=0.12
+        fixX = 0
+        fixY = 0.06
+      }
       wordsLayout.push({
         i: divKey,
         x: posX + fixX,
@@ -251,26 +228,26 @@ class SentenceEditor extends Component {
       breakpoints={{lg: 800, md: 600, sm: 500, xs: 480, xxs: 0}}
       cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}} >
         {this.props.sentence.map((wordItem, index) =>
-                                 <div key={"word_" + this.props.sentenceIndex + "_" + index}>
+                                 <div key={"word_" + this.props.index + "_" + index}>
+                                 {wordItem.word.length === 1? wordItem.word : (
                                      <WordEditor
-                                   sentenceIndex={this.props.sentenceIndex}
-                                   wordIndex={index}
                                    default={wordItem.word}
                                    wordWidth={wordItem.word.length*0.5}
-                                 {...this.props}  />
-
+                                   {...this.props}  />)}
                                  </div>)}
       </ResponsiveReactGridLayout>)
   }
 }
 
 
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(select, mapDispatchToProps)
 class Writer extends Component {
   constructor(props, context){
     super(props, context);
   }
   componentDidMount() {
+    //let s = ["农夫山泉是一家饮料公司", ]
+    //this.props.getSentencesTokened(s)
     this.props.getSentencesTokened(this.props.selectionRes)
   }
   static defaultProps = {
@@ -332,8 +309,7 @@ class Writer extends Component {
   generateDom(){
     return (
         <div key={'sentenceArray'}>
-        {this.props.tokened === undefined ? null : (<SentenceEditorArray
-                                                    {...this.props} />)}
+        {this.props.tokened === undefined ? null : (<SentenceEditorArray {...this.props} />)}
       </div>)
   }
   render(){
@@ -346,6 +322,7 @@ class Writer extends Component {
       {i:"sentenceArray", x: 0, y:0.8, w: 12, h: 0.2, static:true}])}
 
     // this.props.updateLayouts(layouts)
+
     // {React.cloneElement(wordsEditors, {...this.props})}
     //console.log('tokened', this.props.tokened)
     //{wordsEditors}

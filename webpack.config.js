@@ -6,6 +6,7 @@ module.exports = {
     'whatwg-fetch',
     "./app/index.js"
   ],
+  devtool: 'source-map',
   output: {
     path: __dirname + '/static',
     filename: "bundle.js"

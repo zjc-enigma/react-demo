@@ -188,7 +188,7 @@ def nocache(view):
 
 
 
-
+@app.route("/result")
 @app.route("/selection")
 @app.route("/writer")
 @app.route("/")
@@ -218,3 +218,4 @@ def index():
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=7777, threaded=True)
 
+    

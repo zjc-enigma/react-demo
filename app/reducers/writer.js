@@ -17,6 +17,9 @@ export default function (state = [], action) {
   case "UPDATE_SIM_WORDS":
     return {...state, [action.word]: action.data}
 
+  case "UPDATE_SELECTION":
+    return {...state, ["selection"+action.wordIndex + "_" + action.sentenceIndex]: action.data}
+    //return {...state, selection[action.sentenceIndex][action.wordIndex]: action.data}
 
   default:
     return state
