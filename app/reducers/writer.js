@@ -18,7 +18,18 @@ export default function (state = [], action) {
     return {...state, [action.word]: action.data}
 
   case "UPDATE_SELECTION":
-    return {...state, ["selection"+action.wordIndex + "_" + action.sentenceIndex]: action.data}
+    let origin = []
+    if (state.selection != undefined) {
+      origin = state.selection
+    }
+    let tmp = []
+    if (origin[action.sentenceIndex] != undefined){
+      tmp = origin[action.sentenceIndex]
+    }
+    tmp[action.wordIndex] = action.data
+    origin[action.sentenceIndex] = tmp
+    return {...state, selection: origin}
+    //return {...state, ["selection"+action.sentenceIndex + "_" + action.wordIndex]: action.data}
     //return {...state, selection[action.sentenceIndex][action.wordIndex]: action.data}
 
   default:

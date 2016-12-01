@@ -12,7 +12,7 @@ import {MultiSelect} from 'react-selectize'
 
 
 let mapStateToProps = state => ({ state: state.result,
-                                  writerRes: state.writer})
+                                  writerRes: state.writer.selection})
 
 
 
@@ -56,20 +56,40 @@ class Result extends Component {
 class ResultTable extends Component {
 
   constructor(props, context){
-    super(props, context);
+    super(props, context)
   }
   componentWillReceiveProps(nextProps){
 
   }
 
+  mapWordToSentence(){
+    let sentenceArray = []
+    for(var wordArray of this.props.writerRes){
+
+      let tmp = wordArray[0]
+      for(var wordItem of wordArray.slice(1, wordArray.length)){
+        let tt = []
+        for (var word of wordItem){
+          for(var t of tmp){
+            tt.push(t + word)
+          }
+        }
+        tmp = tt.slice()
+      }
+      sentenceArray.push(tmp)
+    }
+    return sentenceArray
+  }
   generateRows(){
-    return this.props.writerRes===undefined ?
-      null : this.props.writerRes.map(item => <TableRow>
-                                      <TableRowColumn>{item.tag}</TableRowColumn>
-                                      <TableRowColumn>{'头条'}</TableRowColumn>
-                                      <TableRowColumn>{'测试'}</TableRowColumn>
-                                      <TableRowColumn style={{width:'60%'}}>{item.content}</TableRowColumn>
-                                      </TableRow>)
+
+    let sentenceArray = this.mapWordToSentence()
+    return sentenceArray.length === 0 ?
+      null : sentenceArray.map(sentence => sentence.map(s => <TableRow>
+                                                        <TableRowColumn>{'标签'}</TableRowColumn>
+                                                        <TableRowColumn>{'头条'}</TableRowColumn>
+                                                        <TableRowColumn>{'测试'}</TableRowColumn>
+                                                        <TableRowColumn style={{width:'60%'}}>{s}</TableRowColumn>
+                                                        </TableRow>))
   }
 
 
@@ -79,6 +99,7 @@ class ResultTable extends Component {
   }
 
   render() {
+
     return(
         <Table
       selectable={true}
