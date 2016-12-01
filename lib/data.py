@@ -84,7 +84,7 @@ def get_sentence_class(sentence):
         s_tokened = tokenize_zh_line(sentence)
         s_df = pd.DataFrame(s_tokened)
         s_df.columns = ["word"]
-        s_df = pd.DataFrame(s_df.word.apply(lambda x: x.encode('utf8')))
+        #s_df = pd.DataFrame(s_df.word.apply(lambda x: x.encode('utf8')))
 
         merge_df = pd.merge(s_df, class_df, on='word', how='inner')
         class_sum_score_df = merge_df.groupby(['class_name']).sum()

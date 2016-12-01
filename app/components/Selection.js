@@ -139,7 +139,7 @@ class SelectionTable extends Component {
       null : this.props.searchRes.map(item => <TableRow>
                                       <TableRowColumn>{item.tag}</TableRowColumn>
                                       <TableRowColumn>{'头条'}</TableRowColumn>
-                                      <TableRowColumn>{'测试'}</TableRowColumn>
+                                      <TableRowColumn>{item.label}</TableRowColumn>
                                       <TableRowColumn style={{width:'60%'}}>{item.content}</TableRowColumn>
                                       </TableRow>)
   }

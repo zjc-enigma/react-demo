@@ -114,7 +114,7 @@ class TokenSentence(Resource):
         for sentence in sentence_list:
             tokened = []
             #tokened = myutils.tokenize_zh_line(sentence.decode('utf8'))
-            words = pseg.cut(sentence.encode('utf8'))
+            words = pseg.cut(sentence.encode('utf-8'))
             for word, flag in words:
                 tokened.append({"word": word, "flag": flag})
             print(sentence)
@@ -157,7 +157,7 @@ class SearchByClass(Resource):
             print("item:", item, type(item))
             class_name_list.append(item['value'])
 
-        return search_title_by_class(query.encode('utf8'), class_name_list)
+        return search_title_by_class(query, class_name_list)
 
 api.add_resource(SearchByClass, '/query_by_class')
 

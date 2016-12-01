@@ -5,6 +5,12 @@ export default function (state = [], action) {
 
   case "SEARCH_QUERY":
     return {...state, searchRes: action.data}
+
+  case "UPDATE_MULTISELECT_OPTIONS":
+    return {...state, classOptions: action.data}
+
+  case "UPDATE_CLASS_SELECTION":
+    return {...state, classSelection: action.data}
     
   default:
     return state

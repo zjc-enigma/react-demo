@@ -12842,6 +12842,12 @@
 	    case "SEARCH_QUERY":
 	      return (0, _extends3.default)({}, state, { searchRes: action.data });
 
+	    case "UPDATE_MULTISELECT_OPTIONS":
+	      return (0, _extends3.default)({}, state, { classOptions: action.data });
+
+	    case "UPDATE_CLASS_SELECTION":
+	      return (0, _extends3.default)({}, state, { classSelection: action.data });
+
 	    default:
 	      return state;
 
@@ -39521,6 +39527,41 @@
 	        data: text
 	      });
 	    },
+	    updateClassSelection: function updateClassSelection(selectionArray) {
+	      dispatch({
+	        type: 'UPDATE_CLASS_SELECTION',
+	        data: selectionArray
+	      });
+	    },
+	    getMultiselectOption: function getMultiselectOption() {
+	      fetch("/multiselect_options", { method: "GET",
+	        headers: {
+	          'Accept': 'application/json',
+	          'Content-Type': 'application/json' }
+	      }).then(parseJson).then(function (json) {
+	        return dispatch({ type: "UPDATE_MULTISELECT_OPTIONS",
+	          data: json });
+	      }).catch(function (e) {
+	        console.log('parsing failed', e);
+	      });
+	    },
+
+	    searchQueryByClass: function searchQueryByClass(text, className) {
+	      if (text) {
+	        fetch('/query_by_class', { method: "POST",
+	          headers: {
+	            'Accept': 'application/json',
+	            'Content-Type': 'application/json' },
+	          body: (0, _stringify2.default)({ key: text, class_name: className })
+	        }).then(parseJson).then(function (json) {
+	          return dispatch({ type: "SEARCH_QUERY", data: json });
+	        }).catch(function (e) {
+	          console.log('parsing failed', e);
+	        });
+	      } else {
+	        alert("Please input search text");
+	      }
+	    },
 	    searchQuery: function searchQuery(text) {
 	      if (text) {
 	        fetch('/query', { method: "POST",
@@ -39545,7 +39586,11 @@
 
 	  function Search(props, context) {
 	    (0, _classCallCheck3.default)(this, Search);
-	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Search).call(this, props, context));
+
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Search).call(this, props, context));
+
+	    _this.props.getMultiselectOption();
+	    return _this;
 	  }
 
 	  (0, _createClass3.default)(Search, [{
@@ -39553,7 +39598,8 @@
 	    value: function search(text) {
 	      //console.log('search Query:', text)
 	      //TODO: add assert of text===""
-	      this.props.searchQuery(text);
+	      //this.props.searchQuery(text)
+	      this.props.searchQueryByClass(text, this.props.classSelection);
 	      this.props.history.push('/selection');
 	    }
 	  }, {
@@ -39589,7 +39635,10 @@
 	          _react2.default.createElement(
 	            'div',
 	            { key: 'categorySelection' },
-	            _react2.default.createElement(CategorySelection, null)
+	            _react2.default.createElement(CategorySelection, {
+	              classOptions: this.props.classOptions,
+	              updateClassSelection: this.props.updateClassSelection
+	            })
 	          )
 	        )
 	      );
@@ -39668,14 +39717,18 @@
 	  (0, _createClass3.default)(CategorySelection, [{
 	    key: 'render',
 	    value: function render() {
+	      var _this7 = this;
+
 	      var ops = [{ label: "apple",
 	        value: "apple" }, { label: "mango",
 	        value: "mango" }, { label: "grapes",
 	        value: "grapes" }];
 
 	      return _react2.default.createElement(_reactSelectize.MultiSelect, {
-	        options: ops,
-	        onValuesChange: function onValuesChange() {},
+	        options: this.props.classOptions,
+	        onValuesChange: function onValuesChange(values) {
+	          return _this7.props.updateClassSelection(values);
+	        },
 	        placeholder: "请选择投放类目" });
 	    }
 	  }]);
@@ -39693,13 +39746,13 @@
 	  (0, _createClass3.default)(SearchBtn, [{
 	    key: 'render',
 	    value: function render() {
-	      var _this8 = this;
+	      var _this9 = this;
 
 	      return _react2.default.createElement(_RaisedButton2.default, {
 	        fullWidth: true,
 	        label: this.props.label,
 	        onClick: function onClick() {
-	          return _this8.props.onClick();
+	          return _this9.props.onClick();
 	        } });
 	    }
 	  }]);
@@ -55903,7 +55956,7 @@
 	          _react2.default.createElement(
 	            _Table.TableRowColumn,
 	            null,
-	            '测试'
+	            item.label
 	          ),
 	          _react2.default.createElement(
 	            _Table.TableRowColumn,

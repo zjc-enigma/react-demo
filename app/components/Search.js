@@ -24,6 +24,41 @@ const mapDispatchToProps = dispatch => {
         data: text
       })
     },
+    updateClassSelection: function(selectionArray){
+      dispatch({
+        type: 'UPDATE_CLASS_SELECTION',
+        data: selectionArray
+      });
+    },
+    getMultiselectOption: function(){
+      fetch("/multiselect_options",
+            {method: "GET",
+             headers:{
+               'Accept': 'application/json',
+               'Content-Type': 'application/json'},
+            })
+        .then(parseJson)
+        .then(json => dispatch({type: "UPDATE_MULTISELECT_OPTIONS",
+                                data: json}))
+        .catch(function(e){console.log('parsing failed', e)})
+    },
+
+    searchQueryByClass: function(text, className){
+      if(text){
+        fetch('/query_by_class',
+              {method: "POST",
+               headers:{
+                 'Accept': 'application/json',
+                 'Content-Type': 'application/json'},
+               body: JSON.stringify({key: text, class_name: className})
+              })
+          .then(parseJson)
+          .then(json => dispatch({type: "SEARCH_QUERY", data: json}))
+          .catch(function(e){console.log('parsing failed', e)})
+      } else {
+        alert("Please input search text");
+      }
+    },
     searchQuery: function(text){
       if(text){
         fetch('/query',
@@ -48,13 +83,15 @@ const mapDispatchToProps = dispatch => {
 class Search extends Component {
 
   constructor(props, context){
-    super(props, context);
+    super(props, context)
+    this.props.getMultiselectOption()
   }
 
   search(text){
     //console.log('search Query:', text)
     //TODO: add assert of text===""
-    this.props.searchQuery(text)
+    //this.props.searchQuery(text)
+    this.props.searchQueryByClass(text, this.props.classSelection)
     this.props.history.push('/selection')
   }
   render() {
@@ -75,7 +112,10 @@ class Search extends Component {
       onClick={() => this.search(this.props.searchText)}
         /></div>
         <div key={'categorySelection'}>
-        <CategorySelection />
+        <CategorySelection
+      classOptions={this.props.classOptions}
+      updateClassSelection={this.props.updateClassSelection}
+        />
         </div>
 
         </SearchGridLayout>
@@ -149,8 +189,8 @@ class CategorySelection extends Component {
 
     return (
         <MultiSelect
-      options={ops}
-      onValuesChange = {() => {}}
+      options={this.props.classOptions}
+      onValuesChange = {values => this.props.updateClassSelection(values)}
       placeholder={"请选择投放类目"}>
         </MultiSelect>
     )
