@@ -9,10 +9,12 @@ import {Responsive, WidthProvider} from 'react-grid-layout'
 const ResponsiveReactGridLayout = WidthProvider(Responsive)
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
 import {MultiSelect} from 'react-selectize'
+import Divider from 'material-ui/Divider'
+import Paper from 'material-ui/Paper'
 
 
 let mapStateToProps = state => ({ ...state.writer,
-                         selectionRes: state.selection.selectionRes})
+                                  selectionRes: state.selection.selectionRes})
 
 
 const mapDispatchToProps = (dispatch) => {
@@ -133,15 +135,16 @@ class WordEditor extends Component {
       disableSelection = true
     }
     return (
-          <MultiSelect
-          options={optionArray}
-          disabled={disableSelection}
-          onValuesChange={selected => {this.props.updateSelection(selected, this.props.wordIndex, this.props.sentenceIndex)}}
-          defaultValues={[{label:this.props.default, value:this.props.default}]}
-          placeholder={this.props.default}
-          theme={"material"}
-          style={{width: width}}>
-          </MultiSelect>
+      this.props.default.length === 1 || optionArray.length === 0? <span>{this.props.default}</span>:
+        <MultiSelect
+      options={optionArray}
+      disabled={disableSelection}
+      onValuesChange={selected => {this.props.updateSelection(selected, this.props.wordIndex, this.props.sentenceIndex)}}
+      defaultValues={[{label:this.props.default, value:this.props.default}]}
+      placeholder={this.props.default}
+      theme={"material"}
+      style={{position:"relative", top: "-18px", width: width}}>
+        </MultiSelect>
     )
   }
 }
@@ -232,9 +235,9 @@ class SentenceEditor extends Component {
       wordsLayout.push({
         i: divKey,
         x: posX + fixX,
-        y: posY + fixY,
+        y: posY*2 + fixY,
         w: wordWidth + fixWidth,
-        h: 0.05,
+        h: 0,
         static:true})
 
       posX += wordWidth
@@ -242,7 +245,8 @@ class SentenceEditor extends Component {
 
     return {lg:wordsLayout}
   }
-
+  getDom() {
+  }
   render() {
 
     return(
@@ -252,13 +256,12 @@ class SentenceEditor extends Component {
       cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}} >
         {this.props.sentence.map((wordItem, index) =>
                                  <div key={"word_" + this.props.sentenceIndex + "_" + index}>
-                                     <WordEditor
-                                   sentenceIndex={this.props.sentenceIndex}
-                                   wordIndex={index}
-                                   default={wordItem.word}
-                                   wordWidth={wordItem.word.length*0.5}
+                                 <WordEditor
+                                 sentenceIndex={this.props.sentenceIndex}
+                                 wordIndex={index}
+                                 default={wordItem.word}
+                                 wordWidth={wordItem.word.length*0.5}
                                  {...this.props}  />
-
                                  </div>)}
       </ResponsiveReactGridLayout>)
   }
@@ -422,6 +425,7 @@ class WriterGridLayout extends Component {
   static defaultProps = {
 
   }
+
   componentDidMount() {
   }
 

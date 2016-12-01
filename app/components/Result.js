@@ -85,10 +85,7 @@ class ResultTable extends Component {
     let sentenceArray = this.mapWordToSentence()
     return sentenceArray.length === 0 ?
       null : sentenceArray.map(sentence => sentence.map(s => <TableRow>
-                                                        <TableRowColumn>{'标签'}</TableRowColumn>
-                                                        <TableRowColumn>{'头条'}</TableRowColumn>
-                                                        <TableRowColumn>{'测试'}</TableRowColumn>
-                                                        <TableRowColumn style={{width:'60%'}}>{s}</TableRowColumn>
+                                                        <TableRowColumn>{s}</TableRowColumn>
                                                         </TableRow>))
   }
 
@@ -107,10 +104,7 @@ class ResultTable extends Component {
       onRowSelection={slices => this.handleSelection(slices)}>
         <TableHeader>
         <TableRow>
-        <TableHeaderColumn>类别</TableHeaderColumn>
-        <TableHeaderColumn>来源</TableHeaderColumn>
-        <TableHeaderColumn>类目</TableHeaderColumn>
-        <TableHeaderColumn style={{width: '60%'}}>内容</TableHeaderColumn>
+        <TableHeaderColumn>内容</TableHeaderColumn>
         </TableRow>
         </TableHeader>
         <TableBody deselectOnClickaway={false}>
