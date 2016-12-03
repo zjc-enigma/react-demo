@@ -12847,7 +12847,6 @@
 	
 	    case "UPDATE_CLASS_SELECTION":
 	      return (0, _extends3.default)({}, state, { classSelection: action.data });
-	
 	    default:
 	      return state;
 	
@@ -39640,6 +39639,7 @@
 	      var _this2 = this;
 	
 	      //console.log("this.props", this.props)
+	
 	      return _react2.default.createElement(
 	        _MuiThemeProvider2.default,
 	        null,
@@ -39649,6 +39649,9 @@
 	          _react2.default.createElement(
 	            'div',
 	            { key: 'searchText' },
+	            _react2.default.createElement('textarea', { value: "test textarea", onChange: function onChange(event) {
+	                return console.log(event);
+	              } }),
 	            _react2.default.createElement(SearchTextField, {
 	              hint: "input your secrets",
 	              text: this.props.searchText,

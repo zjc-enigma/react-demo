@@ -11,7 +11,6 @@ export default function (state = [], action) {
 
   case "UPDATE_CLASS_SELECTION":
     return {...state, classSelection: action.data}
-    
   default:
     return state
 
