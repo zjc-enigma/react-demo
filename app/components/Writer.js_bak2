@@ -11,25 +11,6 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import {MultiSelect} from 'react-selectize'
 import Divider from 'material-ui/Divider'
 import Paper from 'material-ui/Paper'
-import {Editor, EditorState} from 'draft-js';
-
-class MyEditor extends React.Component {
-  constructor(props) {
-    super(props);
-    //this.state = {editorState: EditorState.createEmpty()};
-  }
-
-  onChange(editorState) {
-    //this.setState({editorState})
-
-  };
-
-  render() {
-    const {editorState} = this.state;
-    return <Editor editorState={editorState} onChange={this.onChange} />;
-  }
-}
-
 
 
 let mapStateToProps = state => ({ ...state.writer,
@@ -385,7 +366,6 @@ class Writer extends Component {
         <WriterGridLayout layouts={layouts}>
         <div key={'nextBtn'}> <NextBtn onClick={() => this.nextStep()}/> </div>
         <div key={'prevBtn'}> <PrevBtn /> </div>
-        <div key={'myeditor'}> <MyEditor /> </div>
         {this.generateDom()}
         </WriterGridLayout>
         </MuiThemeProvider>
