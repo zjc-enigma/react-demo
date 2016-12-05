@@ -96,12 +96,12 @@ class Search extends Component {
   }
   render() {
     //console.log("this.props", this.props)
-
+    //<textarea value={"test textarea"} onChange={event => console.log(event)} />
     return (
         <MuiThemeProvider>
         <SearchGridLayout>
         <div key={'searchText'}>
-        <textarea value={"test textarea"} onChange={event => console.log(event)} />
+
         <SearchTextField
       hint={"input your secrets"}
       text={this.props.searchText}

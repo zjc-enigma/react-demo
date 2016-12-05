@@ -8,7 +8,7 @@ import Search from './components/Search'
 import SelectionTable from './components/Selection'
 import Writer from './components/Writer'
 import Result from './components/Result'
-
+import MyEditor from './components/Draft'
 
 const TestBtn = () => {
   return (
@@ -21,6 +21,7 @@ const TestBtn = () => {
 const routes = (
     <Route>
     <Route name='index' path='/' component={Search} />
+    <Route name='editor' path='/editor' component={MyEditor} />
     <Route name='selection' path='/selection' component={SelectionTable} />
     <Route name='writer' path='/writer' component={Writer} />
     <Route name='result' path='/result' component={Result} />

@@ -13,24 +13,6 @@ import Divider from 'material-ui/Divider'
 import Paper from 'material-ui/Paper'
 import {Editor, EditorState} from 'draft-js';
 
-class MyEditor extends React.Component {
-  constructor(props) {
-    super(props);
-    //this.state = {editorState: EditorState.createEmpty()};
-  }
-
-  onChange(editorState) {
-    //this.setState({editorState})
-
-  };
-
-  render() {
-    const {editorState} = this.state;
-    return <Editor editorState={editorState} onChange={this.onChange} />;
-  }
-}
-
-
 
 let mapStateToProps = state => ({ ...state.writer,
                                   selectionRes: state.selection.selectionRes})
@@ -363,6 +345,7 @@ class Writer extends Component {
     //let wordsEditors = this.props.editors
 
     let layouts = {lg:this.props.layouts.concat([
+      {i:"myEditor", x: 1, y: 1, w: 3, h: 0.2, static:true},
       {i:"nextBtn", x: 6, y: 0.2, w: 1, h: 0.2, static:true},
       {i:"prevBtn", x: 5, y: 0.2, w: 1, h: 0.2, static:true},
       {i:"sentenceArray", x: 0, y:0.8, w: 12, h: 0.2, static:true}])}
@@ -379,14 +362,13 @@ class Writer extends Component {
     // sentenceArray={this.props.sentenceArray}
     //console.log('token', this.props)
 
+    //{this.generateDom()}
     return (
-      
         <MuiThemeProvider>
         <WriterGridLayout layouts={layouts}>
         <div key={'nextBtn'}> <NextBtn onClick={() => this.nextStep()}/> </div>
         <div key={'prevBtn'}> <PrevBtn /> </div>
-        <div key={'myeditor'}> <MyEditor /> </div>
-        {this.generateDom()}
+        <div key={'myEditor'}> <MyEditor /> </div>
         </WriterGridLayout>
         </MuiThemeProvider>
 
