@@ -12,7 +12,7 @@ module.exports = {
     filename: "bundle.js"
   },
   resolve: {
-      extensions: ['', '.scss', '.css', '.js', '.json'],
+    extensions: ['', '.scss', '.css', '.js', '.json', '.jsx'],
       modulesDirectories: [
           'node_modules',
           path.resolve(__dirname, './node_modules')
@@ -21,7 +21,7 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.js?$/,
+        test: /(\.js|\.jsx)$/,
         loader: 'babel-loader',
         query: {
           presets: ['es2015', 'react', 'stage-0'],

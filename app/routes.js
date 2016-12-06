@@ -8,7 +8,7 @@ import Search from './components/Search'
 import SelectionTable from './components/Selection'
 import Writer from './components/Writer'
 import Result from './components/Result'
-import MyEditor from './components/Draft'
+import MyEditor from './components/Editor'
 
 const TestBtn = () => {
   return (
