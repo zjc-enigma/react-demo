@@ -1,4 +1,4 @@
-import {Editor, EditorState, RichUtils} from 'draft-js';
+import {Editor, EditorState, RichUtils, convertFromRaw, CompositeDecorator } from 'draft-js';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -31,18 +31,136 @@ const styles = {
     backgroundColor: 'rgba(248, 222, 126, 1.0)',
     padding: '2px 0',
   },
+  styleButton: {
+    color: '#999',
+    cursor: 'pointer',
+    marginRight: '16px',
+    padding: '2px 0',
+    display: 'inline-block',
+  },
 };
+
+const getDecoratedStyle = (mutability) => {
+  switch (mutability) {
+    case 'IMMUTABLE': return styles.immutable;
+    case 'MUTABLE': return styles.mutable;
+    case 'SEGMENTED': return styles.segmented;
+    default: return null;
+  }
+};
+
+const TokenSpan = (props) => {
+  const style = getDecoratedStyle(
+    props.contentState.getEntity(props.entityKey).getMutability()
+  );
+  return (
+    <span data-offset-key={props.offsetkey} style={style}>
+      {props.children}
+    </span>
+  );
+};
+
+const getEntityStrategy = (mutability) => {
+  return (contentBlock, callback, contentState) => {
+    contentBlock.findEntityRanges(
+      (character) => {
+        const entityKey = character.getEntity();
+        if (entityKey === null) {
+          return false;
+        }
+        return contentState.getEntity(entityKey).getMutability() === mutability;
+      },
+      callback
+    );
+  };
+}
+
+var INLINE_STYLES = [
+  {label: 'Bold', style: 'BOLD'},
+  {label: 'Italic', style: 'ITALIC'},
+  {label: 'Underline', style: 'UNDERLINE'},
+  {label: 'Monospace', style: 'CODE'},
+];
+
+
+class StyleButton extends React.Component {
+  constructor() {
+    super();
+    this.onToggle = (e) => {
+      e.preventDefault();
+      this.props.onToggle(this.props.style);
+    };
+  }
+
+  render() {
+    let className = 'RichEditor-styleButton';
+    if (this.props.active) {
+      className += ' RichEditor-activeButton';
+    }
+
+    return (
+      <span className={className} onMouseDown={this.onToggle} style={styles.styleButton}>
+        {this.props.label}
+      </span>
+    );
+  }
+}
+
+const InlineStyleControls = (props) => {
+  var currentStyle = props.editorState.getCurrentInlineStyle();
+  return (
+    <div className="RichEditor-controls">
+      {INLINE_STYLES.map(type =>
+        <StyleButton
+          key={type.label}
+          active={currentStyle.has(type.style)}
+          label={type.label}
+          onToggle={props.onToggle}
+          style={type.style}
+        />
+       )}
+    </div>
+  );
+};
+
 
 
 class MyEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {editorState: EditorState.createEmpty()};
+    
     this.onChange = (editorState) => this.setState({editorState});
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
     this.focus = () => this.refs.editor.focus();
+
+    const decorator = new CompositeDecorator([
+      {
+        strategy: getEntityStrategy('IMMUTABLE'),
+        component: TokenSpan,
+      },
+      {
+        strategy: getEntityStrategy('MUTABLE'),
+        component: TokenSpan,
+      },
+      {
+        strategy: getEntityStrategy('SEGMENTED'),
+        component: TokenSpan,
+      },
+    ]);
+    //const blocks = convertFromRaw(rawContent);
+    this.state = {editorState: EditorState.createEmpty()};
+
+    this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
   }
 
+  _toggleInlineStyle(inlineStyle) {
+    this.onChange(
+      RichUtils.toggleInlineStyle(
+        this.state.editorState,
+        inlineStyle
+      )
+    );
+  }
 
   handleKeyCommand(command) {
     const newState = RichUtils.handleKeyCommand(this.state.editorState, command);
@@ -67,22 +185,20 @@ class MyEditor extends React.Component {
     // }
     // return 'not-handled';
   }
-
+  //placeholder="Enter rich text"
   render() {
     const {editorState} = this.state;
     return (
         <div style={styles.root}>
-        <button
-          onClick={() => this.onBoldClick()}
-          style={styles.button}> Bold
-        </button>
-
+        <InlineStyleControls
+          editorState={editorState}
+          onToggle={this.toggleInlineStyle}
+        />
         <div style={styles.editor} onClick={this.focus}>
           <Editor
-            editorState={editorState}
+            editorState={this.state.editorState}
             handleKeyCommand={this.handleKeyCommand}
             onChange={this.onChange}
-            placeholder="Enter rich text"
             ref="editor"
           />
         </div>

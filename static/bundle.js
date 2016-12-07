@@ -81163,29 +81163,143 @@
 	  segmented: {
 	    backgroundColor: 'rgba(248, 222, 126, 1.0)',
 	    padding: '2px 0'
+	  },
+	  styleButton: {
+	    color: '#999',
+	    cursor: 'pointer',
+	    marginRight: '16px',
+	    padding: '2px 0',
+	    display: 'inline-block'
 	  }
 	};
 	
-	var MyEditor = function (_React$Component) {
-	  (0, _inherits3.default)(MyEditor, _React$Component);
+	var getDecoratedStyle = function getDecoratedStyle(mutability) {
+	  switch (mutability) {
+	    case 'IMMUTABLE':
+	      return styles.immutable;
+	    case 'MUTABLE':
+	      return styles.mutable;
+	    case 'SEGMENTED':
+	      return styles.segmented;
+	    default:
+	      return null;
+	  }
+	};
 	
-	  function MyEditor(props) {
-	    (0, _classCallCheck3.default)(this, MyEditor);
+	var TokenSpan = function TokenSpan(props) {
+	  var style = getDecoratedStyle(props.contentState.getEntity(props.entityKey).getMutability());
+	  return _react2.default.createElement(
+	    'span',
+	    { 'data-offset-key': props.offsetkey, style: style },
+	    props.children
+	  );
+	};
 	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (MyEditor.__proto__ || (0, _getPrototypeOf2.default)(MyEditor)).call(this, props));
+	var getEntityStrategy = function getEntityStrategy(mutability) {
+	  return function (contentBlock, callback, contentState) {
+	    contentBlock.findEntityRanges(function (character) {
+	      var entityKey = character.getEntity();
+	      if (entityKey === null) {
+	        return false;
+	      }
+	      return contentState.getEntity(entityKey).getMutability() === mutability;
+	    }, callback);
+	  };
+	};
 	
-	    _this.state = { editorState: _draftJs.EditorState.createEmpty() };
-	    _this.onChange = function (editorState) {
-	      return _this.setState({ editorState: editorState });
-	    };
-	    _this.handleKeyCommand = _this.handleKeyCommand.bind(_this);
-	    _this.focus = function () {
-	      return _this.refs.editor.focus();
+	var INLINE_STYLES = [{ label: 'Bold', style: 'BOLD' }, { label: 'Italic', style: 'ITALIC' }, { label: 'Underline', style: 'UNDERLINE' }, { label: 'Monospace', style: 'CODE' }];
+	
+	var StyleButton = function (_React$Component) {
+	  (0, _inherits3.default)(StyleButton, _React$Component);
+	
+	  function StyleButton() {
+	    (0, _classCallCheck3.default)(this, StyleButton);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (StyleButton.__proto__ || (0, _getPrototypeOf2.default)(StyleButton)).call(this));
+	
+	    _this.onToggle = function (e) {
+	      e.preventDefault();
+	      _this.props.onToggle(_this.props.style);
 	    };
 	    return _this;
 	  }
 	
+	  (0, _createClass3.default)(StyleButton, [{
+	    key: 'render',
+	    value: function render() {
+	      var className = 'RichEditor-styleButton';
+	      if (this.props.active) {
+	        className += ' RichEditor-activeButton';
+	      }
+	
+	      return _react2.default.createElement(
+	        'span',
+	        { className: className, onMouseDown: this.onToggle, style: styles.styleButton },
+	        this.props.label
+	      );
+	    }
+	  }]);
+	  return StyleButton;
+	}(_react2.default.Component);
+	
+	var InlineStyleControls = function InlineStyleControls(props) {
+	  var currentStyle = props.editorState.getCurrentInlineStyle();
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'RichEditor-controls' },
+	    INLINE_STYLES.map(function (type) {
+	      return _react2.default.createElement(StyleButton, {
+	        key: type.label,
+	        active: currentStyle.has(type.style),
+	        label: type.label,
+	        onToggle: props.onToggle,
+	        style: type.style
+	      });
+	    })
+	  );
+	};
+	
+	var MyEditor = function (_React$Component2) {
+	  (0, _inherits3.default)(MyEditor, _React$Component2);
+	
+	  function MyEditor(props) {
+	    (0, _classCallCheck3.default)(this, MyEditor);
+	
+	    var _this2 = (0, _possibleConstructorReturn3.default)(this, (MyEditor.__proto__ || (0, _getPrototypeOf2.default)(MyEditor)).call(this, props));
+	
+	    _this2.onChange = function (editorState) {
+	      return _this2.setState({ editorState: editorState });
+	    };
+	    _this2.handleKeyCommand = _this2.handleKeyCommand.bind(_this2);
+	    _this2.focus = function () {
+	      return _this2.refs.editor.focus();
+	    };
+	
+	    var decorator = new _draftJs.CompositeDecorator([{
+	      strategy: getEntityStrategy('IMMUTABLE'),
+	      component: TokenSpan
+	    }, {
+	      strategy: getEntityStrategy('MUTABLE'),
+	      component: TokenSpan
+	    }, {
+	      strategy: getEntityStrategy('SEGMENTED'),
+	      component: TokenSpan
+	    }]);
+	    //const blocks = convertFromRaw(rawContent);
+	    _this2.state = { editorState: _draftJs.EditorState.createEmpty() };
+	
+	    _this2.toggleInlineStyle = function (style) {
+	      return _this2._toggleInlineStyle(style);
+	    };
+	    return _this2;
+	  }
+	
 	  (0, _createClass3.default)(MyEditor, [{
+	    key: '_toggleInlineStyle',
+	    value: function _toggleInlineStyle(inlineStyle) {
+	      this.onChange(_draftJs.RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle));
+	    }
+	  }, {
 	    key: 'handleKeyCommand',
 	    value: function handleKeyCommand(command) {
 	      var newState = _draftJs.RichUtils.handleKeyCommand(this.state.editorState, command);
@@ -81212,33 +81326,27 @@
 	      // }
 	      // return 'not-handled';
 	    }
+	    //placeholder="Enter rich text"
+	
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
-	
 	      var editorState = this.state.editorState;
 	
 	      return _react2.default.createElement(
 	        'div',
 	        { style: styles.root },
-	        _react2.default.createElement(
-	          'button',
-	          {
-	            onClick: function onClick() {
-	              return _this2.onBoldClick();
-	            },
-	            style: styles.button },
-	          ' Bold'
-	        ),
+	        _react2.default.createElement(InlineStyleControls, {
+	          editorState: editorState,
+	          onToggle: this.toggleInlineStyle
+	        }),
 	        _react2.default.createElement(
 	          'div',
 	          { style: styles.editor, onClick: this.focus },
 	          _react2.default.createElement(_draftJs.Editor, {
-	            editorState: editorState,
+	            editorState: this.state.editorState,
 	            handleKeyCommand: this.handleKeyCommand,
 	            onChange: this.onChange,
-	            placeholder: 'Enter rich text',
 	            ref: 'editor'
 	          })
 	        )
