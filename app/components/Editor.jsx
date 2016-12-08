@@ -62,6 +62,7 @@ const TokenSpan = (props) => {
 };
 
 const getEntityStrategy = (mutability) => {
+
   return (contentBlock, callback, contentState) => {
     contentBlock.findEntityRanges(
       (character) => {
@@ -126,21 +127,6 @@ const InlineStyleControls = (props) => {
 
 
 
-const decorator = new CompositeDecorator([
-  {
-    strategy: getEntityStrategy('IMMUTABLE'),
-    component: TokenSpan,
-  },
-  {
-    strategy: getEntityStrategy('MUTABLE'),
-    component: TokenSpan,
-  },
-  {
-    strategy: getEntityStrategy('SEGMENTED'),
-    component: TokenSpan,
-  },
-]);
-
 
 class MyEditor extends React.Component {
   constructor(props) {
@@ -152,8 +138,26 @@ class MyEditor extends React.Component {
     //const blocks = convertFromRaw(rawContent);
     this.state = {editorState: EditorState.createEmpty()};
 
-    this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
+    //this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
+    this.toggleInlineStyle = () => this._insertEntity()
+
+
+    this.decorator = new CompositeDecorator([
+      {
+        strategy: getEntityStrategy('IMMUTABLE'),
+        component: TokenSpan,
+      },
+      {
+        strategy: getEntityStrategy('MUTABLE'),
+        component: TokenSpan,
+      },
+      {
+        strategy: getEntityStrategy('SEGMENTED'),
+        component: TokenSpan,
+      },
+    ]);
   }
+
 
   _toggleInlineStyle(inlineStyle) {
 
@@ -163,29 +167,6 @@ class MyEditor extends React.Component {
      * const block = this.state.editorState.getCurrentContent().getFirstBlock()
      * const selectedText = block.getText().slice(start, end)
      */
-    /* const contentState = this.state.editorState.getCurrentContent()
-     * const targetRange = [{offset: 1, length: 8, key: 'first'}]
-     * const key = Entity.create('LINK', 'MUTABLE',  {href: 'www.google.com'});
-     * const contentStateWithLink = Modifier.applyEntity(
-     *   contentState,
-     *   targetRange,
-     *   key
-     * )
-     * this.state = {
-     *   editorState: EditorState.createWithContent(contentStateWithLink, decorator)
-     * }*/
-    const contentState = this.state.editorState.getCurrentContent()
-    const targetRange = this.state.editorState.getSelection()
-    const text = "Insert!"
-
-    const contentStateWithInsert = Modifier.insertText(
-      contentState,
-      targetRange,
-      text
-    )
-    this.state = {
-       editorState: EditorState.createWithContent(contentStateWithInsert)
-    }
 
     this.onChange(
       RichUtils.toggleInlineStyle(
@@ -194,6 +175,35 @@ class MyEditor extends React.Component {
       )
     );
   }
+  _insertEntity() {
+    const contentState = this.state.editorState.getCurrentContent()
+    const targetRange = this.state.editorState.getSelection()
+    const key = Entity.create('LINK', 'MUTABLE',  {href: 'www.google.com'});
+    const contentStateWithLink = Modifier.applyEntity(
+      contentState,
+      targetRange,
+      key
+    )
+    this.state = {
+      editorState: EditorState.createWithContent(contentStateWithLink, this.decorator)
+    }
+  }
+
+  _insertText(text) {
+    if (text) {
+      const contentState = this.state.editorState.getCurrentContent()
+      const targetRange = this.state.editorState.getSelection()
+      const contentStateWithInsert = Modifier.insertText(
+        contentState,
+        targetRange,
+        text
+      )
+      this.state = {
+        editorState: EditorState.createWithContent(contentStateWithInsert)
+      }
+    }
+  }
+
 
   handleKeyCommand(command) {
     const newState = RichUtils.handleKeyCommand(this.state.editorState, command);

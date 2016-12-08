@@ -81196,6 +81196,7 @@
 	};
 	
 	var getEntityStrategy = function getEntityStrategy(mutability) {
+	
 	  return function (contentBlock, callback, contentState) {
 	    contentBlock.findEntityRanges(function (character) {
 	      var entityKey = character.getEntity();
@@ -81259,17 +81260,6 @@
 	  );
 	};
 	
-	var decorator = new _draftJs.CompositeDecorator([{
-	  strategy: getEntityStrategy('IMMUTABLE'),
-	  component: TokenSpan
-	}, {
-	  strategy: getEntityStrategy('MUTABLE'),
-	  component: TokenSpan
-	}, {
-	  strategy: getEntityStrategy('SEGMENTED'),
-	  component: TokenSpan
-	}]);
-	
 	var MyEditor = function (_React$Component2) {
 	  (0, _inherits3.default)(MyEditor, _React$Component2);
 	
@@ -81289,9 +81279,21 @@
 	    //const blocks = convertFromRaw(rawContent);
 	    _this2.state = { editorState: _draftJs.EditorState.createEmpty() };
 	
-	    _this2.toggleInlineStyle = function (style) {
-	      return _this2._toggleInlineStyle(style);
+	    //this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
+	    _this2.toggleInlineStyle = function () {
+	      return _this2._insertEntity();
 	    };
+	
+	    _this2.decorator = new _draftJs.CompositeDecorator([{
+	      strategy: getEntityStrategy('IMMUTABLE'),
+	      component: TokenSpan
+	    }, {
+	      strategy: getEntityStrategy('MUTABLE'),
+	      component: TokenSpan
+	    }, {
+	      strategy: getEntityStrategy('SEGMENTED'),
+	      component: TokenSpan
+	    }]);
 	    return _this2;
 	  }
 	
@@ -81305,27 +81307,31 @@
 	       * const block = this.state.editorState.getCurrentContent().getFirstBlock()
 	       * const selectedText = block.getText().slice(start, end)
 	       */
-	      /* const contentState = this.state.editorState.getCurrentContent()
-	       * const targetRange = [{offset: 1, length: 8, key: 'first'}]
-	       * const key = Entity.create('LINK', 'MUTABLE',  {href: 'www.google.com'});
-	       * const contentStateWithLink = Modifier.applyEntity(
-	       *   contentState,
-	       *   targetRange,
-	       *   key
-	       * )
-	       * this.state = {
-	       *   editorState: EditorState.createWithContent(contentStateWithLink, decorator)
-	       * }*/
-	      var contentState = this.state.editorState.getCurrentContent();
-	      var targetRange = this.state.editorState.getSelection();
-	      var text = "Insert!";
-	
-	      var contentStateWithInsert = _draftJs.Modifier.insertText(contentState, targetRange, text);
-	      this.state = {
-	        editorState: _draftJs.EditorState.createWithContent(contentStateWithInsert)
-	      };
 	
 	      this.onChange(_draftJs.RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle));
+	    }
+	  }, {
+	    key: '_insertEntity',
+	    value: function _insertEntity() {
+	      var contentState = this.state.editorState.getCurrentContent();
+	      var targetRange = this.state.editorState.getSelection();
+	      var key = _draftJs.Entity.create('LINK', 'MUTABLE', { href: 'www.google.com' });
+	      var contentStateWithLink = _draftJs.Modifier.applyEntity(contentState, targetRange, key);
+	      this.state = {
+	        editorState: _draftJs.EditorState.createWithContent(contentStateWithLink, this.decorator)
+	      };
+	    }
+	  }, {
+	    key: '_insertText',
+	    value: function _insertText(text) {
+	      if (text) {
+	        var contentState = this.state.editorState.getCurrentContent();
+	        var targetRange = this.state.editorState.getSelection();
+	        var contentStateWithInsert = _draftJs.Modifier.insertText(contentState, targetRange, text);
+	        this.state = {
+	          editorState: _draftJs.EditorState.createWithContent(contentStateWithInsert)
+	        };
+	      }
 	    }
 	  }, {
 	    key: 'handleKeyCommand',
