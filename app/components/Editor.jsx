@@ -1,4 +1,5 @@
-import {Editor, EditorState, RichUtils, convertFromRaw, CompositeDecorator } from 'draft-js';
+import { Editor, EditorState, RichUtils, convertFromRaw, CompositeDecorator } from 'draft-js';
+import { Entity, Modifier } from 'draft-js';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -125,28 +126,29 @@ const InlineStyleControls = (props) => {
 
 
 
+const decorator = new CompositeDecorator([
+  {
+    strategy: getEntityStrategy('IMMUTABLE'),
+    component: TokenSpan,
+  },
+  {
+    strategy: getEntityStrategy('MUTABLE'),
+    component: TokenSpan,
+  },
+  {
+    strategy: getEntityStrategy('SEGMENTED'),
+    component: TokenSpan,
+  },
+]);
+
+
 class MyEditor extends React.Component {
   constructor(props) {
     super(props);
-    
     this.onChange = (editorState) => this.setState({editorState});
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
     this.focus = () => this.refs.editor.focus();
 
-    const decorator = new CompositeDecorator([
-      {
-        strategy: getEntityStrategy('IMMUTABLE'),
-        component: TokenSpan,
-      },
-      {
-        strategy: getEntityStrategy('MUTABLE'),
-        component: TokenSpan,
-      },
-      {
-        strategy: getEntityStrategy('SEGMENTED'),
-        component: TokenSpan,
-      },
-    ]);
     //const blocks = convertFromRaw(rawContent);
     this.state = {editorState: EditorState.createEmpty()};
 
@@ -154,21 +156,37 @@ class MyEditor extends React.Component {
   }
 
   _toggleInlineStyle(inlineStyle) {
-    
 
-    const selectionState = this.state.editorState.getSelection();
-    const start = selectionState.getStartOffset();
-    const end = selectionState.getEndOffset();
-    //var selectedText = myContentBlock.getText().slice(start, end);
-    //const start = selectionState.getStartOffset()
-    //const end = selectionState.getEndOffset()
-    
-    //console.log('selection:', selection)
-    const block = this.state.editorState.getCurrentContent().getFirstBlock()
-    const selectedText = block.getText().slice(start, end)
-    
-    console.log('current content:', block.getText())
-    console.log('current selection:', selectedText)
+    /* const selectionState = this.state.editorState.getSelection();
+     * const start = selectionState.getStartOffset();
+     * const end = selectionState.getEndOffset();
+     * const block = this.state.editorState.getCurrentContent().getFirstBlock()
+     * const selectedText = block.getText().slice(start, end)
+     */
+    /* const contentState = this.state.editorState.getCurrentContent()
+     * const targetRange = [{offset: 1, length: 8, key: 'first'}]
+     * const key = Entity.create('LINK', 'MUTABLE',  {href: 'www.google.com'});
+     * const contentStateWithLink = Modifier.applyEntity(
+     *   contentState,
+     *   targetRange,
+     *   key
+     * )
+     * this.state = {
+     *   editorState: EditorState.createWithContent(contentStateWithLink, decorator)
+     * }*/
+    const contentState = this.state.editorState.getCurrentContent()
+    const targetRange = this.state.editorState.getSelection()
+    const text = "Insert!"
+
+    const contentStateWithInsert = Modifier.insertText(
+      contentState,
+      targetRange,
+      text
+    )
+    this.state = {
+       editorState: EditorState.createWithContent(contentStateWithInsert)
+    }
+
     this.onChange(
       RichUtils.toggleInlineStyle(
         this.state.editorState,
