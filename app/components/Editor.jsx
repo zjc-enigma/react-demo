@@ -154,6 +154,21 @@ class MyEditor extends React.Component {
   }
 
   _toggleInlineStyle(inlineStyle) {
+    
+
+    const selectionState = this.state.editorState.getSelection();
+    const start = selectionState.getStartOffset();
+    const end = selectionState.getEndOffset();
+    //var selectedText = myContentBlock.getText().slice(start, end);
+    //const start = selectionState.getStartOffset()
+    //const end = selectionState.getEndOffset()
+    
+    //console.log('selection:', selection)
+    const block = this.state.editorState.getCurrentContent().getFirstBlock()
+    const selectedText = block.getText().slice(start, end)
+    
+    console.log('current content:', block.getText())
+    console.log('current selection:', selectedText)
     this.onChange(
       RichUtils.toggleInlineStyle(
         this.state.editorState,

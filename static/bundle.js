@@ -81297,6 +81297,20 @@
 	  (0, _createClass3.default)(MyEditor, [{
 	    key: '_toggleInlineStyle',
 	    value: function _toggleInlineStyle(inlineStyle) {
+	
+	      var selectionState = this.state.editorState.getSelection();
+	      var start = selectionState.getStartOffset();
+	      var end = selectionState.getEndOffset();
+	      //var selectedText = myContentBlock.getText().slice(start, end);
+	      //const start = selectionState.getStartOffset()
+	      //const end = selectionState.getEndOffset()
+	
+	      //console.log('selection:', selection)
+	      var block = this.state.editorState.getCurrentContent().getFirstBlock();
+	      var selectedText = block.getText().slice(start, end);
+	
+	      console.log('current content:', block.getText());
+	      console.log('current selection:', selectedText);
 	      this.onChange(_draftJs.RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle));
 	    }
 	  }, {
