@@ -61,21 +61,7 @@ const TokenSpan = (props) => {
   );
 };
 
-const getEntityStrategy = (mutability) => {
 
-  return (contentBlock, callback, contentState) => {
-    contentBlock.findEntityRanges(
-      (character) => {
-        const entityKey = character.getEntity();
-        if (entityKey === null) {
-          return false;
-        }
-        return contentState.getEntity(entityKey).getMutability() === mutability;
-      },
-      callback
-    );
-  };
-}
 
 var INLINE_STYLES = [
   {label: 'Bold', style: 'BOLD'},
@@ -126,9 +112,44 @@ const InlineStyleControls = (props) => {
 };
 
 
+const getEntityStrategy = (mutability) => {
+  
+  return (contentBlock, callback, contentState) => {
+    contentBlock.findEntityRanges(
+      (character) => {
+        const entityKey = character.getEntity();
+        if (entityKey === null) {
+          return false;
+        }
+        console.log('contentState:', contentState)
+        return contentState.getEntity(entityKey).getMutability() === mutability;
+      },
+      callback
+    );
+  };
+}
 
+const handleStrategy = (contentBlock, callback, arg) => {
+  contentBlock.findEntityRanges(
+    (character) => {
+      const entityKey = character.getEntity();
+      console.log('character', character)
+      console.log('entityKey', entityKey)
+
+      if (entityKey === null) {
+        return false;
+      }
+      return true;
+    },
+    callback
+  );
+    /* console.log("contentBlock:", contentBlock.getText())
+     * console.log("callback:", callback)
+     * console.log('other args:', arg)*/
+}
 
 class MyEditor extends React.Component {
+
   constructor(props) {
     super(props);
     this.onChange = (editorState) => this.setState({editorState});
@@ -142,24 +163,28 @@ class MyEditor extends React.Component {
     this.toggleInlineStyle = () => this._insertEntity()
 
 
-    this.decorator = new CompositeDecorator([
+     this.decorator = new CompositeDecorator([
       {
-        strategy: getEntityStrategy('IMMUTABLE'),
-        component: TokenSpan,
-      },
-      {
-        strategy: getEntityStrategy('MUTABLE'),
-        component: TokenSpan,
-      },
-      {
-        strategy: getEntityStrategy('SEGMENTED'),
+        strategy: handleStrategy,
         component: TokenSpan,
       },
     ]);
+    /* const contentState = this.state.editorState.getCurrentContent()
+     * const targetRange = this.state.editorState.getSelection()
+     * const key = Entity.create('TOKEN', 'SEGMENTED',  {href: 'www.google.com'});
+     * const contentStateWithLink = Modifier.applyEntity(
+     *   contentState,
+     *   targetRange,
+     *   key
+     * )
+     * this.state = {
+     *   editorState: EditorState.createWithContent(contentStateWithLink, decorator)
+     * }*/
+
   }
 
 
-  _toggleInlineStyle(inlineStyle) {
+  _toggleInlineStyle(inlineStyle){
 
     /* const selectionState = this.state.editorState.getSelection();
      * const start = selectionState.getStartOffset();
@@ -176,9 +201,10 @@ class MyEditor extends React.Component {
     );
   }
   _insertEntity() {
+
     const contentState = this.state.editorState.getCurrentContent()
     const targetRange = this.state.editorState.getSelection()
-    const key = Entity.create('LINK', 'MUTABLE',  {href: 'www.google.com'});
+    const key = Entity.create('TOKEN', 'SEGMENTED',  {href: 'www.google.com'});
     const contentStateWithLink = Modifier.applyEntity(
       contentState,
       targetRange,
@@ -187,6 +213,7 @@ class MyEditor extends React.Component {
     this.state = {
       editorState: EditorState.createWithContent(contentStateWithLink, this.decorator)
     }
+
   }
 
   _insertText(text) {

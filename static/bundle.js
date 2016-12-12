@@ -62558,7 +62558,7 @@
 	    });
 	  };
 	  var updateSimWords = function updateSimWords(json, word) {
-	    //console.log(word)
+	
 	    dispatch({
 	      type: "UPDATE_SIM_WORDS",
 	      data: json,
@@ -81195,19 +81195,6 @@
 	  );
 	};
 	
-	var getEntityStrategy = function getEntityStrategy(mutability) {
-	
-	  return function (contentBlock, callback, contentState) {
-	    contentBlock.findEntityRanges(function (character) {
-	      var entityKey = character.getEntity();
-	      if (entityKey === null) {
-	        return false;
-	      }
-	      return contentState.getEntity(entityKey).getMutability() === mutability;
-	    }, callback);
-	  };
-	};
-	
 	var INLINE_STYLES = [{ label: 'Bold', style: 'BOLD' }, { label: 'Italic', style: 'ITALIC' }, { label: 'Underline', style: 'UNDERLINE' }, { label: 'Monospace', style: 'CODE' }];
 	
 	var StyleButton = function (_React$Component) {
@@ -81260,6 +81247,36 @@
 	  );
 	};
 	
+	var getEntityStrategy = function getEntityStrategy(mutability) {
+	
+	  return function (contentBlock, callback, contentState) {
+	    contentBlock.findEntityRanges(function (character) {
+	      var entityKey = character.getEntity();
+	      if (entityKey === null) {
+	        return false;
+	      }
+	      console.log('contentState:', contentState);
+	      return contentState.getEntity(entityKey).getMutability() === mutability;
+	    }, callback);
+	  };
+	};
+	
+	var handleStrategy = function handleStrategy(contentBlock, callback, arg) {
+	  contentBlock.findEntityRanges(function (character) {
+	    var entityKey = character.getEntity();
+	    console.log('character', character);
+	    console.log('entityKey', entityKey);
+	
+	    if (entityKey === null) {
+	      return false;
+	    }
+	    return true;
+	  }, callback);
+	  /* console.log("contentBlock:", contentBlock.getText())
+	   * console.log("callback:", callback)
+	   * console.log('other args:', arg)*/
+	};
+	
 	var MyEditor = function (_React$Component2) {
 	  (0, _inherits3.default)(MyEditor, _React$Component2);
 	
@@ -81285,15 +81302,21 @@
 	    };
 	
 	    _this2.decorator = new _draftJs.CompositeDecorator([{
-	      strategy: getEntityStrategy('IMMUTABLE'),
-	      component: TokenSpan
-	    }, {
-	      strategy: getEntityStrategy('MUTABLE'),
-	      component: TokenSpan
-	    }, {
-	      strategy: getEntityStrategy('SEGMENTED'),
+	      strategy: handleStrategy,
 	      component: TokenSpan
 	    }]);
+	    /* const contentState = this.state.editorState.getCurrentContent()
+	     * const targetRange = this.state.editorState.getSelection()
+	     * const key = Entity.create('TOKEN', 'SEGMENTED',  {href: 'www.google.com'});
+	     * const contentStateWithLink = Modifier.applyEntity(
+	     *   contentState,
+	     *   targetRange,
+	     *   key
+	     * )
+	     * this.state = {
+	     *   editorState: EditorState.createWithContent(contentStateWithLink, decorator)
+	     * }*/
+	
 	    return _this2;
 	  }
 	
@@ -81313,9 +81336,10 @@
 	  }, {
 	    key: '_insertEntity',
 	    value: function _insertEntity() {
+	
 	      var contentState = this.state.editorState.getCurrentContent();
 	      var targetRange = this.state.editorState.getSelection();
-	      var key = _draftJs.Entity.create('LINK', 'MUTABLE', { href: 'www.google.com' });
+	      var key = _draftJs.Entity.create('TOKEN', 'SEGMENTED', { href: 'www.google.com' });
 	      var contentStateWithLink = _draftJs.Modifier.applyEntity(contentState, targetRange, key);
 	      this.state = {
 	        editorState: _draftJs.EditorState.createWithContent(contentStateWithLink, this.decorator)

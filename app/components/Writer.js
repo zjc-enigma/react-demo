@@ -31,7 +31,7 @@ const mapDispatchToProps = (dispatch) => {
     })
   }
   let updateSimWords = function(json, word) {
-    //console.log(word)
+
     dispatch({
       type: "UPDATE_SIM_WORDS",
       data: json,
