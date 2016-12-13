@@ -81124,6 +81124,10 @@
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
+	var _extends2 = __webpack_require__(3);
+	
+	var _extends3 = _interopRequireDefault(_extends2);
+	
 	var _draftJs = __webpack_require__(646);
 	
 	var _react = __webpack_require__(46);
@@ -81185,12 +81189,25 @@
 	      return null;
 	  }
 	};
-	
+	/* 
+	 * const TokenSpan = (props) => {
+	 *   console.log('tokenspan props:', props)
+	 *   const style = getDecoratedStyle(
+	 *     props.contentState.getEntity(props.entityKey).getMutability()
+	 *   );
+	 *   return (
+	 *     <span data-offset-key={props.offsetkey} style={style}>
+	 *       {props.children}
+	 *     </span>
+	 *   );
+	 * };
+	 * 
+	 * */
 	var TokenSpan = function TokenSpan(props) {
-	  var style = getDecoratedStyle(props.contentState.getEntity(props.entityKey).getMutability());
+	  var style = getDecoratedStyle(_draftJs.Entity.get(props.entityKey).getMutability());
 	  return _react2.default.createElement(
 	    'span',
-	    { 'data-offset-key': props.offsetkey, style: style },
+	    (0, _extends3.default)({}, props, { style: style }),
 	    props.children
 	  );
 	};
@@ -81261,7 +81278,16 @@
 	  };
 	};
 	
-	var handleStrategy = function handleStrategy(contentBlock, callback, arg) {
+	var handleStrategy1 = function handleStrategy1(contentBlock, callback) {
+	  console.log('contentBlock content:', contentBlock.getText());
+	  contentBlock.findEntityRanges(function (char) {
+	    var entityKey = char.getEntity();
+	    //console.log("entitykey type:", Entity.get(entityKey).getType())
+	    return entityKey !== null && _draftJs.Entity.get(entityKey).getType() === 'TOKEN';
+	  }, callback);
+	};
+	
+	var handleStrategy = function handleStrategy(contentBlock, callback) {
 	  contentBlock.findEntityRanges(function (character) {
 	    var entityKey = character.getEntity();
 	    console.log('character', character);
@@ -81297,12 +81323,14 @@
 	    _this2.state = { editorState: _draftJs.EditorState.createEmpty() };
 	
 	    //this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
-	    _this2.toggleInlineStyle = function () {
-	      return _this2._insertEntity();
+	    _this2.toggleInlineStyle = function (style) {
+	      return _this2._toggle(style);
 	    };
-	
+	    _this2.onChange = function (editorState) {
+	      return _this2.setState({ editorState: editorState });
+	    };
 	    _this2.decorator = new _draftJs.CompositeDecorator([{
-	      strategy: handleStrategy,
+	      strategy: handleStrategy1,
 	      component: TokenSpan
 	    }]);
 	    /* const contentState = this.state.editorState.getCurrentContent()
@@ -81330,7 +81358,6 @@
 	       * const block = this.state.editorState.getCurrentContent().getFirstBlock()
 	       * const selectedText = block.getText().slice(start, end)
 	       */
-	
 	      this.onChange(_draftJs.RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle));
 	    }
 	  }, {
@@ -81344,6 +81371,17 @@
 	      this.state = {
 	        editorState: _draftJs.EditorState.createWithContent(contentStateWithLink, this.decorator)
 	      };
+	    }
+	  }, {
+	    key: '_toggle',
+	    value: function _toggle(style) {
+	      var contentState = this.state.editorState.getCurrentContent();
+	      console.log('before toggle', contentState);
+	      var targetRange = this.state.editorState.getSelection();
+	      var key = _draftJs.Entity.create('TOKEN', 'SEGMENTED');
+	      var contentStateWithEntity = _draftJs.Modifier.applyEntity(contentState, targetRange, key);
+	      this.onChange(_draftJs.EditorState.createWithContent(contentStateWithEntity, this.decorator));
+	      console.log('after toggle', this.state.editorState.getCurrentContent());
 	    }
 	  }, {
 	    key: '_insertText',

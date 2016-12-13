@@ -49,13 +49,26 @@ const getDecoratedStyle = (mutability) => {
     default: return null;
   }
 };
-
+/* 
+ * const TokenSpan = (props) => {
+ *   console.log('tokenspan props:', props)
+ *   const style = getDecoratedStyle(
+ *     props.contentState.getEntity(props.entityKey).getMutability()
+ *   );
+ *   return (
+ *     <span data-offset-key={props.offsetkey} style={style}>
+ *       {props.children}
+ *     </span>
+ *   );
+ * };
+ * 
+ * */
 const TokenSpan = (props) => {
   const style = getDecoratedStyle(
-    props.contentState.getEntity(props.entityKey).getMutability()
+    Entity.get(props.entityKey).getMutability()
   );
   return (
-    <span data-offset-key={props.offsetkey} style={style}>
+    <span {...props} style={style}>
       {props.children}
     </span>
   );
@@ -129,7 +142,23 @@ const getEntityStrategy = (mutability) => {
   };
 }
 
-const handleStrategy = (contentBlock, callback, arg) => {
+const handleStrategy1 = (contentBlock, callback) => {
+  console.log('contentBlock content:', contentBlock.getText())
+  contentBlock.findEntityRanges(
+    (char) => {
+      const entityKey = char.getEntity()
+      //console.log("entitykey type:", Entity.get(entityKey).getType())
+      return(
+        entityKey !== null &&
+        Entity.get(entityKey).getType() === 'TOKEN'
+      )
+    },
+    callback
+  )
+
+}
+
+const handleStrategy = (contentBlock, callback) => {
   contentBlock.findEntityRanges(
     (character) => {
       const entityKey = character.getEntity();
@@ -160,12 +189,11 @@ class MyEditor extends React.Component {
     this.state = {editorState: EditorState.createEmpty()};
 
     //this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
-    this.toggleInlineStyle = () => this._insertEntity()
-
-
-     this.decorator = new CompositeDecorator([
+    this.toggleInlineStyle = (style) => this._toggle(style);
+    this.onChange = (editorState) => this.setState({editorState})
+    this.decorator = new CompositeDecorator([
       {
-        strategy: handleStrategy,
+        strategy: handleStrategy1,
         component: TokenSpan,
       },
     ]);
@@ -192,7 +220,6 @@ class MyEditor extends React.Component {
      * const block = this.state.editorState.getCurrentContent().getFirstBlock()
      * const selectedText = block.getText().slice(start, end)
      */
-
     this.onChange(
       RichUtils.toggleInlineStyle(
         this.state.editorState,
@@ -200,6 +227,7 @@ class MyEditor extends React.Component {
       )
     );
   }
+
   _insertEntity() {
 
     const contentState = this.state.editorState.getCurrentContent()
@@ -214,6 +242,22 @@ class MyEditor extends React.Component {
       editorState: EditorState.createWithContent(contentStateWithLink, this.decorator)
     }
 
+  }
+
+  _toggle(style) {
+    const contentState = this.state.editorState.getCurrentContent()
+    console.log('before toggle', contentState)
+    const targetRange = this.state.editorState.getSelection()
+    const key = Entity.create('TOKEN', 'SEGMENTED');
+    const contentStateWithEntity = Modifier.applyEntity(
+      contentState,
+      targetRange,
+      key
+    )
+    this.onChange(
+      EditorState.createWithContent(contentStateWithEntity, this.decorator)
+    )
+    console.log('after toggle', this.state.editorState.getCurrentContent())
   }
 
   _insertText(text) {
