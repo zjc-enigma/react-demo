@@ -81324,8 +81324,9 @@
 	
 	    //this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
 	    _this2.toggleInlineStyle = function (style) {
-	      return _this2._toggle(style);
+	      return _this2._insertEntity(style);
 	    };
+	
 	    _this2.onChange = function (editorState) {
 	      return _this2.setState({ editorState: editorState });
 	    };
@@ -81333,18 +81334,6 @@
 	      strategy: handleStrategy1,
 	      component: TokenSpan
 	    }]);
-	    /* const contentState = this.state.editorState.getCurrentContent()
-	     * const targetRange = this.state.editorState.getSelection()
-	     * const key = Entity.create('TOKEN', 'SEGMENTED',  {href: 'www.google.com'});
-	     * const contentStateWithLink = Modifier.applyEntity(
-	     *   contentState,
-	     *   targetRange,
-	     *   key
-	     * )
-	     * this.state = {
-	     *   editorState: EditorState.createWithContent(contentStateWithLink, decorator)
-	     * }*/
-	
 	    return _this2;
 	  }
 	
@@ -81362,21 +81351,18 @@
 	    }
 	  }, {
 	    key: '_insertEntity',
-	    value: function _insertEntity() {
+	    value: function _insertEntity(style) {
 	
 	      var contentState = this.state.editorState.getCurrentContent();
 	      var targetRange = this.state.editorState.getSelection();
-	      var key = _draftJs.Entity.create('TOKEN', 'SEGMENTED', { href: 'www.google.com' });
-	      var contentStateWithLink = _draftJs.Modifier.applyEntity(contentState, targetRange, key);
-	      this.state = {
-	        editorState: _draftJs.EditorState.createWithContent(contentStateWithLink, this.decorator)
-	      };
+	      var key = _draftJs.Entity.create('TOKEN', 'SEGMENTED');
+	      var contentStateWithEntity = _draftJs.Modifier.insertText(contentState, targetRange, "hehehe", null, key);
+	      this.onChange(_draftJs.EditorState.createWithContent(contentStateWithEntity, this.decorator));
 	    }
 	  }, {
-	    key: '_toggle',
-	    value: function _toggle(style) {
+	    key: '_toggleEntity',
+	    value: function _toggleEntity(style) {
 	      var contentState = this.state.editorState.getCurrentContent();
-	      console.log('before toggle', contentState);
 	      var targetRange = this.state.editorState.getSelection();
 	      var key = _draftJs.Entity.create('TOKEN', 'SEGMENTED');
 	      var contentStateWithEntity = _draftJs.Modifier.applyEntity(contentState, targetRange, key);
@@ -81386,13 +81372,12 @@
 	  }, {
 	    key: '_insertText',
 	    value: function _insertText(text) {
+	      //console.log('_insertText', text)
 	      if (text) {
 	        var contentState = this.state.editorState.getCurrentContent();
 	        var targetRange = this.state.editorState.getSelection();
 	        var contentStateWithInsert = _draftJs.Modifier.insertText(contentState, targetRange, text);
-	        this.state = {
-	          editorState: _draftJs.EditorState.createWithContent(contentStateWithInsert)
-	        };
+	        this.onChange(_draftJs.EditorState.createWithContent(contentStateWithInsert));
 	      }
 	    }
 	  }, {

@@ -189,7 +189,8 @@ class MyEditor extends React.Component {
     this.state = {editorState: EditorState.createEmpty()};
 
     //this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
-    this.toggleInlineStyle = (style) => this._toggle(style);
+    this.toggleInlineStyle = (style) => this._insertEntity(style);
+
     this.onChange = (editorState) => this.setState({editorState})
     this.decorator = new CompositeDecorator([
       {
@@ -197,18 +198,6 @@ class MyEditor extends React.Component {
         component: TokenSpan,
       },
     ]);
-    /* const contentState = this.state.editorState.getCurrentContent()
-     * const targetRange = this.state.editorState.getSelection()
-     * const key = Entity.create('TOKEN', 'SEGMENTED',  {href: 'www.google.com'});
-     * const contentStateWithLink = Modifier.applyEntity(
-     *   contentState,
-     *   targetRange,
-     *   key
-     * )
-     * this.state = {
-     *   editorState: EditorState.createWithContent(contentStateWithLink, decorator)
-     * }*/
-
   }
 
 
@@ -228,25 +217,25 @@ class MyEditor extends React.Component {
     );
   }
 
-  _insertEntity() {
+  _insertEntity(style) {
 
     const contentState = this.state.editorState.getCurrentContent()
     const targetRange = this.state.editorState.getSelection()
-    const key = Entity.create('TOKEN', 'SEGMENTED',  {href: 'www.google.com'});
-    const contentStateWithLink = Modifier.applyEntity(
+    const key = Entity.create('TOKEN', 'SEGMENTED');
+    const contentStateWithEntity = Modifier.insertText(
       contentState,
       targetRange,
+      "hehehe",
+      null,
       key
     )
-    this.state = {
-      editorState: EditorState.createWithContent(contentStateWithLink, this.decorator)
-    }
-
+    this.onChange(
+      EditorState.createWithContent(contentStateWithEntity, this.decorator)
+    )
   }
 
-  _toggle(style) {
+  _toggleEntity(style) {
     const contentState = this.state.editorState.getCurrentContent()
-    console.log('before toggle', contentState)
     const targetRange = this.state.editorState.getSelection()
     const key = Entity.create('TOKEN', 'SEGMENTED');
     const contentStateWithEntity = Modifier.applyEntity(
@@ -260,7 +249,9 @@ class MyEditor extends React.Component {
     console.log('after toggle', this.state.editorState.getCurrentContent())
   }
 
+
   _insertText(text) {
+    //console.log('_insertText', text)
     if (text) {
       const contentState = this.state.editorState.getCurrentContent()
       const targetRange = this.state.editorState.getSelection()
@@ -269,9 +260,9 @@ class MyEditor extends React.Component {
         targetRange,
         text
       )
-      this.state = {
-        editorState: EditorState.createWithContent(contentStateWithInsert)
-      }
+      this.onChange(
+        EditorState.createWithContent(contentStateWithInsert)
+      )
     }
   }
 
