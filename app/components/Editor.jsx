@@ -6,27 +6,44 @@ import '../css/editor.scss';
 
 
 class CreativeEditor extends React.Component {
+
   constructor(props) {
     super(props);
-    this.onChange = (editorState) => this.setState({editorState});
-    this.state = {editorState: EditorState.createEmpty()};
+    //this.onChange = (editorState) => this.props.updateEditorState({editorState});
+    //const initState = EditorState.createEmpty();
+    //this.props.updateEditorState(initState);
+
+  }
+
+  componentDidMount() {
+
   }
 
   render() {
-    const {editorState} = this.state;
+    //const {editorState, updateEditorState} = this.props;
+
+    //const editorState = this.props.editorState;
+    //console.log('editorState in render:', editorState)
 
     return (
       <MuiThemeProvider>
-        <div className={"editor"}>
-          <Editor
-            editorState={this.state.editorState}
-            onChange={this.onChange}
-            ref="editor"
+        <Editor
+          editorState={EditorState.createEmpty()}
+          onChange={this.onChange}
+          ref="editor"
         />
-        </div>
       </MuiThemeProvider>
     )
   }
 }
+/* 
+ * {
+ *   editorState === undefined ? null :
+ *   <Editor
+ *                                        editorState={editorState}
+ *                                        onChange={this.onChange}
+ *                                        ref="editor"
+ *                                      />
+ * }*/
 
 export default CreativeEditor

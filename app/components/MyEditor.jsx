@@ -72,6 +72,7 @@ var INLINE_STYLES = [
 
 
 class StyleButton extends React.Component {
+  
   constructor() {
     super();
     this.onToggle = (e) => {

@@ -20,14 +20,15 @@ let mapStateToProps = state => ({
   selectionRes: state.selection.selectionRes })
 
 const mapDispatchToProps = (dispatch) => {
-
-
   return {
-
+    updateEditorState: (editorState) => {
+      dispatch({
+        type: "UPDATE_EDITOR_STATE",
+        data: editorState
+      })
+    }
   }
 }
-
-
 
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -42,8 +43,14 @@ class Writer extends Component {
       <div className={"writer"}>
         <SelectList
           className={"list"}
-          itemArray={this.props.selectionRes} />
-        <CreativeEditor className={"editor"} />
+          itemArray={this.props.selectionRes}
+          editorState={this.props.editorState} />
+
+        <CreativeEditor
+          className={"editor"}
+          editorState={this.props.editorState}
+          updateEditorState={this.props.updateEditorState}
+        />
       </div>
     )
   }
