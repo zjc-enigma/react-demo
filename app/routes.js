@@ -8,7 +8,7 @@ import Search from './components/Search'
 import SelectionTable from './components/Selection'
 import Writer from './components/Writer'
 import Result from './components/Result'
-import MyEditor from './components/Editor'
+import CreativeEditor from './components/Editor'
 import SelectList from './components/SelectList'
 
 const TestBtn = () => {
@@ -22,7 +22,7 @@ const TestBtn = () => {
 const routes = (
     <Route>
     <Route name='index' path='/' component={Search} />
-    <Route name='editor' path='/editor' component={MyEditor} />
+    <Route name='editor' path='/editor' component={CreativeEditor} />
     <Route name='select_list' path='/select_list' component={SelectList} />
     <Route name='selection' path='/selection' component={SelectionTable} />
     <Route name='writer' path='/writer' component={Writer} />

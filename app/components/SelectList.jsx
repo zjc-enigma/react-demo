@@ -29,19 +29,24 @@ class SelectList extends Component {
 
   constructor(props, context){
     super(props, context);
-    this.itemArray = [
+  }
+
+  static defaultProps = {
+    itemArray: [
       "发生发生的发生的发生地方",
       "阿斯顿发送到发送到付家坡",
       "我奖品为进排气尾聘请为毛坯房的撒"
-    ]
+    ],
+
   }
+
 
   render(){
     return (
       <MuiThemeProvider>
         <List className={"selectList"}>
             {
-              this.itemArray.map(item => <ListItem
+              this.props.itemArray.map(item => <ListItem
                                            primaryText={item}
                                            secondaryText={"分类"}
                                            leftIcon={<ActionGrade color={pinkA200} />}
