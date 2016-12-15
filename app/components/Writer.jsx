@@ -26,6 +26,13 @@ const mapDispatchToProps = (dispatch) => {
         type: "UPDATE_EDITOR_STATE",
         data: editorState
       })
+    },
+
+    handleClick: (item) => {
+      dispatch({
+        type: "ON_CLICK_LIST_INSERT_TEXT",
+        data: item
+      })
     }
   }
 }
@@ -39,15 +46,18 @@ class Writer extends Component {
    }
 
   render() {
+    //console.log(this.props.handleClick)
     return (
       <div className={"writer"}>
         <SelectList
           className={"list"}
           itemArray={this.props.selectionRes}
-          editorState={this.props.editorState} />
+          editorState={this.props.editorState}
+          handleClick={this.props.handleClick} />
 
         <CreativeEditor
           className={"editor"}
+          insertText={this.props.insertText}
           editorState={this.props.editorState}
           updateEditorState={this.props.updateEditorState}
         />

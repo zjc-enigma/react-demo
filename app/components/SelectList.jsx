@@ -41,16 +41,19 @@ class SelectList extends Component {
   }
 
 
+
   render(){
+    
     return (
       <MuiThemeProvider>
         <List className={"selectList"}>
             {
-              this.props.itemArray.map(item => <ListItem
-                                           primaryText={item}
-                                           secondaryText={"分类"}
-                                           leftIcon={<ActionGrade color={pinkA200} />}
-                                         />)}
+              this.props.itemArray.map(item =>
+                <ListItem
+                  primaryText={item}
+                  secondaryText={"分类"}
+                  leftIcon={<ActionGrade color={pinkA200}/>}
+                  onClick={() => this.props.handleClick(item)} />)}
           </List>
       </MuiThemeProvider>
     )
