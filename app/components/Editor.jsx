@@ -48,7 +48,7 @@ class StyleButton extends React.Component {
     super();
     this.onToggle = (e) => {
       e.preventDefault();
-      this.props.onToggle(this.props.style);
+      this.props.onToggle();
     };
   }
 
@@ -115,8 +115,32 @@ class CreativeEditor extends React.Component {
   }
 
   componentDidMount() {
-    //const initState = EditorState.createEmpty();
-    //this.props.updateEditorState(initState);
+
+  }
+
+  _insertEntity(style) {
+
+    const contentState = this.state.editorState.getCurrentContent()
+    const targetRange = this.state.editorState.getSelection()
+    const key = Entity.create('TOKEN', 'SEGMENTED');
+    const contentStateWithEntity = Modifier.insertText(
+      contentState,
+      targetRange,
+      "hehehe",
+      null,
+      key
+    )
+    this.onChange(
+      EditorState.createWithContent(contentStateWithEntity, this.decorator)
+    )
+  }
+
+
+  _getWordListWithSelection() {
+    console.log("STATE", this.state)
+    const t = this.state.editorState.getSelection()
+    console.log(t.getText())
+
 
   }
 
@@ -144,7 +168,7 @@ class CreativeEditor extends React.Component {
        <div style={styles.root}>
         <InlineStyleControls
           editorState={editorState}
-          onToggle={this.toggleInlineStyle}
+          onToggle={() => this._getWordListWithSelection()}
         />
         <div className="editor" onClick={this.focus}>
             <Editor

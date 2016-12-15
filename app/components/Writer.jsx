@@ -33,6 +33,27 @@ const mapDispatchToProps = (dispatch) => {
         type: "ON_CLICK_LIST_INSERT_TEXT",
         data: item
       })
+    },
+    handleClickWord: (item) => {
+      dispatch({
+        type: "ON_CLICK_WORD_LIST",
+        data: item
+      })
+    },
+    getWordList: (word, cate) => {
+
+      fetch("/simwords",
+        {method: "POST",
+          headers:{
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'},
+          body: JSON.stringify({base_word: word})
+        })
+        .then(res => res.json())
+        .then(json => dispatch({
+                      type: "GET_WORD_LIST",
+                      data: json}))
+        .catch(function(e){console.log('/simwords parsing failed', e)})
     }
   }
 }
@@ -50,7 +71,7 @@ class Writer extends Component {
     return (
       <div className={"writer"}>
         <SelectList
-          className={"list"}
+          className={"sentenceList"}
           itemArray={this.props.selectionRes}
           editorState={this.props.editorState}
           handleClick={this.props.handleClick} />
@@ -58,9 +79,17 @@ class Writer extends Component {
         <CreativeEditor
           className={"editor"}
           insertText={this.props.insertText}
+          word={this.props.word}
+          getWordList={this.props.getWordList}
           editorState={this.props.editorState}
           updateEditorState={this.props.updateEditorState}
         />
+
+        <SelectList
+          className={"wordList"}
+          itemArray={this.props.wordList}
+          editorState={this.props.editorState}
+          handleClick={this.props.handleClickWord} />
       </div>
     )
   }

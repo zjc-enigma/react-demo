@@ -12880,12 +12880,23 @@
 	    case "ON_CLICK_LIST_INSERT_TEXT":
 	      return (0, _extends3.default)({}, state, { insertText: action.data });
 	
+	    case "ON_CLICK_WORD_LIST":
+	      return (0, _extends3.default)({}, state, { word: action.data });
+	
+	    case "GET_WORD_LIST":
+	      return (0, _extends3.default)({}, state, { wordList: action.data });
+	
 	    default:
 	      return state;
 	  }
 	};
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var controller = function controller(state, action) {
+	
+	  return (0, _extends3.default)({}, state);
+	};
 
 /***/ },
 /* 134 */
@@ -60509,6 +60520,10 @@
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
+	var _stringify = __webpack_require__(441);
+	
+	var _stringify2 = _interopRequireDefault(_stringify);
+	
 	var _extends2 = __webpack_require__(3);
 	
 	var _extends3 = _interopRequireDefault(_extends2);
@@ -60581,6 +60596,29 @@
 	        type: "ON_CLICK_LIST_INSERT_TEXT",
 	        data: item
 	      });
+	    },
+	    handleClickWord: function handleClickWord(item) {
+	      dispatch({
+	        type: "ON_CLICK_WORD_LIST",
+	        data: item
+	      });
+	    },
+	    getWordList: function getWordList(word, cate) {
+	
+	      fetch("/simwords", { method: "POST",
+	        headers: {
+	          'Accept': 'application/json',
+	          'Content-Type': 'application/json' },
+	        body: (0, _stringify2.default)({ base_word: word })
+	      }).then(function (res) {
+	        return res.json();
+	      }).then(function (json) {
+	        return dispatch({
+	          type: "GET_WORD_LIST",
+	          data: json });
+	      }).catch(function (e) {
+	        console.log('/simwords parsing failed', e);
+	      });
 	    }
 	  };
 	};
@@ -60601,16 +60639,23 @@
 	        'div',
 	        { className: "writer" },
 	        _react2.default.createElement(_SelectList2.default, {
-	          className: "list",
+	          className: "sentenceList",
 	          itemArray: this.props.selectionRes,
 	          editorState: this.props.editorState,
 	          handleClick: this.props.handleClick }),
 	        _react2.default.createElement(_Editor2.default, {
 	          className: "editor",
 	          insertText: this.props.insertText,
+	          word: this.props.word,
+	          getWordList: this.props.getWordList,
 	          editorState: this.props.editorState,
 	          updateEditorState: this.props.updateEditorState
-	        })
+	        }),
+	        _react2.default.createElement(_SelectList2.default, {
+	          className: "wordList",
+	          itemArray: this.props.wordList,
+	          editorState: this.props.editorState,
+	          handleClick: this.props.handleClickWord })
 	      );
 	    }
 	  }]);
@@ -65442,7 +65487,7 @@
 	
 	    _this.onToggle = function (e) {
 	      e.preventDefault();
-	      _this.props.onToggle(_this.props.style);
+	      _this.props.onToggle();
 	    };
 	    return _this;
 	  }
@@ -65514,10 +65559,23 @@
 	    }
 	  }, {
 	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      //const initState = EditorState.createEmpty();
-	      //this.props.updateEditorState(initState);
+	    value: function componentDidMount() {}
+	  }, {
+	    key: '_insertEntity',
+	    value: function _insertEntity(style) {
 	
+	      var contentState = this.state.editorState.getCurrentContent();
+	      var targetRange = this.state.editorState.getSelection();
+	      var key = _draftJs.Entity.create('TOKEN', 'SEGMENTED');
+	      var contentStateWithEntity = _draftJs.Modifier.insertText(contentState, targetRange, "hehehe", null, key);
+	      this.onChange(_draftJs.EditorState.createWithContent(contentStateWithEntity, this.decorator));
+	    }
+	  }, {
+	    key: '_getWordListWithSelection',
+	    value: function _getWordListWithSelection() {
+	      console.log("STATE", this.state);
+	      var t = this.state.editorState.getSelection();
+	      console.log(t.getText());
 	    }
 	  }, {
 	    key: '_insertText',
@@ -65533,6 +65591,8 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this3 = this;
+	
 	      var editorState = this.state.editorState;
 	
 	      return _react2.default.createElement(
@@ -65543,7 +65603,9 @@
 	          { style: styles.root },
 	          _react2.default.createElement(InlineStyleControls, {
 	            editorState: editorState,
-	            onToggle: this.toggleInlineStyle
+	            onToggle: function onToggle() {
+	              return _this3._getWordListWithSelection();
+	            }
 	          }),
 	          _react2.default.createElement(
 	            'div',
@@ -83076,7 +83138,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".writer {\n  display: -webkit-flex;\n  /* for webkit browser */\n  display: inline-flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: center;\n  align-items: flex-start;\n  width: 100%;\n  height: 300px; }\n\n.list {\n  flex-grow: 2;\n  flex-shrink: 0; }\n\n.editor {\n  margin-top: 10px;\n  flex-grow: 2;\n  flex-shrink: 0; }\n\n.styleButton {\n  flex-grow: 1;\n  flex-shrink: 0;\n  margin-top: 10px; }\n", ""]);
+	exports.push([module.id, ".writer {\n  display: -webkit-flex;\n  /* for webkit browser */\n  display: inline-flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: center;\n  align-items: flex-start;\n  width: 100%;\n  height: 300px; }\n\n.sentenceList {\n  flex-grow: 2;\n  flex-shrink: 0; }\n\n.editor {\n  margin-top: 10px;\n  flex-grow: 2;\n  flex-shrink: 0; }\n\n.styleButton {\n  flex-grow: 1;\n  flex-shrink: 0;\n  margin-top: 10px; }\n", ""]);
 	
 	// exports
 

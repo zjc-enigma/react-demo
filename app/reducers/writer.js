@@ -1,3 +1,21 @@
+const controller = (state, action) => {
+
+
+
+
+
+
+
+
+
+  return {
+    ...state,
+  }
+}
+
+
+
+
 export default function (state = [], action) {
   switch(action.type){
 
@@ -6,6 +24,12 @@ export default function (state = [], action) {
 
   case "ON_CLICK_LIST_INSERT_TEXT":
     return {...state, insertText: action.data}
+
+  case "ON_CLICK_WORD_LIST":
+    return {...state, word: action.data}
+
+  case "GET_WORD_LIST":
+    return {...state, wordList: action.data}
 
   default:
     return state
