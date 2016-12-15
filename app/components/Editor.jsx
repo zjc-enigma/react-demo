@@ -49,20 +49,8 @@ const getDecoratedStyle = (mutability) => {
     default: return null;
   }
 };
-/* 
- * const TokenSpan = (props) => {
- *   console.log('tokenspan props:', props)
- *   const style = getDecoratedStyle(
- *     props.contentState.getEntity(props.entityKey).getMutability()
- *   );
- *   return (
- *     <span data-offset-key={props.offsetkey} style={style}>
- *       {props.children}
- *     </span>
- *   );
- * };
- * 
- * */
+
+
 const TokenSpan = (props) => {
   const style = getDecoratedStyle(
     Entity.get(props.entityKey).getMutability()
@@ -73,7 +61,6 @@ const TokenSpan = (props) => {
     </span>
   );
 };
-
 
 
 var INLINE_STYLES = [

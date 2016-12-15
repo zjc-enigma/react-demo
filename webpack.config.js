@@ -29,16 +29,10 @@ module.exports = {
         },
         exclude: /node_modules/
       },
-      {
-          test: /(\.scss|\.css)$/,
-        //loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass')
-        loaders:["style", "css", "sass"]
-      }
+      { test: /\.scss$/, loaders:["style", "css", "sass"] },
+      { test: /\.css$/, loader: "style-loader!css-loader" },
     ]
   },
-  // sassLoader: {
-  //     data: '@import "' + path.resolve(__dirname, './theme/theme.scss') + '";'
-  // },
 
   plugins: [
       new ExtractTextPlugin('theme.css', { allChunks: true }),

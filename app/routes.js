@@ -9,6 +9,7 @@ import SelectionTable from './components/Selection'
 import Writer from './components/Writer'
 import Result from './components/Result'
 import MyEditor from './components/Editor'
+import SelectList from './components/SelectList'
 
 const TestBtn = () => {
   return (
@@ -22,6 +23,7 @@ const routes = (
     <Route>
     <Route name='index' path='/' component={Search} />
     <Route name='editor' path='/editor' component={MyEditor} />
+    <Route name='select_list' path='/select_list' component={SelectList} />
     <Route name='selection' path='/selection' component={SelectionTable} />
     <Route name='writer' path='/writer' component={Writer} />
     <Route name='result' path='/result' component={Result} />
