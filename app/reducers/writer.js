@@ -1,21 +1,3 @@
-const controller = (state, action) => {
-
-
-
-
-
-
-
-
-
-  return {
-    ...state,
-  }
-}
-
-
-
-
 export default function (state = [], action) {
   switch(action.type){
 

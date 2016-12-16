@@ -12902,11 +12902,6 @@
 	};
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var controller = function controller(state, action) {
-	
-	  return (0, _extends3.default)({}, state);
-	};
 
 /***/ },
 /* 135 */
@@ -67290,6 +67285,10 @@
 	  value: true
 	});
 	
+	var _extends2 = __webpack_require__(3);
+	
+	var _extends3 = _interopRequireDefault(_extends2);
+	
 	var _getPrototypeOf = __webpack_require__(489);
 	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
@@ -67413,6 +67412,37 @@
 	  );
 	};
 	
+	var getDecoratedStyle = function getDecoratedStyle(mutability) {
+	  switch (mutability) {
+	    case 'IMMUTABLE':
+	      return styles.immutable;
+	    case 'MUTABLE':
+	      return styles.mutable;
+	    case 'SEGMENTED':
+	      return styles.segmented;
+	    default:
+	      return null;
+	  }
+	};
+	
+	var TokenSpan = function TokenSpan(props) {
+	  var style = getDecoratedStyle(_draftJs.Entity.get(props.entityKey).getMutability());
+	  return _react2.default.createElement(
+	    'span',
+	    (0, _extends3.default)({}, props, { style: style }),
+	    props.children
+	  );
+	};
+	
+	var handleStrategy1 = function handleStrategy1(contentBlock, callback) {
+	  console.log('contentBlock content:', contentBlock.getText());
+	  contentBlock.findEntityRanges(function (char) {
+	    var entityKey = char.getEntity();
+	    //console.log("entitykey type:", Entity.get(entityKey).getType())
+	    return entityKey !== null && _draftJs.Entity.get(entityKey).getType() === 'TOKEN';
+	  }, callback);
+	};
+	
 	var CreativeEditor = function (_React$Component2) {
 	  (0, _inherits3.default)(CreativeEditor, _React$Component2);
 	
@@ -67429,6 +67459,11 @@
 	    _this2.focus = function () {
 	      return _this2.refs.editor.focus();
 	    };
+	    _this2.decorator = new _draftJs.CompositeDecorator([{
+	      strategy: handleStrategy1,
+	      component: TokenSpan
+	    }]);
+	
 	    return _this2;
 	  }
 	
@@ -67440,18 +67475,22 @@
 	      if (this.props.insertText !== nextProps.insertText) {
 	        this._insertText(nextProps.insertText);
 	      }
+	      if (this.props.word !== nextProps.word) {
+	        this._insertEntity(nextProps.word);
+	      }
 	    }
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {}
 	  }, {
 	    key: '_insertEntity',
-	    value: function _insertEntity(style) {
+	    value: function _insertEntity(text) {
 	
 	      var contentState = this.state.editorState.getCurrentContent();
 	      var targetRange = this.state.editorState.getSelection();
 	      var key = _draftJs.Entity.create('TOKEN', 'SEGMENTED');
-	      var contentStateWithEntity = _draftJs.Modifier.insertText(contentState, targetRange, "hehehe", null, key);
+	      var contentStateWithEntity = _draftJs.Modifier.insertText(contentState, targetRange, text, null, key);
+	
 	      this.onChange(_draftJs.EditorState.createWithContent(contentStateWithEntity, this.decorator));
 	    }
 	  }, {

@@ -93,6 +93,45 @@ const InlineStyleControls = (props) => {
 };
 
 
+const getDecoratedStyle = (mutability) => {
+  switch (mutability) {
+    case 'IMMUTABLE': return styles.immutable;
+    case 'MUTABLE': return styles.mutable;
+    case 'SEGMENTED': return styles.segmented;
+    default: return null;
+  }
+};
+
+const TokenSpan = (props) => {
+  const style = getDecoratedStyle(
+    Entity.get(props.entityKey).getMutability()
+  );
+  return (
+    <span {...props} style={style}>
+      {props.children}
+    </span>
+  );
+};
+
+
+
+
+const handleStrategy1 = (contentBlock, callback) => {
+  console.log('contentBlock content:', contentBlock.getText())
+  contentBlock.findEntityRanges(
+    (char) => {
+      const entityKey = char.getEntity()
+      //console.log("entitykey type:", Entity.get(entityKey).getType())
+      return(
+        entityKey !== null &&
+        Entity.get(entityKey).getType() === 'TOKEN'
+      )
+    },
+    callback
+  )
+}
+
+
 class CreativeEditor extends React.Component {
 
   constructor(props) {
@@ -103,6 +142,13 @@ class CreativeEditor extends React.Component {
     }
     this.state = {editorState: EditorState.createEmpty()}
     this.focus = () => this.refs.editor.focus();
+    this.decorator = new CompositeDecorator([
+      {
+        strategy: handleStrategy1,
+        component: TokenSpan,
+      },
+    ]);
+
   }
 
 
@@ -112,13 +158,18 @@ class CreativeEditor extends React.Component {
     if (this.props.insertText !== nextProps.insertText){
       this._insertText(nextProps.insertText)
     }
+    if (this.props.word !== nextProps.word) {
+      this._insertEntity(nextProps.word)
+    }
+
+
   }
 
   componentDidMount() {
 
   }
 
-  _insertEntity(style) {
+  _insertEntity(text) {
 
     const contentState = this.state.editorState.getCurrentContent()
     const targetRange = this.state.editorState.getSelection()
@@ -126,10 +177,11 @@ class CreativeEditor extends React.Component {
     const contentStateWithEntity = Modifier.insertText(
       contentState,
       targetRange,
-      "hehehe",
+      text,
       null,
       key
     )
+
     this.onChange(
       EditorState.createWithContent(contentStateWithEntity, this.decorator)
     )
