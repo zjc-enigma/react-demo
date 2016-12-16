@@ -12878,6 +12878,10 @@
 	
 	var _extends3 = _interopRequireDefault(_extends2);
 	
+	var _keys = __webpack_require__(791);
+	
+	var _keys2 = _interopRequireDefault(_keys);
+	
 	exports.default = function () {
 	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 	  var action = arguments[1];
@@ -12891,7 +12895,19 @@
 	      return (0, _extends3.default)({}, state, { insertText: action.data });
 	
 	    case "ON_CLICK_WORD_LIST":
-	      return (0, _extends3.default)({}, state, { word: action.data });
+	      console.log('state:', state);
+	
+	      if (state.selectedWords === undefined) {
+	        return (0, _extends3.default)({}, state, { selectedWords: [action.data] });
+	      }
+	
+	      var index = state.selectedWords.indexOf(action.data);
+	      if (index > -1) {
+	        var newSelected = (0, _reactAddonsUpdate2.default)(state.selectedWords, { $splice: [[index, 1]] });
+	        return (0, _extends3.default)({}, state, { selectedWords: newSelected });
+	      }
+	
+	      return (0, _reactAddonsUpdate2.default)(state, { selectedWords: { $push: [action.data] } });
 	
 	    case "GET_WORD_LIST":
 	      return (0, _extends3.default)({}, state, { wordList: action.data });
@@ -12901,7 +12917,21 @@
 	  }
 	};
 	
+	var _reactAddonsUpdate = __webpack_require__(1015);
+	
+	var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var removeByKey = function removeByKey(myObj, deleteKey) {
+	
+	  return (0, _keys2.default)(myObj).filter(function (key) {
+	    return key !== deleteKey;
+	  }).reduce(function (result, current) {
+	    result[current] = myObj[current];
+	    return result;
+	  }, {});
+	};
 
 /***/ },
 /* 135 */
@@ -67483,24 +67513,50 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {}
 	  }, {
+	    key: '_getPrevEntityKey',
+	    value: function _getPrevEntityKey() {
+	      // -1 for enter prev entity range
+	      var selection = this.state.editorState.getSelection();
+	      var contentState = this.state.editorState.getCurrentContent();
+	      var offset = selection.getEndOffset() > 0 ? selection.getEndOffset() - 1 : 0;
+	      var currentBlock = contentState.getBlockForKey(selection.getStartKey());
+	      var entityKey = currentBlock.getEntityAt(offset);
+	      console.log("offset:", offset);
+	      console.log("entity key:", entityKey);
+	
+	      return entityKey;
+	    }
+	  }, {
 	    key: '_insertEntity',
 	    value: function _insertEntity(text) {
 	
 	      var contentState = this.state.editorState.getCurrentContent();
 	      var targetRange = this.state.editorState.getSelection();
 	      var key = _draftJs.Entity.create('TOKEN', 'SEGMENTED');
+	      console.log("created entity with key:", key);
+	      //console.log("char list:", currentBlock.getCharacterList())
+	      //console.log("prev key:", selection.getStartKey())
+	
+	      var prevEntityKey = this._getPrevEntityKey();
+	
+	      /* if(prevEntityKey !== undefined){
+	       *   key = Entity.mergeData(prevEntityKey,
+	       *     { 'mention': Map({ 'text': text })})
+	       * }*/
 	      var contentStateWithEntity = _draftJs.Modifier.insertText(contentState, targetRange, text, null, key);
 	
-	      this.onChange(_draftJs.EditorState.createWithContent(contentStateWithEntity, this.decorator));
+	      this.onChange(_draftJs.EditorState.moveSelectionToEnd(_draftJs.EditorState.createWithContent(contentStateWithEntity, this.decorator)));
 	    }
 	  }, {
 	    key: '_getWordListWithSelection',
 	    value: function _getWordListWithSelection() {
 	      // get selection text
+	      var contentState = this.state.editorState.getCurrentContent();
 	      var selectionState = this.state.editorState.getSelection();
 	      var start = selectionState.getStartOffset();
 	      var end = selectionState.getEndOffset();
-	      var block = this.state.editorState.getCurrentContent().getFirstBlock();
+	      //const block = this.state.editorState.getCurrentContent().getFirstBlock()
+	      var block = contentState.getBlockForKey(selectionState.getStartKey());
 	      var selectedText = block.getText().slice(start, end);
 	      this.props.getWordList(selectedText, "DEFAULT");
 	    }
@@ -67512,7 +67568,7 @@
 	        var contentState = this.state.editorState.getCurrentContent();
 	        var targetRange = this.state.editorState.getSelection();
 	        var contentStateWithInsert = _draftJs.Modifier.insertText(contentState, targetRange, text);
-	        this.onChange(_draftJs.EditorState.createWithContent(contentStateWithInsert));
+	        this.onChange(_draftJs.EditorState.moveSelectionToEnd(_draftJs.EditorState.createWithContent(contentStateWithInsert)));
 	      }
 	    }
 	  }, {
@@ -98734,6 +98790,140 @@
 	
 	// exports
 
+
+/***/ },
+/* 1004 */,
+/* 1005 */,
+/* 1006 */,
+/* 1007 */,
+/* 1008 */,
+/* 1009 */,
+/* 1010 */,
+/* 1011 */,
+/* 1012 */,
+/* 1013 */,
+/* 1014 */,
+/* 1015 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(1016);
+
+/***/ },
+/* 1016 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 */
+	
+	/* global hasOwnProperty:true */
+	
+	'use strict';
+	
+	var _prodInvariant = __webpack_require__(50),
+	    _assign = __webpack_require__(38);
+	
+	var invariant = __webpack_require__(21);
+	var hasOwnProperty = {}.hasOwnProperty;
+	
+	function shallowCopy(x) {
+	  if (Array.isArray(x)) {
+	    return x.concat();
+	  } else if (x && typeof x === 'object') {
+	    return _assign(new x.constructor(), x);
+	  } else {
+	    return x;
+	  }
+	}
+	
+	var COMMAND_PUSH = '$push';
+	var COMMAND_UNSHIFT = '$unshift';
+	var COMMAND_SPLICE = '$splice';
+	var COMMAND_SET = '$set';
+	var COMMAND_MERGE = '$merge';
+	var COMMAND_APPLY = '$apply';
+	
+	var ALL_COMMANDS_LIST = [COMMAND_PUSH, COMMAND_UNSHIFT, COMMAND_SPLICE, COMMAND_SET, COMMAND_MERGE, COMMAND_APPLY];
+	
+	var ALL_COMMANDS_SET = {};
+	
+	ALL_COMMANDS_LIST.forEach(function (command) {
+	  ALL_COMMANDS_SET[command] = true;
+	});
+	
+	function invariantArrayCase(value, spec, command) {
+	  !Array.isArray(value) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected target of %s to be an array; got %s.', command, value) : _prodInvariant('1', command, value) : void 0;
+	  var specValue = spec[command];
+	  !Array.isArray(specValue) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array; got %s. Did you forget to wrap your parameter in an array?', command, specValue) : _prodInvariant('2', command, specValue) : void 0;
+	}
+	
+	/**
+	 * Returns a updated shallow copy of an object without mutating the original.
+	 * See https://facebook.github.io/react/docs/update.html for details.
+	 */
+	function update(value, spec) {
+	  !(typeof spec === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): You provided a key path to update() that did not contain one of %s. Did you forget to include {%s: ...}?', ALL_COMMANDS_LIST.join(', '), COMMAND_SET) : _prodInvariant('3', ALL_COMMANDS_LIST.join(', '), COMMAND_SET) : void 0;
+	
+	  if (hasOwnProperty.call(spec, COMMAND_SET)) {
+	    !(Object.keys(spec).length === 1) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Cannot have more than one key in an object with %s', COMMAND_SET) : _prodInvariant('4', COMMAND_SET) : void 0;
+	
+	    return spec[COMMAND_SET];
+	  }
+	
+	  var nextValue = shallowCopy(value);
+	
+	  if (hasOwnProperty.call(spec, COMMAND_MERGE)) {
+	    var mergeObj = spec[COMMAND_MERGE];
+	    !(mergeObj && typeof mergeObj === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): %s expects a spec of type \'object\'; got %s', COMMAND_MERGE, mergeObj) : _prodInvariant('5', COMMAND_MERGE, mergeObj) : void 0;
+	    !(nextValue && typeof nextValue === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): %s expects a target of type \'object\'; got %s', COMMAND_MERGE, nextValue) : _prodInvariant('6', COMMAND_MERGE, nextValue) : void 0;
+	    _assign(nextValue, spec[COMMAND_MERGE]);
+	  }
+	
+	  if (hasOwnProperty.call(spec, COMMAND_PUSH)) {
+	    invariantArrayCase(value, spec, COMMAND_PUSH);
+	    spec[COMMAND_PUSH].forEach(function (item) {
+	      nextValue.push(item);
+	    });
+	  }
+	
+	  if (hasOwnProperty.call(spec, COMMAND_UNSHIFT)) {
+	    invariantArrayCase(value, spec, COMMAND_UNSHIFT);
+	    spec[COMMAND_UNSHIFT].forEach(function (item) {
+	      nextValue.unshift(item);
+	    });
+	  }
+	
+	  if (hasOwnProperty.call(spec, COMMAND_SPLICE)) {
+	    !Array.isArray(value) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Expected %s target to be an array; got %s', COMMAND_SPLICE, value) : _prodInvariant('7', COMMAND_SPLICE, value) : void 0;
+	    !Array.isArray(spec[COMMAND_SPLICE]) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array of arrays; got %s. Did you forget to wrap your parameters in an array?', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : _prodInvariant('8', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : void 0;
+	    spec[COMMAND_SPLICE].forEach(function (args) {
+	      !Array.isArray(args) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array of arrays; got %s. Did you forget to wrap your parameters in an array?', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : _prodInvariant('8', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : void 0;
+	      nextValue.splice.apply(nextValue, args);
+	    });
+	  }
+	
+	  if (hasOwnProperty.call(spec, COMMAND_APPLY)) {
+	    !(typeof spec[COMMAND_APPLY] === 'function') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be a function; got %s.', COMMAND_APPLY, spec[COMMAND_APPLY]) : _prodInvariant('9', COMMAND_APPLY, spec[COMMAND_APPLY]) : void 0;
+	    nextValue = spec[COMMAND_APPLY](nextValue);
+	  }
+	
+	  for (var k in spec) {
+	    if (!(ALL_COMMANDS_SET.hasOwnProperty(k) && ALL_COMMANDS_SET[k])) {
+	      nextValue[k] = update(value[k], spec[k]);
+	    }
+	  }
+	
+	  return nextValue;
+	}
+	
+	module.exports = update;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
 
 /***/ }
 /******/ ]);

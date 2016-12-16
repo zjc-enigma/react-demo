@@ -169,11 +169,34 @@ class CreativeEditor extends React.Component {
 
   }
 
+  _getPrevEntityKey() {
+    // -1 for enter prev entity range
+    const selection = this.state.editorState.getSelection()
+    const contentState = this.state.editorState.getCurrentContent()
+    const offset = selection.getEndOffset() > 0 ? selection.getEndOffset() - 1 : 0
+    const currentBlock = contentState.getBlockForKey(selection.getStartKey())
+    const entityKey = currentBlock.getEntityAt(offset)
+    console.log("offset:", offset)
+    console.log("entity key:", entityKey)
+
+    return entityKey;
+  }
+
   _insertEntity(text) {
 
     const contentState = this.state.editorState.getCurrentContent()
     const targetRange = this.state.editorState.getSelection()
-    const key = Entity.create('TOKEN', 'SEGMENTED');
+    let key = Entity.create('TOKEN', 'SEGMENTED');
+    console.log("created entity with key:", key)
+    //console.log("char list:", currentBlock.getCharacterList())
+    //console.log("prev key:", selection.getStartKey())
+
+    const prevEntityKey = this._getPrevEntityKey()
+
+    /* if(prevEntityKey !== undefined){
+     *   key = Entity.mergeData(prevEntityKey,
+     *     { 'mention': Map({ 'text': text })})
+     * }*/
     const contentStateWithEntity = Modifier.insertText(
       contentState,
       targetRange,
@@ -183,17 +206,19 @@ class CreativeEditor extends React.Component {
     )
 
     this.onChange(
-      EditorState.createWithContent(contentStateWithEntity, this.decorator)
+      EditorState.moveSelectionToEnd(EditorState.createWithContent(contentStateWithEntity, this.decorator))
     )
   }
 
 
   _getWordListWithSelection() {
     // get selection text
+    const contentState = this.state.editorState.getCurrentContent()
     const selectionState = this.state.editorState.getSelection();
     const start = selectionState.getStartOffset();
     const end = selectionState.getEndOffset();
-    const block = this.state.editorState.getCurrentContent().getFirstBlock()
+    //const block = this.state.editorState.getCurrentContent().getFirstBlock()
+    const block = contentState.getBlockForKey(selectionState.getStartKey())
     const selectedText = block.getText().slice(start, end)
     this.props.getWordList(selectedText, "DEFAULT")
   }
@@ -209,7 +234,7 @@ class CreativeEditor extends React.Component {
         text
       )
       this.onChange(
-        EditorState.createWithContent(contentStateWithInsert)
+        EditorState.moveSelectionToEnd(EditorState.createWithContent(contentStateWithInsert))
       )
     }
   }
