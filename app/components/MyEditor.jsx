@@ -72,7 +72,7 @@ var INLINE_STYLES = [
 
 
 class StyleButton extends React.Component {
-  
+
   constructor() {
     super();
     this.onToggle = (e) => {
@@ -190,12 +190,6 @@ class MyEditor extends React.Component {
 
   _toggleInlineStyle(inlineStyle){
 
-    /* const selectionState = this.state.editorState.getSelection();
-     * const start = selectionState.getStartOffset();
-     * const end = selectionState.getEndOffset();
-     * const block = this.state.editorState.getCurrentContent().getFirstBlock()
-     * const selectedText = block.getText().slice(start, end)
-     */
     this.onChange(
       RichUtils.toggleInlineStyle(
         this.state.editorState,

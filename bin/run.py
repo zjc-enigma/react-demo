@@ -59,7 +59,7 @@ class SimWords(Resource):
             base_word = request.json['base_word']
 
             for item in word_model.most_similar(base_word):
-                sim_words.append({"value": item[0], "label": item[0]})
+                sim_words.append(item[0])
         except Exception as e:
             print(e)
 

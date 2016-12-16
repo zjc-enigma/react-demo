@@ -108,7 +108,7 @@ class CreativeEditor extends React.Component {
 
   componentWillReceiveProps(nextProps){
 
-    console.log("nextProps", nextProps)
+    //console.log("nextProps", nextProps)
     if (this.props.insertText !== nextProps.insertText){
       this._insertText(nextProps.insertText)
     }
@@ -137,11 +137,13 @@ class CreativeEditor extends React.Component {
 
 
   _getWordListWithSelection() {
-    console.log("STATE", this.state)
-    const t = this.state.editorState.getSelection()
-    console.log(t.getText())
-
-
+    // get selection text
+    const selectionState = this.state.editorState.getSelection();
+    const start = selectionState.getStartOffset();
+    const end = selectionState.getEndOffset();
+    const block = this.state.editorState.getCurrentContent().getFirstBlock()
+    const selectedText = block.getText().slice(start, end)
+    this.props.getWordList(selectedText, "DEFAULT")
   }
 
   _insertText(text) {

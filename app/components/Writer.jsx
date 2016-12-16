@@ -20,6 +20,15 @@ let mapStateToProps = state => ({
   selectionRes: state.selection.selectionRes })
 
 const mapDispatchToProps = (dispatch) => {
+
+  const updateWordList = (json) => {
+    console.log(json)
+    dispatch({
+      type: "GET_WORD_LIST",
+      data: json})
+  }
+
+
   return {
     updateEditorState: (editorState) => {
       dispatch({
@@ -50,13 +59,13 @@ const mapDispatchToProps = (dispatch) => {
           body: JSON.stringify({base_word: word})
         })
         .then(res => res.json())
-        .then(json => dispatch({
-                      type: "GET_WORD_LIST",
-                      data: json}))
+        .then(updateWordList)
         .catch(function(e){console.log('/simwords parsing failed', e)})
+
     }
   }
 }
+
 
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -82,14 +91,15 @@ class Writer extends Component {
           word={this.props.word}
           getWordList={this.props.getWordList}
           editorState={this.props.editorState}
-          updateEditorState={this.props.updateEditorState}
-        />
+          updateEditorState={this.props.updateEditorState} />
 
         <SelectList
           className={"wordList"}
           itemArray={this.props.wordList}
           editorState={this.props.editorState}
           handleClick={this.props.handleClickWord} />
+
+
       </div>
     )
   }
