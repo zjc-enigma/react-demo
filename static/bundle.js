@@ -62570,6 +62570,18 @@
 	      dispatch({
 	        type: "CLEAN_SELECTED_WORDS"
 	      });
+	    },
+	    exportToServerAndSave: function exportToServerAndSave(raw) {
+	      fetch("/export_raw", { method: "POST",
+	        headers: {
+	          'Accept': 'application/json',
+	          'Content-Type': 'application/json' },
+	        body: (0, _stringify2.default)({ raw: raw })
+	      }).then(function (res) {
+	        return res.json();
+	      }).catch(function (e) {
+	        console.log('/export_raw parsing failed', e);
+	      });
 	    }
 	  };
 	};
@@ -62602,7 +62614,8 @@
 	          getWordList: this.props.getWordList,
 	          cleanSelectedWords: this.props.cleanSelectedWords,
 	          editorState: this.props.editorState,
-	          updateEditorState: this.props.updateEditorState }),
+	          updateEditorState: this.props.updateEditorState,
+	          exportToServerAndSave: this.props.exportToServerAndSave }),
 	        _react2.default.createElement(_SelectList2.default, {
 	          className: "words",
 	          itemArray: this.props.wordList,
@@ -67624,7 +67637,8 @@
 	    key: '_exportAllContent',
 	    value: function _exportAllContent() {
 	      var contentState = this.state.editorState.getCurrentContent();
-	      console.log((0, _draftJs.convertToRaw)(contentState));
+	      var raw = (0, _draftJs.convertToRaw)(contentState);
+	      this.props.exportToServerAndSave(raw);
 	    }
 	  }, {
 	    key: '_exportToHtml',

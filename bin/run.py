@@ -162,6 +162,20 @@ class SearchByClass(Resource):
 api.add_resource(SearchByClass, '/query_by_class')
 
 
+class ExportTextWithEntity(Resource):
+
+    def get(self):
+        pass
+
+
+    def post(self):
+        query = request.json['raw']
+        print(query)
+        return []
+
+
+api.add_resource(ExportTextWithEntity, '/export_raw')
+
 class MultiselectionOptions(Resource):
 
     def get(self):

@@ -67,6 +67,17 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "CLEAN_SELECTED_WORDS",
       })
+    },
+    exportToServerAndSave: (raw) => {
+      fetch("/export_raw",
+        {method: "POST",
+          headers:{
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'},
+          body: JSON.stringify({raw: raw})
+        })
+        .then(res => res.json())
+        .catch(function(e){console.log('/export_raw parsing failed', e)})
     }
   }
 
@@ -100,7 +111,8 @@ class Writer extends Component {
           getWordList={this.props.getWordList}
           cleanSelectedWords={this.props.cleanSelectedWords}
           editorState={this.props.editorState}
-          updateEditorState={this.props.updateEditorState} />
+          updateEditorState={this.props.updateEditorState}
+          exportToServerAndSave={this.props.exportToServerAndSave} />
 
        <SelectList
          className={"words"}
