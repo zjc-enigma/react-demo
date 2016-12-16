@@ -29,6 +29,10 @@
 
 }
 
+.funcButton {
+  display: inline-block;
+}
+
 .wordList{
   flex-grow: 2;
 }
@@ -38,7 +42,9 @@
 }
 
 .submit {
-  padding-left: 0px;
+  //align-self: flex-end;
+  //padding-left: 0px;
   //justify-content: flex-end;
-  //margin-left: 0px;
+  //margin-right: 1000px;
+  flex-grow: 3;
 }

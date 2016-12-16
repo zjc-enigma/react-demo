@@ -1,8 +1,10 @@
-import { Editor, EditorState, RichUtils, convertFromRaw, CompositeDecorator } from 'draft-js';
+import { Editor, EditorState, RichUtils, convertFromRaw, CompositeDecorator, convertToRaw } from 'draft-js';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Entity, Modifier } from 'draft-js';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import React from 'react';
+import {stateToHTML} from 'draft-js-export-html';
+
 import '../css/editor.scss';
 
 const styles = {
@@ -60,7 +62,10 @@ class StyleButton extends React.Component {
     }
 
     return (
-      <span className={className} onMouseDown={this.onToggle} >
+      <span
+        className={className}
+        onMouseDown={this.onToggle}
+        style={this.props.style}>
         {this.props.label}
       </span>
     );
@@ -70,7 +75,7 @@ class StyleButton extends React.Component {
 var INLINE_STYLES = [
   {label: '近义词', style: 'BOLD', color: 'red'},
   {label: '常用词', style: 'ITALIC', color: 'blue'},
-  {label: '行业词', style: 'UNDERLINE', color: 'yellow'},
+  {label: '行业词', style: 'UNDERLINE', color: 'orange'},
   {label: '特征词', style: 'CODE', color: 'black'},
 ];
 
@@ -82,12 +87,11 @@ const InlineStyleControls = (props) => {
     <div className="RichEditor-controls">
       {INLINE_STYLES.map(type =>
         <StyleButton
+          style={{color: type.color}}
           key={type.label}
-          active={currentStyle.has(type.style)}
+          //active={currentStyle.has(type.style)}
           label={type.label}
-          onToggle={props.onToggle}
-          style={{'color': type.color}}
-        />
+          onToggle={props.onToggle} />
        )}
     </div>
   );
@@ -188,7 +192,7 @@ class CreativeEditor extends React.Component {
     const contentState = this.state.editorState.getCurrentContent()
     const targetRange = this.state.editorState.getSelection()
     let key = Entity.create('TOKEN', 'SEGMENTED');
-    console.log("created entity with key:", key)
+
     //console.log("char list:", currentBlock.getCharacterList())
     //console.log("prev key:", selection.getStartKey())
 
@@ -232,6 +236,20 @@ class CreativeEditor extends React.Component {
     this.props.cleanSelectedWords()
   }
 
+  _exportAllContent(){
+    const contentState = this.state.editorState.getCurrentContent()
+    console.log(convertToRaw(contentState))
+
+
+  }
+
+  _exportToHtml(){
+    const contentState = this.state.editorState.getCurrentContent()
+    const html = stateToHTML(contentState);
+    console.log('export to html:', html)
+
+  }
+
   _insertText(text) {
 
     if (text) {
@@ -254,14 +272,25 @@ class CreativeEditor extends React.Component {
     return (
       <MuiThemeProvider>
        <div style={styles.root}>
-        <InlineStyleControls
-          editorState={editorState}
-          onToggle={() => this._getWordListWithSelection()}
-        />
+         <InlineStyleControls
+           className={"funcButton"}
+           editorState={editorState}
+           onToggle={() => this._getWordListWithSelection()} />
+
         <RaisedButton
-          className={"submit"}
+          className={"funcButton-submit"}
           label={"submit"}
           onClick={() => this._insertSelectedWordsAsEntity()} />
+
+        <RaisedButton
+          className={"funcButton-export"}
+          label={"export"}
+          onClick={() => this._exportAllContent()} />
+
+        <RaisedButton
+          className={"funcButton-html"}
+          label={"html"}
+          onClick={() => this._exportToHtml()} />
 
         <div className="editor" onClick={this.focus}>
             <Editor
@@ -271,7 +300,6 @@ class CreativeEditor extends React.Component {
              />
         </div>
        </div>
-    
       </MuiThemeProvider>
     )
   }
