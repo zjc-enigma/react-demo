@@ -103,10 +103,11 @@ class Writer extends Component {
           updateEditorState={this.props.updateEditorState} />
 
        <SelectList
-          className={"words"}
-          itemArray={this.props.wordList}
-          editorState={this.props.editorState}
-          handleClick={this.props.handleClickWord} />
+         className={"words"}
+         itemArray={this.props.wordList}
+         editorState={this.props.editorState}
+         handleClick={this.props.handleClickWord}
+         selectedWords={this.props.selectedWords} />
 
       </div>
  

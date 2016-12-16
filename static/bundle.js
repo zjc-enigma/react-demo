@@ -62607,7 +62607,8 @@
 	          className: "words",
 	          itemArray: this.props.wordList,
 	          editorState: this.props.editorState,
-	          handleClick: this.props.handleClickWord })
+	          handleClick: this.props.handleClickWord,
+	          selectedWords: this.props.selectedWords })
 	      );
 	    }
 	  }]);
@@ -62701,29 +62702,41 @@
 	
 	var ResponsiveReactGridLayout = (0, _reactGridLayout.WidthProvider)(_reactGridLayout.Responsive);
 	
+	var MyActionGrade = function (_Component) {
+	  (0, _inherits3.default)(MyActionGrade, _Component);
 	
-	/* const styles = {
-	 *   selectList: {
-	 *     fontFamily: '\'Helvetica\', sans-serif',
-	 *     width: 200,
-	 *   },
-	 * }
-	 * */
-	/* 
-	 * class MyActionGrade extends Component {
-	 * 
-	 *   constructor(props, context){
-	 *     super(props, context);
-	 *   }
-	 * 
-	 * 
-	 *   const selectedColor = pinkA200;
-	 *   const unselectedColor = transparent;
-	 * 
-	 * }
-	 * */
-	var SelectList = (_temp = _class = function (_Component) {
-	  (0, _inherits3.default)(SelectList, _Component);
+	  function MyActionGrade(props, context) {
+	    (0, _classCallCheck3.default)(this, MyActionGrade);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (MyActionGrade.__proto__ || (0, _getPrototypeOf2.default)(MyActionGrade)).call(this, props, context));
+	
+	    _this.color = _colors.transparent;
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(MyActionGrade, [{
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      if (this.props.selectedWords !== nextProps.selectedWords) {
+	        var index = nextProps.selectedWords.indexOf(this.props.item);
+	        if (index > -1) {
+	          this.color = _colors.pinkA200;
+	        } else {
+	          this.color = _colors.transparent;
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(_grade2.default, { color: this.color });
+	    }
+	  }]);
+	  return MyActionGrade;
+	}(_react.Component);
+	
+	var SelectList = (_temp = _class = function (_Component2) {
+	  (0, _inherits3.default)(SelectList, _Component2);
 	
 	  function SelectList(props, context) {
 	    (0, _classCallCheck3.default)(this, SelectList);
@@ -62736,7 +62749,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
+	      var _this3 = this;
 	
 	      return _react2.default.createElement(
 	        _MuiThemeProvider2.default,
@@ -62748,9 +62761,13 @@
 	            return _react2.default.createElement(_List.ListItem, {
 	              primaryText: item,
 	              secondaryText: "分类",
-	              leftIcon: _react2.default.createElement(_grade2.default, { color: _colors.pinkA200 }),
+	              leftIcon: _react2.default.createElement(MyActionGrade, {
+	                style: { display: "inline" },
+	                item: item,
+	                selectedWords: _this3.props.selectedWords }),
+	
 	              onClick: function onClick() {
-	                return _this2.props.handleClick(item);
+	                return _this3.props.handleClick(item);
 	              } });
 	          })
 	        )

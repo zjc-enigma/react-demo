@@ -17,26 +17,35 @@ import {pinkA200, transparent} from 'material-ui/styles/colors';
 import { withRouter } from 'react-router';
 import '../css/selectList.scss';
 
-/* const styles = {
- *   selectList: {
- *     fontFamily: '\'Helvetica\', sans-serif',
- *     width: 200,
- *   },
- * }
- * */
-/* 
- * class MyActionGrade extends Component {
- * 
- *   constructor(props, context){
- *     super(props, context);
- *   }
- * 
- * 
- *   const selectedColor = pinkA200;
- *   const unselectedColor = transparent;
- * 
- * }
- * */
+
+class MyActionGrade extends Component {
+  
+  constructor(props, context){
+    super(props, context);
+    this.color = transparent;
+  }
+
+  componentWillReceiveProps(nextProps){
+    if (this.props.selectedWords !== nextProps.selectedWords){
+      let index = nextProps.selectedWords.indexOf(this.props.item)
+      if(index > -1){
+        this.color = pinkA200;
+      } else {
+        this.color = transparent;
+      }
+    }
+  }
+
+  render(){
+    return(
+      <ActionGrade color={this.color} />
+    )
+
+  }
+}
+
+
+
 class SelectList extends Component {
 
   constructor(props, context){
@@ -53,7 +62,7 @@ class SelectList extends Component {
   }
 
   _clickItem(item) {
-    
+
   }
 
 
@@ -67,7 +76,11 @@ class SelectList extends Component {
                 <ListItem
                   primaryText={item}
                   secondaryText={"分类"}
-                  leftIcon={<ActionGrade color={pinkA200}/>}
+                leftIcon={<MyActionGrade
+                            style={{display:"inline"}}
+                            item={item}
+                            selectedWords={this.props.selectedWords}/>}
+
                   onClick={() => this.props.handleClick(item)} />)}
           </List>
       </MuiThemeProvider>
