@@ -12912,6 +12912,9 @@
 	    case "GET_WORD_LIST":
 	      return (0, _extends3.default)({}, state, { wordList: action.data });
 	
+	    case "CLEAN_SELECTED_WORDS":
+	      return (0, _extends3.default)({}, state, { selectedWords: undefined });
+	
 	    default:
 	      return state;
 	  }
@@ -62562,6 +62565,11 @@
 	      }).then(updateWordList).catch(function (e) {
 	        console.log('/simwords parsing failed', e);
 	      });
+	    },
+	    cleanSelectedWords: function cleanSelectedWords() {
+	      dispatch({
+	        type: "CLEAN_SELECTED_WORDS"
+	      });
 	    }
 	  };
 	};
@@ -62590,11 +62598,13 @@
 	          className: "editor",
 	          insertText: this.props.insertText,
 	          word: this.props.word,
+	          selectedWords: this.props.selectedWords,
 	          getWordList: this.props.getWordList,
+	          cleanSelectedWords: this.props.cleanSelectedWords,
 	          editorState: this.props.editorState,
 	          updateEditorState: this.props.updateEditorState }),
 	        _react2.default.createElement(_SelectList2.default, {
-	          className: "wordList",
+	          className: "words",
 	          itemArray: this.props.wordList,
 	          editorState: this.props.editorState,
 	          handleClick: this.props.handleClickWord })
@@ -62699,7 +62709,19 @@
 	 *   },
 	 * }
 	 * */
-	
+	/* 
+	 * class MyActionGrade extends Component {
+	 * 
+	 *   constructor(props, context){
+	 *     super(props, context);
+	 *   }
+	 * 
+	 * 
+	 *   const selectedColor = pinkA200;
+	 *   const unselectedColor = transparent;
+	 * 
+	 * }
+	 * */
 	var SelectList = (_temp = _class = function (_Component) {
 	  (0, _inherits3.default)(SelectList, _Component);
 	
@@ -62709,6 +62731,9 @@
 	  }
 	
 	  (0, _createClass3.default)(SelectList, [{
+	    key: '_clickItem',
+	    value: function _clickItem(item) {}
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
@@ -67300,7 +67325,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".selectList {\n  font-size: 200%            !important;\n  width: 10%                 !important; }\n", ""]);
+	exports.push([module.id, "", ""]);
 	
 	// exports
 
@@ -67340,6 +67365,10 @@
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
 	var _draftJs = __webpack_require__(874);
+	
+	var _RaisedButton = __webpack_require__(311);
+	
+	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
 	
 	var _MuiThemeProvider = __webpack_require__(139);
 	
@@ -67423,7 +67452,7 @@
 	  return StyleButton;
 	}(_react2.default.Component);
 	
-	var INLINE_STYLES = [{ label: '近义词', style: 'BOLD' }, { label: '常用词', style: 'ITALIC' }, { label: '行业词', style: 'UNDERLINE' }, { label: '特征词', style: 'CODE' }];
+	var INLINE_STYLES = [{ label: '近义词', style: 'BOLD', color: 'red' }, { label: '常用词', style: 'ITALIC', color: 'blue' }, { label: '行业词', style: 'UNDERLINE', color: 'yellow' }, { label: '特征词', style: 'CODE', color: 'black' }];
 	
 	var InlineStyleControls = function InlineStyleControls(props) {
 	  var currentStyle = props.editorState.getCurrentInlineStyle();
@@ -67436,7 +67465,7 @@
 	        active: currentStyle.has(type.style),
 	        label: type.label,
 	        onToggle: props.onToggle,
-	        style: type.style
+	        style: { 'color': type.color }
 	      });
 	    })
 	  );
@@ -67548,6 +67577,15 @@
 	      this.onChange(_draftJs.EditorState.moveSelectionToEnd(_draftJs.EditorState.createWithContent(contentStateWithEntity, this.decorator)));
 	    }
 	  }, {
+	    key: '_insertSelectedWordsAsEntity',
+	    value: function _insertSelectedWordsAsEntity() {
+	
+	      if (this.props.selectedWords) {
+	        var joinedWords = this.props.selectedWords.join('|');
+	        this._insertEntity(joinedWords);
+	      }
+	    }
+	  }, {
 	    key: '_getWordListWithSelection',
 	    value: function _getWordListWithSelection() {
 	      // get selection text
@@ -67559,6 +67597,7 @@
 	      var block = contentState.getBlockForKey(selectionState.getStartKey());
 	      var selectedText = block.getText().slice(start, end);
 	      this.props.getWordList(selectedText, "DEFAULT");
+	      this.props.cleanSelectedWords();
 	    }
 	  }, {
 	    key: '_insertText',
@@ -67590,6 +67629,12 @@
 	              return _this3._getWordListWithSelection();
 	            }
 	          }),
+	          _react2.default.createElement(_RaisedButton2.default, {
+	            className: "submit",
+	            label: "submit",
+	            onClick: function onClick() {
+	              return _this3._insertSelectedWordsAsEntity();
+	            } }),
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'editor', onClick: this.focus },
@@ -67643,7 +67688,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".writer {\n  display: -webkit-flex;\n  /* for webkit browser */\n  display: inline-flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: center;\n  align-items: flex-start;\n  width: 100%;\n  height: 300px; }\n\n.sentenceList {\n  flex-grow: 2;\n  flex-shrink: 0; }\n\n.editor {\n  margin-top: 10px;\n  flex-grow: 2;\n  flex-shrink: 0; }\n\n.styleButton {\n  flex-grow: 1;\n  flex-shrink: 0;\n  margin-top: 10px; }\n", ""]);
+	exports.push([module.id, ".writer {\n  display: -webkit-flex;\n  /* for webkit browser */\n  display: inline-flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: flex-start;\n  width: 100%;\n  height: 100px; }\n\n.sentenceList {\n  flex-grow: 2;\n  flex-shrink: 0; }\n\n.editor {\n  margin-top: 10px;\n  flex-grow: 2;\n  flex-shrink: 0; }\n\n.styleButton {\n  flex-grow: 1;\n  flex-shrink: 0;\n  margin-top: 10px; }\n\n.wordList {\n  flex-grow: 2; }\n\n.words {\n  flex-grow: 2; }\n\n.submit {\n  padding-left: 0px; }\n", ""]);
 	
 	// exports
 

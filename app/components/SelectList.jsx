@@ -24,7 +24,19 @@ import '../css/selectList.scss';
  *   },
  * }
  * */
-
+/* 
+ * class MyActionGrade extends Component {
+ * 
+ *   constructor(props, context){
+ *     super(props, context);
+ *   }
+ * 
+ * 
+ *   const selectedColor = pinkA200;
+ *   const unselectedColor = transparent;
+ * 
+ * }
+ * */
 class SelectList extends Component {
 
   constructor(props, context){
@@ -40,10 +52,13 @@ class SelectList extends Component {
 
   }
 
+  _clickItem(item) {
+    
+  }
 
 
   render(){
-    
+
     return (
       <MuiThemeProvider>
         <List className={"selectList"}>

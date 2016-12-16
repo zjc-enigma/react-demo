@@ -39,6 +39,9 @@ export default function (state = [], action) {
   case "GET_WORD_LIST":
     return {...state, wordList: action.data}
 
+  case "CLEAN_SELECTED_WORDS":
+    return {...state, selectedWords: undefined}
+
   default:
     return state
   }

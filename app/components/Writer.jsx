@@ -62,8 +62,14 @@ const mapDispatchToProps = (dispatch) => {
         .then(updateWordList)
         .catch(function(e){console.log('/simwords parsing failed', e)})
 
+    },
+    cleanSelectedWords: () => {
+      dispatch({
+        type: "CLEAN_SELECTED_WORDS",
+      })
     }
   }
+
 }
 
 
@@ -78,6 +84,7 @@ class Writer extends Component {
   render() {
     //console.log(this.props.handleClick)
     return (
+      
       <div className={"writer"}>
         <SelectList
           className={"sentenceList"}
@@ -89,18 +96,20 @@ class Writer extends Component {
           className={"editor"}
           insertText={this.props.insertText}
           word={this.props.word}
+          selectedWords={this.props.selectedWords}
           getWordList={this.props.getWordList}
+          cleanSelectedWords={this.props.cleanSelectedWords}
           editorState={this.props.editorState}
           updateEditorState={this.props.updateEditorState} />
 
-        <SelectList
-          className={"wordList"}
+       <SelectList
+          className={"words"}
           itemArray={this.props.wordList}
           editorState={this.props.editorState}
           handleClick={this.props.handleClickWord} />
 
-
       </div>
+ 
     )
   }
 

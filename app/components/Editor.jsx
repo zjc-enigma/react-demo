@@ -1,4 +1,5 @@
 import { Editor, EditorState, RichUtils, convertFromRaw, CompositeDecorator } from 'draft-js';
+import RaisedButton from 'material-ui/RaisedButton';
 import { Entity, Modifier } from 'draft-js';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import React from 'react';
@@ -67,10 +68,10 @@ class StyleButton extends React.Component {
 }
 
 var INLINE_STYLES = [
-  {label: '近义词', style: 'BOLD'},
-  {label: '常用词', style: 'ITALIC'},
-  {label: '行业词', style: 'UNDERLINE'},
-  {label: '特征词', style: 'CODE'},
+  {label: '近义词', style: 'BOLD', color: 'red'},
+  {label: '常用词', style: 'ITALIC', color: 'blue'},
+  {label: '行业词', style: 'UNDERLINE', color: 'yellow'},
+  {label: '特征词', style: 'CODE', color: 'black'},
 ];
 
 
@@ -85,7 +86,7 @@ const InlineStyleControls = (props) => {
           active={currentStyle.has(type.style)}
           label={type.label}
           onToggle={props.onToggle}
-          style={type.style}
+          style={{'color': type.color}}
         />
        )}
     </div>
@@ -210,6 +211,13 @@ class CreativeEditor extends React.Component {
     )
   }
 
+  _insertSelectedWordsAsEntity(){
+
+    if(this.props.selectedWords){
+      const joinedWords = this.props.selectedWords.join('|')
+      this._insertEntity(joinedWords)
+    }
+  }
 
   _getWordListWithSelection() {
     // get selection text
@@ -221,6 +229,7 @@ class CreativeEditor extends React.Component {
     const block = contentState.getBlockForKey(selectionState.getStartKey())
     const selectedText = block.getText().slice(start, end)
     this.props.getWordList(selectedText, "DEFAULT")
+    this.props.cleanSelectedWords()
   }
 
   _insertText(text) {
@@ -249,6 +258,11 @@ class CreativeEditor extends React.Component {
           editorState={editorState}
           onToggle={() => this._getWordListWithSelection()}
         />
+        <RaisedButton
+          className={"submit"}
+          label={"submit"}
+          onClick={() => this._insertSelectedWordsAsEntity()} />
+
         <div className="editor" onClick={this.focus}>
             <Editor
               editorState={editorState}
