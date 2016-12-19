@@ -207,7 +207,7 @@ export default function reducer(state = [], action) {
       })
 
   default:
-    console.log("unknown action:" ,action.type);
+    console.log("unknown action in reducer:" ,action.type);
     return state;
 
   }

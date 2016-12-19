@@ -12858,7 +12858,7 @@
 	      });
 	
 	    default:
-	      console.log("unknown action:", action.type);
+	      console.log("unknown action in reducer:", action.type);
 	      return state;
 	
 	  }
@@ -12916,6 +12916,7 @@
 	      return (0, _extends3.default)({}, state, { selectedWords: undefined });
 	
 	    default:
+	      console.log('unknown action in writer');
 	      return state;
 	  }
 	};

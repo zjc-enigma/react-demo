@@ -43,6 +43,7 @@ export default function (state = [], action) {
     return {...state, selectedWords: undefined}
 
   default:
+    console.log('unknown action in writer')
     return state
   }
 }
