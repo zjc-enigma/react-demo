@@ -32,6 +32,7 @@ const styles = {
     padding: '2px 0',
   },
   segmented: {
+    borderRadius: '5px',
     backgroundColor: 'rgba(248, 222, 126, 1.0)',
     padding: '2px 0',
   },
@@ -159,7 +160,6 @@ class CreativeEditor extends React.Component {
 
   componentWillReceiveProps(nextProps){
 
-    //console.log("nextProps", nextProps)
     if (this.props.insertText !== nextProps.insertText){
       this._insertText(nextProps.insertText)
     }

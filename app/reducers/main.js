@@ -1,4 +1,4 @@
-export default function reducer(state = [], action) {
+export default function (state = [], action) {
 
   switch(action.type){
 
@@ -197,9 +197,8 @@ export default function reducer(state = [], action) {
     return   {...state, sentenceTableRows: action.data}
 
   case 'SEARCHRES':
-    return   Object.assign({}, state, {
-      searchRes: action.data,
-    })
+    return  {...state, 
+             searchRes: action.data}
 
   case 'CHANGETEXT':
     return  Object.assign({}, state, {
@@ -207,7 +206,6 @@ export default function reducer(state = [], action) {
       })
 
   default:
-    console.log("unknown action in reducer:" ,action.type);
     return state;
 
   }

@@ -25,6 +25,7 @@ from data import search_title_by_class
 from data import random_select_ad
 from data import label2value, value2label
 from lib import word_by_ad
+import pdb
 
 import jieba.posseg as pseg
 
@@ -163,14 +164,60 @@ api.add_resource(SearchByClass, '/query_by_class')
 
 
 class ExportTextWithEntity(Resource):
+    ''' example entity json:
+    {'entityMap': {'0': {'mutability': 'SEGMENTED', 'data': {}, 'type': 'TOKEN'}}, 'blocks': [{'entityRanges': [{'offset': 23, 'length': 8, 'key': 0}], 'depth': 0, 'key': '7qct2', 'inlineStyleRanges': [], 'data': {}, 'text': '苹果iPhone输入法现“击沉中国”：真相彻底全方位|理性|每无语！', 'type': 'unstyled'}]}
+    '''
+
+
+    def _extract_entity_content(self, entity_text, entity_type):
+        entity_word_list = entity_text.split('|')
+        return entity_word_list
+
+
+    def _update_text_with_content(self, origin_text_list, content_list, offset, length):
+
+        updated_list = []
+        for index, origin_text in enumerate(origin_text_list):
+            for content in content_list:
+
+                updated = origin_text[:offset] + content + origin_text[offset+length:]
+                updated_list.append(updated)
+
+        return updated_list
+
+
 
     def get(self):
         pass
 
 
     def post(self):
-        query = request.json['raw']
-        print(query)
+        raw_json = request.json['raw']
+        print(raw_json)
+        entity_map = raw_json['entityMap']
+
+        for block in raw_json['blocks']:
+            block_text = block['text']
+            block_text_list = [ block_text ]
+
+            entity_list = block['entityRanges']
+
+            sorted_entity_list = sorted(entity_list, key=lambda x: x['offset'], reverse=True)
+
+            for entity in sorted_entity_list:
+                entity_offset = entity['offset']
+                entity_length = entity['length']
+                entity_text = block_text[entity_offset: entity_offset+entity_length]
+                entity_type = entity_map[str(entity['key'])]['type']
+                content_list = self._extract_entity_content(entity_text, entity_type)
+                updated_list = self._update_text_with_content(block_text_list,
+                                                              content_list,
+                                                              entity_offset,
+                                                              entity_length)
+                block_text_list = updated_list
+
+            print(block_text_list)
+
         return []
 
 
@@ -201,9 +248,9 @@ def nocache(view):
     return update_wrapper(no_cache, view)
 
 
-
-@app.route("/select_list")
-@app.route("/editor")
+@app.route("select_table") #for test
+@app.route("/select_list") #for test
+@app.route("/editor") #for test
 @app.route("/result")
 @app.route("/selection")
 @app.route("/writer")

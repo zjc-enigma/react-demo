@@ -24,17 +24,20 @@ export default function (state = [], action) {
     console.log('state:', state)
 
     if (state.selectedWords === undefined){
+      console.log("state.selectedWords has been cleaned")
       return {...state, selectedWords: [action.data]}
     }
 
-    const index = state.selectedWords.indexOf(action.data)
-    if(index > -1){
-      const newSelected = update(state.selectedWords, {$splice: [[index, 1]]})
-      return {...state, selectedWords: newSelected}
+    console.log("state.selectedWords is not cleaned", state.selectedWords)
+    // const index = state.selectedWords.indexOf(action.data)
+    // if(index > -1){
+    //   const newSelected = update(state.selectedWords, {$splice: [[index, 1]]})
+    //   return {...state, selectedWords: newSelected}
 
-    }
-
-    return update(state, {selectedWords: {$push: [action.data]}})
+    // }
+    // let updated = update(state, {selectedWords: {$push: [action.data]}})
+    // return {...state, ...updated}
+    return {...state}
 
   case "GET_WORD_LIST":
     return {...state, wordList: action.data}
@@ -43,7 +46,6 @@ export default function (state = [], action) {
     return {...state, selectedWords: undefined}
 
   default:
-    console.log('unknown action in writer')
-    return state
+    return state;
   }
 }
