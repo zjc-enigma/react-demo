@@ -11,6 +11,7 @@ import Result from './components/Result'
 import CreativeEditor from './components/Editor'
 import SelectList from './components/SelectList'
 import SelectTable from './components/SelectTable'
+import GenerateTable from './components/Generate'
 
 const TestBtn = () => {
   return (
@@ -26,6 +27,7 @@ const routes = (
     <Route name='editor' path='/editor' component={CreativeEditor} />
     <Route name='select_list' path='/select_list' component={SelectList} />
     <Route name='select_table' path='/select_table' component={SelectTable} />
+    <Route name='generate_res_table' path='/generate_res_table' component={GenerateTable} />
     <Route name='selection' path='/selection' component={SelectionTable} />
     <Route name='writer' path='/writer' component={Writer} />
     <Route name='result' path='/result' component={Result} />

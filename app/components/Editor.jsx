@@ -239,7 +239,8 @@ class CreativeEditor extends React.Component {
   _exportAllContent(){
     const contentState = this.state.editorState.getCurrentContent()
     const raw = convertToRaw(contentState);
-    this.props.exportToServerAndSave(raw)
+    this.props.exportToServerAndSave(raw);
+    this.props.history.push('/generate_res_table')
   }
 
   _exportToHtml(){

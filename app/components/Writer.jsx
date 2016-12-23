@@ -22,12 +22,19 @@ let mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch) => {
 
   const updateWordList = (json) => {
-    console.log(json)
     dispatch({
       type: "GET_WORD_LIST",
       data: json})
   }
 
+  const updateGenerateRes = (json) => {
+    console.log(json)
+    dispatch({
+      type: "GENERATE_RES_LIST",
+      data: json
+    })
+
+  }
 
   return {
     updateEditorState: (editorState) => {
@@ -77,7 +84,9 @@ const mapDispatchToProps = (dispatch) => {
           body: JSON.stringify({raw: raw})
         })
         .then(res => res.json())
+        .then(updateGenerateRes)
         .catch(function(e){console.log('/export_raw parsing failed', e)})
+
     },
     updateTableSelection: (selection) => {
       dispatch({
@@ -117,7 +126,8 @@ class Writer extends Component {
             cleanSelectedWords={this.props.cleanSelectedWords}
             editorState={this.props.editorState}
             updateEditorState={this.props.updateEditorState}
-            exportToServerAndSave={this.props.exportToServerAndSave} />
+            exportToServerAndSave={this.props.exportToServerAndSave}
+            history={this.props.history} />
         </div>
 
         <div className={"wordsSelectionTable"}>

@@ -142,6 +142,49 @@ class Search(Resource):
 
 api.add_resource(Search, '/query')
 
+
+
+class SaveToCSV(Resource):
+
+    def _flatten(self, items, ignore_types=(str, bytes)):
+        """flatten a nested list
+
+        test case:
+
+        items = [1, 2, [3, 4, [5, 6], 7], 8]
+        # Produces 1 2 3 4 5 6 7 8
+        for x in flatten(items):
+            print(x)
+
+        items = ['Dave', 'Paula', ['Thomas', 'Lewis']]
+            for x in flatten(items):
+                print(x)
+
+
+        """
+        from collections import Iterable
+
+        for x in items:
+            if isinstance(x, Iterable) and not isinstance(x, ignore_types):
+                yield from self._flatten(x)
+            else:
+                yield x
+
+
+
+    def post(self):
+        selected_res_data = list(self._flatten(request.json['selectedRes']))
+        print("generate SaveToCsv:", selected_res_data)
+        result_file_content = "\n".join(selected_res_data)
+
+        return Response(result_file_content,
+                        mimetype="text/plain",
+                        headers={"Content-Disposition":
+                                 "attachment;filename=result.txt"})
+
+api.add_resource(SaveToCSV, '/save_to_csv')
+
+
 class SearchByClass(Resource):
 
     def post(self):
@@ -216,9 +259,9 @@ class ExportTextWithEntity(Resource):
                                                               entity_length)
                 block_text_list = updated_list
 
-            print(block_text_list)
+            print('generate res:', block_text_list)
 
-        return []
+        return block_text_list
 
 
 api.add_resource(ExportTextWithEntity, '/export_raw')
@@ -248,6 +291,7 @@ def nocache(view):
     return update_wrapper(no_cache, view)
 
 
+@app.route("/generate_res_table") #for test
 @app.route("/select_table") #for test
 @app.route("/select_list") #for test
 @app.route("/editor") #for test

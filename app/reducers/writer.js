@@ -48,6 +48,9 @@ export default function (state = [], action) {
   case "CLEAN_SELECTED_WORDS":
     return {...state, selectedWords: undefined}
 
+  case "GENERATE_RES_LIST":
+    return {...state, generateResList: action.data}
+
   default:
     return state;
   }
