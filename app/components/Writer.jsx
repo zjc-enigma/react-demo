@@ -8,8 +8,8 @@ import TextField from 'material-ui/TextField';
 import {Responsive, WidthProvider} from 'react-grid-layout';
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
-import {MultiSelect} from 'react-selectize';
 import SelectList from './SelectList';
+import SelectTable from './SelectTable'
 import { withRouter } from 'react-router';
 import CreativeEditor from './Editor';
 import '../css/writer.scss';
@@ -78,9 +78,14 @@ const mapDispatchToProps = (dispatch) => {
         })
         .then(res => res.json())
         .catch(function(e){console.log('/export_raw parsing failed', e)})
+    },
+    updateTableSelection: (selection) => {
+      dispatch({
+        type: "UPDATE_WORDS_TABLE_SELECTION",
+        data: selection
+      })
     }
   }
-
 }
 
 
@@ -93,39 +98,73 @@ class Writer extends Component {
    }
 
   render() {
-    //console.log(this.props.handleClick)
+
     return (
-      
-      <div className={"writer"}>
-        <SelectList
-          className={"sentenceList"}
-          itemArray={this.props.selectionRes}
-          editorState={this.props.editorState}
-          handleClick={this.props.handleClick} />
+      <MuiThemeProvider>
+      <div className={"sentenceWriter"}>
+        <div className={"sentenceTable"}>
+          <SelectList
+            itemArray={this.props.selectionRes}
+            handleClick={this.props.handleClick} />
+        </div>
 
-        <CreativeEditor
-          className={"editor"}
-          insertText={this.props.insertText}
-          word={this.props.word}
-          selectedWords={this.props.selectedWords}
-          getWordList={this.props.getWordList}
-          cleanSelectedWords={this.props.cleanSelectedWords}
-          editorState={this.props.editorState}
-          updateEditorState={this.props.updateEditorState}
-          exportToServerAndSave={this.props.exportToServerAndSave} />
+        <div className={"sentenceEditor"}>
+          <CreativeEditor
+            insertText={this.props.insertText}
+            word={this.props.word}
+            selectedWords={this.props.selectedWords}
+            getWordList={this.props.getWordList}
+            cleanSelectedWords={this.props.cleanSelectedWords}
+            editorState={this.props.editorState}
+            updateEditorState={this.props.updateEditorState}
+            exportToServerAndSave={this.props.exportToServerAndSave} />
+        </div>
 
-       <SelectList
-         className={"words"}
-         itemArray={this.props.wordList}
-         editorState={this.props.editorState}
-         handleClick={this.props.handleClickWord}
-         selectedWords={this.props.selectedWords} />
-
+        <div className={"wordsSelectionTable"}>
+          <SelectTable 
+            itemArray={this.props.wordList}
+            handleClick={this.props.handleClickWord}
+            selectedWords={this.props.selectedWords}
+            updateTableSelection={this.props.updateTableSelection}
+            wordsSelection={this.props.wordsSelection}  />
+        </div>
       </div>
+      </MuiThemeProvider>
  
     )
   }
 
 }
 
+
+
+
+
+
+
+
 export default withRouter(Writer)
+
+/* <SelectList
+ * className={"sentenceList"}
+ * itemArray={this.props.selectionRes}
+ * editorState={this.props.editorState}
+ * handleClick={this.props.handleClick} />
+ * 
+ * <CreativeEditor
+ * className={"editor"}
+ * insertText={this.props.insertText}
+ * word={this.props.word}
+ * selectedWords={this.props.selectedWords}
+ * getWordList={this.props.getWordList}
+ * cleanSelectedWords={this.props.cleanSelectedWords}
+ * editorState={this.props.editorState}
+ * updateEditorState={this.props.updateEditorState}
+ * exportToServerAndSave={this.props.exportToServerAndSave} />
+ * 
+ * <SelectList
+ * className={"words"}
+ * itemArray={this.props.wordList}
+ * editorState={this.props.editorState}
+ * handleClick={this.props.handleClickWord}
+ * selectedWords={this.props.selectedWords} />*/

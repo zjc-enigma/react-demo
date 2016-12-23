@@ -69,21 +69,19 @@ class SelectList extends Component {
   render(){
 
     return (
-      <MuiThemeProvider>
-        <List className={"selectList"}>
+        <List style={{'width': '100%'}}>
             {
               this.props.itemArray.map(item =>
                 <ListItem
                   primaryText={item}
                   secondaryText={"分类"}
-                leftIcon={<MyActionGrade
+                  leftIcon={<MyActionGrade
                             style={{display:"inline"}}
                             item={item}
                             selectedWords={this.props.selectedWords}/>}
 
                   onClick={() => this.props.handleClick(item)} />)}
           </List>
-      </MuiThemeProvider>
     )
   }
 

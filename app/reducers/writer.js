@@ -14,6 +14,9 @@ const removeByKey = (myObj, deleteKey) => {
 export default function (state = [], action) {
   switch(action.type){
 
+  case "UPDATE_WORDS_TABLE_SELECTION":
+    return {...state, selectedWords: action.data}
+
   case "UPDATE_EDITOR_STATE":
     return {...state, editorState: action.data}
 

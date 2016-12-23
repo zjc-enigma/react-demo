@@ -248,7 +248,7 @@ def nocache(view):
     return update_wrapper(no_cache, view)
 
 
-@app.route("select_table") #for test
+@app.route("/select_table") #for test
 @app.route("/select_list") #for test
 @app.route("/editor") #for test
 @app.route("/result")

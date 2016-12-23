@@ -10,31 +10,27 @@ import { withRouter } from 'react-router';
 
 
 class SelectionTable extends Component {
-
-
   constructor(props, context){
     super(props, context);
   }
-  componentWillReceiveProps(nextProps){
-
-  }
 
   shouldComponentUpdate (nextProps, nextState) {
-    return nextProps.searchRes !== this.props.searchRes
+    return nextProps.itemArray !== this.props.itemArray
   }
-  
+
+
   generateRows(){
-    return this.props.searchRes===undefined ?
-           null : this.props.searchRes.map(
-             item => <TableRow>
-  <TableRowColumn>{item.tag}</TableRowColumn>
-  <TableRowColumn>{'未知'}</TableRowColumn>
-             </TableRow>)
+
+    return this.props.itemArray === undefined ? null :
+           this.props.itemArray.map(item => <TableRow>
+                      <TableRowColumn>{item}</TableRowColumn>
+                      <TableRowColumn>{'未知'}</TableRowColumn>
+                      </TableRow>)
   }
 
   handleSelection(slices) {
-    let selection = slices.map(index => {return this.props.searchRes[index]})
-    this.props.updateSelection(selection)
+    let selection = slices.map(index => this.props.itemArray[index])
+    this.props.updateTableSelection(selection)
   }
 
   render() {
