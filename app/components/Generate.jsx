@@ -27,19 +27,8 @@ const mapDispatchToProps = dispatch => {
     },
 
     saveToCsv: selectedRes => {
-
-      let d = "abcdedf"
-
-      fileDownload(d, "tttt.csv")
-
-      /* return fetch("/save_to_csv",
-       *   {method: "POST",
-       *     headers:{
-       *       'Accept': 'application/json',
-       *       'Content-Type': 'application/json'},
-       *     body: JSON.stringify({selectedRes: selectedRes})
-       *   })
-       *   .catch(function(e){console.log('/save_to_csv parsing failed', e)})*/
+      let saveRes = selectedRes.join('\n')
+      fileDownload(saveRes, "result.txt")
     }
   }
 }

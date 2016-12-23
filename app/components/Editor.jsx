@@ -32,7 +32,7 @@ const styles = {
     padding: '2px 0',
   },
   segmented: {
-    borderRadius: '5px',
+    borderRadius: '15px',
     backgroundColor: 'rgba(248, 222, 126, 1.0)',
     padding: '2px 0',
   },
