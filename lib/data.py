@@ -181,6 +181,8 @@ class TitleTagger(object):
         search_res = []
         print ("query :", query)
         print ("query repr:", repr(query))
+
+        class_name_list = [ label2value[class_name] for class_name in class_name_list ]
         print ("class_name_list:", class_name_list)
 
         for tag in self.res_dict:

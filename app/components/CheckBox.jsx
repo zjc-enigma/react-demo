@@ -14,13 +14,23 @@ const styles = {
   },
 };
 
-
+//checked={this.props.checked}
 const MyCheckbox = props => {
+
+  let isChecked = false
+
+  if(props.checkedList.indexOf(props.label) > -1){
+    isChecked = true
+  }
 
   return (
       <Checkbox
         label={props.label}
-        style={styles.checkbox} />
+        style={styles.checkbox}
+        checked={isChecked}
+        onCheck={(event, isInputChecked) =>
+                props.onCheck(event, isInputChecked, props.label)}
+    />
     )
 }
 
