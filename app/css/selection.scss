@@ -1,0 +1,44 @@
+.selection {
+  display: -webkit-flex; /* for webkit browser */
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  //justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  // debug
+  border: 2px solid red;
+}
+
+
+.searchBar {
+
+  // debug
+  border: 2px solid blue;
+}
+
+
+.searchTextField {
+
+  // debug
+  border: 2px solid black;
+}
+
+
+.searchBtn {
+
+  // debug
+  border: 2px solid orange;
+}
+
+
+.nextBtn {
+
+
+}
+
+
+.addBtn {
+
+
+}
