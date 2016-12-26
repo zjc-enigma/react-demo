@@ -12,13 +12,17 @@ import {MultiSelect} from 'react-selectize'
 import '../../node_modules/react-selectize/themes/index.css';
 import SearchTextField from './SearchTextField';
 import SearchBtn from './SearchBtn';
+import MyChip from './Chip'
+import MyCheckBox from './CheckBox'
 
 
 let select = state => {return state.search}
 const mapDispatchToProps = dispatch => {
+
   let parseJson = function(response){
     return response.json()
   }
+
   return {
     updateSearchText: text => {
       dispatch({
@@ -26,13 +30,13 @@ const mapDispatchToProps = dispatch => {
         data: text
       })
     },
-    updateClassSelection: function(selectionArray){
+    updateClassSelection: selectionArray => {
       dispatch({
         type: 'UPDATE_CLASS_SELECTION',
         data: selectionArray
       });
     },
-    getMultiselectOption: function(){
+    getMultiselectOption: () => {
       fetch("/multiselect_options",
             {method: "GET",
              headers:{
@@ -45,7 +49,7 @@ const mapDispatchToProps = dispatch => {
         .catch(function(e){console.log('parsing failed', e)})
     },
 
-    searchQueryByClass: function(text, className){
+    searchQueryByClass: (text, className) => {
       if(text){
         fetch('/query_by_class',
               {method: "POST",
@@ -61,7 +65,7 @@ const mapDispatchToProps = dispatch => {
         alert("Please input search text");
       }
     },
-    searchQuery: function(text){
+    searchQuery: text => {
       if(text){
         fetch('/query',
               {method: "POST",
@@ -77,6 +81,27 @@ const mapDispatchToProps = dispatch => {
       } else {
         alert("Please input search text");
       }
+    },
+    onClickChips: () => {
+
+    },
+
+    obtainAllClassname: () => {
+
+      fetch("/all_classname",
+        {method: "GET",
+          headers:{
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'},
+        })
+        .then(parseJson)
+        .then(json => dispatch({
+          type: "UPDATE_ALL_CLASSNAME",
+          data: json}))
+        .then(dispatch({
+          type: "FINISHED_GET_CLASSNAME",
+        }))
+        .catch(function(e){console.log('parsing failed', e)})
     }
   }
 }
@@ -87,8 +112,10 @@ class Search extends Component {
 
   constructor(props, context){
     super(props, context)
+    this.props.obtainAllClassname()
     this.props.getMultiselectOption()
   }
+
 
   search(text){
     //console.log('search Query:', text)
@@ -99,57 +126,40 @@ class Search extends Component {
   }
   render() {
     return (
-        <MuiThemeProvider>
-        <SearchGridLayout>
-        <div key={'searchText'}>
-          <SearchTextField
-            hint={"input your secrets"}
-            text={this.props.searchText}
-            updateSearchText={this.props.updateSearchText}/></div>
+      <MuiThemeProvider>
+        <div className={'search'}>
 
-        <div key={'searchBtn'}>
-          <SearchBtn
-            label={"Search"}
-            onClick={() => this.search(this.props.searchText)}/></div>
+          <div className={'classCheckBox'}>
+            {this.props.isGetClassname &&
+             this.props.allClassNameList.map(
+               item =>
+                <MyCheckBox
+                 label={item} />)
+            }
+          </div>
+          <div className={'searchBar'}>
+            <div className={'searchText'}>
+              <SearchTextField
+                hint={"input your secrets"}
+                text={this.props.searchText}
+                updateSearchText={this.props.updateSearchText}/></div>
+
+            <div className={'searchBtn'}>
+              <SearchBtn
+                label={"Search"}
+                onClick={() => this.search(this.props.searchText)}/></div>
+          </div>
 
 
-        <div key={'categorySelection'}>
-          <CategorySelection
-            classOptions={this.props.classOptions}
-            updateClassSelection={this.props.updateClassSelection}/></div>
-
-        </SearchGridLayout>
-        </MuiThemeProvider>
+          <div className={'categorySelection'}>
+            <CategorySelection
+              classOptions={this.props.classOptions}
+              updateClassSelection={this.props.updateClassSelection}/></div>
+        </div>
+      </MuiThemeProvider>
     )
   }
 }
-
-
-class SearchGridLayout extends Component {
-  constructor(props, context){
-    super(props, context);
-  }
-
-  render() {
-
-    let layouts = {
-      lg:[{i:"searchText", x: 3, y: 2, w: 5, h: 0.2, static:true},
-          {i:"searchBtn", x: 8, y: 2, w: 1, h: 0.2, static:true},
-          {i:"categorySelection", x: 3, y: 1, w: 3, h: 0.2, static:true},]
-    }
-
-    return(
-        <ResponsiveReactGridLayout
-      layouts={layouts}
-      breakpoints={{lg: 800, md: 600, sm: 500, xs: 480, xxs: 0}}
-      cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}>
-        {this.props.children}
-      </ResponsiveReactGridLayout>
-    )
-  }
-
-}
-
 
 
 class CategorySelection extends Component {

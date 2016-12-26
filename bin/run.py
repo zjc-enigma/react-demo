@@ -24,6 +24,7 @@ from data import search_title
 from data import search_title_by_class
 from data import random_select_ad
 from data import label2value, value2label
+from data import all_classname_list
 from lib import word_by_ad
 import pdb
 
@@ -183,6 +184,12 @@ class SaveToCSV(Resource):
                                  "attachment;filename=result.txt"})
 
 api.add_resource(SaveToCSV, '/save_to_csv')
+
+class AllClassname(Resource):
+    def get(self):
+        return all_classname_list
+
+api.add_resource(AllClassname, '/all_classname')
 
 
 class SearchByClass(Resource):

@@ -17,7 +17,7 @@ import '../css/writer.scss';
 
 let mapStateToProps = state => ({
   ...state.writer,
-  selectionRes: state.selection.selectionRes })
+  selectionRes: state.selection.totalSelection })
 
 const mapDispatchToProps = (dispatch) => {
 

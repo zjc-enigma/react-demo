@@ -11,6 +11,13 @@ export default function (state = [], action) {
 
   case "UPDATE_CLASS_SELECTION":
     return {...state, classSelection: action.data}
+
+  case "UPDATE_ALL_CLASSNAME":
+    return {...state, allClassNameList: action.data}
+
+  case "FINISHED_GET_CLASSNAME":
+    return {...state, isGetClassname: true}
+
   default:
     return state
 

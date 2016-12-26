@@ -1,5 +1,9 @@
 import update from 'react-addons-update';
 
+//in ES6 using set to get unique Array
+let uniq = a => [...new Set(a)]
+
+
 export default function (state = [], action) {
   switch(action.type){
 
@@ -14,7 +18,7 @@ export default function (state = [], action) {
 
     let oldSelections = state.totalSelection
     let newSelections = action.data
-    let mergedSelections = {...oldSelections, ...newSelections}
+    let mergedSelections = uniq([...oldSelections, ...newSelections])
     let updated = update(state, {totalSelection: {$set: mergedSelections}})
     return {...state, ...updated}
 

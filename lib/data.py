@@ -249,5 +249,7 @@ random_select_titles = title_tag.random_select_titles
 random_select_ad = ad_tag.random_select_titles
 search_title = title_tag.search_title_by_query
 search_title_by_class = title_tag.search_title_by_query_and_class
+# in python3 dict.values is not json serizable, so must convert it to list
+all_classname_list = list(value2label.values())
 #res_dict = all_titles_classify(titles_path, rule_path)
 #random_dict = random_select_titles(res_dict, 10)
