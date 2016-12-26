@@ -13,8 +13,11 @@ import SearchBtn from './SearchBtn';
 
 
 
-let mapStateToProps = state => ({state: state.selection,
-                                 searchRes: state.search.searchRes })
+let mapStateToProps = state => ({
+  ...state.selection,
+  searchRes: state.search.searchRes,
+  searchText: state.search.searchText
+})
 
 const mapDispatchToProps = dispatch => {
 
@@ -24,7 +27,30 @@ const mapDispatchToProps = dispatch => {
         type: "UPDATE_SELECTION",
         data: selection
       })
-    }
+    },
+    updateSearchText: text => {
+      dispatch({
+        type: "UPDATE_SEARCH_TEXT",
+        data: text
+      })
+    },
+    searchQueryByClass: (text, className) => {
+      if(text){
+
+        fetch('/query_by_class',
+          {method: "POST",
+            headers:{
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'},
+            body: JSON.stringify({key: text, class_name: className})
+          })
+          .then(res => res.json())
+          .then(json => dispatch({type: "SEARCH_QUERY", data: json}))
+          .catch(function(e){console.log('parsing failed', e)})
+      } else {
+        alert("Please input search text");
+      }
+    },
   }
 }
 
@@ -41,7 +67,16 @@ class Selection extends Component {
     this.props.history.push('/writer')
   }
 
+  search(text){
+    //console.log('search Query:', text)
+    //TODO: add assert of text===""
+    //this.props.searchQuery(text)
+    this.props.searchQueryByClass(text, this.props.classSelection)
+  }
+
+
   render() {
+    console.log("PROPS:", this.props)
 
     return (
       <MuiThemeProvider>
@@ -50,12 +85,13 @@ class Selection extends Component {
             <div className={'searchTextField'}>
               <SearchTextField
                 hint={"input your secrets"}
-                text={''}/></div>
+                text={this.props.searchText}
+                updateSearchText={this.props.updateSearchText} /></div>
 
             <div className={'searchBtn'}>
               <SearchBtn
                 label={"Search"}
-                onClick={() => {}}/></div>
+                onClick={() => this.search(this.props.searchText)} /></div>
           </div>
 
           <div className={'nextBtn'}>
