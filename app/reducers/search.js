@@ -20,6 +20,9 @@ export default function (state = [], action) {
   case "FINISHED_GET_CLASSNAME":
     return {...state, isGotClassname: true}
 
+  case "FINISHED_GET_CLASSNAME":
+    return {...state, isFinishedSearchRes: true}
+
   case "ADD_OR_REMOVE_CLASS_BY_CHECKBOX":
     if (state.checkedClassList === undefined && action.isChecked === true){
       // init

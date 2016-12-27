@@ -21,9 +21,9 @@ let select = state => ({
 })
 const mapDispatchToProps = dispatch => {
 
-  let parseJson = function(response){
-    return response.json()
-  }
+  let parseJson = response => response.json()
+
+  let finishedSearchRes = () => dispatch({type: "FINISHED_SEARCH_RES"})
 
   return {
     updateSearchText: text => {
@@ -62,6 +62,7 @@ const mapDispatchToProps = dispatch => {
               })
           .then(parseJson)
           .then(json => dispatch({type: "SEARCH_QUERY", data: json}))
+          .then(finishedSearchRes)
           .catch(function(e){console.log('parsing failed', e)})
       } else {
         alert("Please input search text");

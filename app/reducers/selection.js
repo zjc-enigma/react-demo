@@ -22,6 +22,23 @@ export default function (state = [], action) {
     let updated = update(state, {totalSelection: {$set: mergedSelections}})
     return {...state, ...updated}
 
+  case "CLICK_CLASS_CHIP":
+    //console.log("data:", action.data)
+    if (state.selectedClass === undefined){
+      return {...state, selectedClass:[action.data]}
+    }
+    let index = state.selectedClass.indexOf(action.data)
+    if (index > -1){
+      // remove
+      let newSelected = update(state.selectedClass, {$splice: [[index, 1]]})
+      return {...state, selectedClass: newSelected}
+    }
+    else {
+      // insert
+      let updated = update(state, {selectedClass: {$push: [action.data]}})
+      return {...state, ...updated}
+    }
+
   default:
     return state
   }

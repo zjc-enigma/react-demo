@@ -9,6 +9,7 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import SearchTextField from './SearchTextField';
 import SearchBtn from './SearchBtn';
 import MySnackbar from './SneckBar';
+import MyChip from './Chip'
 
 import '../css/selection.scss';
 
@@ -16,7 +17,8 @@ import '../css/selection.scss';
 let mapStateToProps = state => ({
   ...state.selection,
   searchRes: state.search.searchRes,
-  searchText: state.search.searchText
+  searchText: state.search.searchText,
+  isFinishedSearchRes: state.search.isFinishedSearchRes
 })
 
 const mapDispatchToProps = dispatch => {
@@ -57,6 +59,12 @@ const mapDispatchToProps = dispatch => {
         type: "UPDATE_TOTAL_SELECTION",
         data: selection_list
       })
+    },
+    clickClassChip: key => {
+      dispatch({
+        type: "CLICK_CLASS_CHIP",
+        data: key
+      })
     }
   }
 }
@@ -81,6 +89,42 @@ class Selection extends Component {
     this.props.searchQueryByClass(text, this.props.classSelection)
   }
 
+  generateClassChips = () => {
+    let counter = {}
+    for (const item of this.props.searchRes) {
+
+      if(item.label in counter){
+        counter[item.label] += 1
+      }
+      else {
+        counter[item.label] = 1
+      }
+    }
+
+    let colored = {}
+    Object.keys(counter).map(key =>
+      colored[key] = false
+    )
+
+    if (this.props.selectedClass !== undefined &&
+        this.props.selectedClass.length > 0) {
+
+      Object.keys(colored).map(key =>
+        colored[key] = (this.props.selectedClass.indexOf(key) > -1)
+      )
+    }
+
+
+    return Object.keys(counter).map(key =>
+      <MyChip
+        chipText={key}
+        chipTextAvatar={counter[key]}
+        colored={colored[key]}
+        handleClick={() => this.props.clickClassChip(key)}
+        handleDelete={() => {console.log('click close')}} />)
+  }
+
+
 
   render() {
     console.log("PROPS:", this.props)
@@ -88,6 +132,11 @@ class Selection extends Component {
     return (
       <MuiThemeProvider>
         <div className={'selection'}>
+          <div className={'classChipArea'}>
+            {
+              this.props.searchRes === undefined ? null : this.generateClassChips()
+            }
+          </div>
           <div className={'searchBar'}>
             <div className={'searchTextField'}>
               <SearchTextField
@@ -113,7 +162,8 @@ class Selection extends Component {
          <div className={'selectionTable'}>
            <SelectionTable
              searchRes={this.props.searchRes}
-             updateSelection={this.props.updateSelection} /></div>
+             updateSelection={this.props.updateSelection}
+             selectedClass={this.props.selectedClass} /></div>
          </div>
       </MuiThemeProvider>
 
@@ -164,12 +214,23 @@ class SelectionTable extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    return nextProps.searchRes !== this.props.searchRes
+    let isSearchUpdate = nextProps.searchRes !== this.props.searchRes
+    let isClassUpdate = nextProps.selectedClass !== this.props.selectedClass
+    return isSearchUpdate || isClassUpdate
   }
 
   generateRows(){
-    return this.props.searchRes===undefined ?
-           null : this.props.searchRes.map(item =>
+
+    let filteredRes = this.props.searchRes
+
+    if(this.props.selectedClass !== undefined &&
+       this.props.selectedClass.length > 0) {
+
+      filteredRes = this.props.searchRes.filter(item =>
+        this.props.selectedClass.indexOf(item.label) > -1)
+      console.log('filterd res:', filteredRes)
+    }
+    return filteredRes.map(item =>
              <TableRow>
                <TableRowColumn>{item.tag}</TableRowColumn>
                <TableRowColumn>{'头条'}</TableRowColumn>
@@ -200,7 +261,9 @@ class SelectionTable extends Component {
               </TableRow>
             </TableHeader>
             <TableBody deselectOnClickaway={false}>
-              {this.generateRows()}
+              {
+                this.props.searchRes===undefined ? null : this.generateRows()
+              }
             </TableBody>
           </Table>
         </MuiThemeProvider>
