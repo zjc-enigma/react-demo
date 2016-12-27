@@ -84,13 +84,13 @@ var INLINE_STYLES = [
 
 const InlineStyleControls = (props) => {
   var currentStyle = props.editorState.getCurrentInlineStyle();
+  //active={currentStyle.has(type.style)}
   return (
     <div className="RichEditor-controls">
       {INLINE_STYLES.map(type =>
         <StyleButton
           style={{color: type.color}}
           key={type.label}
-          //active={currentStyle.has(type.style)}
           label={type.label}
           onToggle={props.onToggle} />
        )}
@@ -144,6 +144,7 @@ class CreativeEditor extends React.Component {
     super(props);
     this.onChange = (editorState) => {
       //this.props.updateEditorState({editorState});
+      console.log("onChange")
       this.setState({editorState})
     }
     this.state = {editorState: EditorState.createEmpty()}
@@ -178,11 +179,11 @@ class CreativeEditor extends React.Component {
     // -1 for enter prev entity range
     const selection = this.state.editorState.getSelection()
     const contentState = this.state.editorState.getCurrentContent()
-    const offset = selection.getEndOffset() > 0 ? selection.getEndOffset() - 1 : 0
+    const offset = selection.getStartOffset() > 0 ? selection.getStartOffset() - 1 : 0
     const currentBlock = contentState.getBlockForKey(selection.getStartKey())
     const entityKey = currentBlock.getEntityAt(offset)
-    console.log("offset:", offset)
-    console.log("entity key:", entityKey)
+    console.log("prev offset:", offset)
+    console.log("prev entity key:", entityKey)
 
     return entityKey;
   }
@@ -191,29 +192,39 @@ class CreativeEditor extends React.Component {
 
     const contentState = this.state.editorState.getCurrentContent()
     const targetRange = this.state.editorState.getSelection()
-    let key = Entity.create('TOKEN', 'SEGMENTED');
+    let newEntityKey = Entity.create('TOKEN', 'SEGMENTED');
+    console.log('new entity key:', newEntityKey)
 
-    console.log('targeRange:', targetRange)
-
+    //console.log('targeRange:', targetRange)
     //console.log("char list:", currentBlock.getCharacterList())
     //console.log("prev key:", selection.getStartKey())
 
-    const prevEntityKey = this._getPrevEntityKey()
-
-    /* if(prevEntityKey !== undefined){
-     *   key = Entity.mergeData(prevEntityKey,
-     *     { 'mention': Map({ 'text': text })})
+    /* const prevEntityKey = this._getPrevEntityKey()
+     * if(prevEntityKey !== null){
+     *   let prevEntity = Entity.get(prevEntityKey)
+     *   let newEntity = Entity.get(newEntityKey)
+     *   //console.log('prev Entity mutability', prevEntity.getMutability())
+     *   //console.log('prev Entity type:', prevEntity.getType())
+     *   //console.log('prev Entity data:', prevEntity.getData())
+     *   //console.log('prev Entity mutability:', prevEntity.getMutibility())
+     *   if (prevEntity.getMutability() === newEntity.getMutability()) {
+     *     Entity.mergeData(newEntityKey, prevEntityKey)
+     *   }
      * }*/
+
     const contentStateWithEntity = Modifier.replaceText(
       contentState,
       targetRange,
       text,
       null,
-      key
+      newEntityKey
     )
 
     this.onChange(
-      EditorState.moveSelectionToEnd(EditorState.createWithContent(contentStateWithEntity, this.decorator))
+      EditorState.moveSelectionToEnd(
+        EditorState.createWithContent(
+          contentStateWithEntity,
+          this.decorator))
     )
   }
 
@@ -227,6 +238,7 @@ class CreativeEditor extends React.Component {
 
   _getWordListWithSelection() {
     // get selection text
+    console.log('on select')
     const contentState = this.state.editorState.getCurrentContent()
     const selectionState = this.state.editorState.getSelection();
     const start = selectionState.getStartOffset();
@@ -236,6 +248,7 @@ class CreativeEditor extends React.Component {
     const selectedText = block.getText().slice(start, end)
     this.props.getWordList(selectedText, "DEFAULT")
     this.props.cleanSelectedWords()
+
   }
 
   _exportAllContent(){
@@ -263,7 +276,10 @@ class CreativeEditor extends React.Component {
         text
       )
       this.onChange(
-        EditorState.moveSelectionToEnd(EditorState.createWithContent(contentStateWithInsert, this.decorator))
+        EditorState.moveSelectionToEnd(
+          EditorState.createWithContent(
+            contentStateWithInsert,
+            this.decorator))
       )
     }
   }
@@ -295,7 +311,9 @@ class CreativeEditor extends React.Component {
             onClick={() => this._exportToHtml()} />
 
           <div style={styles.root}>
-            <div className="editor" onClick={this.focus}>
+            <div
+              className="editor"
+              onSelect={() => {}}>
               <Editor
                 editorState={editorState}
                 onChange={this.onChange}
@@ -307,5 +325,7 @@ class CreativeEditor extends React.Component {
     )
   }
 }
-
+//onClick={this.focus}
+//onMouseDown={() => {console.log('main editor mouse down')}}>
+//this._getWordListWithSelection()
 export default CreativeEditor
