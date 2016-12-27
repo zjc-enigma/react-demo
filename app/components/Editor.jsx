@@ -193,6 +193,8 @@ class CreativeEditor extends React.Component {
     const targetRange = this.state.editorState.getSelection()
     let key = Entity.create('TOKEN', 'SEGMENTED');
 
+    console.log('targeRange:', targetRange)
+
     //console.log("char list:", currentBlock.getCharacterList())
     //console.log("prev key:", selection.getStartKey())
 
@@ -202,7 +204,7 @@ class CreativeEditor extends React.Component {
      *   key = Entity.mergeData(prevEntityKey,
      *     { 'mention': Map({ 'text': text })})
      * }*/
-    const contentStateWithEntity = Modifier.insertText(
+    const contentStateWithEntity = Modifier.replaceText(
       contentState,
       targetRange,
       text,
@@ -261,7 +263,7 @@ class CreativeEditor extends React.Component {
         text
       )
       this.onChange(
-        EditorState.moveSelectionToEnd(EditorState.createWithContent(contentStateWithInsert))
+        EditorState.moveSelectionToEnd(EditorState.createWithContent(contentStateWithInsert, this.decorator))
       )
     }
   }
@@ -271,35 +273,36 @@ class CreativeEditor extends React.Component {
     const {editorState} = this.state;
     return (
       <MuiThemeProvider>
-       <div style={styles.root}>
-         <InlineStyleControls
-           className={"funcButton"}
-           editorState={editorState}
-           onToggle={() => this._getWordListWithSelection()} />
+        <div className="editorWithButtons">
+          <InlineStyleControls
+            className={"funcButton"}
+            editorState={editorState}
+            onToggle={() => this._getWordListWithSelection()} />
 
-        <RaisedButton
-          className={"funcButton-submit"}
-          label={"submit"}
-          onClick={() => this._insertSelectedWordsAsEntity()} />
+          <RaisedButton
+            className={"funcButton-submit"}
+            label={"submit"}
+            onClick={() => this._insertSelectedWordsAsEntity()} />
 
-        <RaisedButton
-          className={"funcButton-export"}
-          label={"export"}
-          onClick={() => this._exportAllContent()} />
+          <RaisedButton
+            className={"funcButton-export"}
+            label={"export"}
+            onClick={() => this._exportAllContent()} />
 
-        <RaisedButton
-          className={"funcButton-html"}
-          label={"html"}
-          onClick={() => this._exportToHtml()} />
+          <RaisedButton
+            className={"funcButton-html"}
+            label={"html"}
+            onClick={() => this._exportToHtml()} />
 
-        <div className="editor" onClick={this.focus}>
-            <Editor
-              editorState={editorState}
-              onChange={this.onChange}
-              ref="editor"
-             />
+          <div style={styles.root}>
+            <div className="editor" onClick={this.focus}>
+              <Editor
+                editorState={editorState}
+                onChange={this.onChange}
+                ref="editor"/>
+            </div>
+          </div>
         </div>
-       </div>
       </MuiThemeProvider>
     )
   }
