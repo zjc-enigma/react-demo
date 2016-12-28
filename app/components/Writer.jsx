@@ -19,15 +19,15 @@ let mapStateToProps = state => ({
   ...state.writer,
   selectionRes: state.selection.totalSelection })
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 
-  const updateWordList = (json) => {
+  const updateWordList = json => {
     dispatch({
       type: "GET_WORD_LIST",
       data: json})
   }
 
-  const updateGenerateRes = (json) => {
+  const updateGenerateRes = json => {
     console.log(json)
     dispatch({
       type: "GENERATE_RES_LIST",
@@ -37,20 +37,20 @@ const mapDispatchToProps = (dispatch) => {
   }
 
   return {
-    updateEditorState: (editorState) => {
+    updateEditorState: editorState => {
       dispatch({
         type: "UPDATE_EDITOR_STATE",
         data: editorState
       })
     },
 
-    handleClick: (item) => {
+    handleClick: item => {
       dispatch({
         type: "ON_CLICK_LIST_INSERT_TEXT",
         data: item
       })
     },
-    handleClickWord: (item) => {
+    handleClickWord: item => {
       dispatch({
         type: "ON_CLICK_WORD_LIST",
         data: item
@@ -75,7 +75,7 @@ const mapDispatchToProps = (dispatch) => {
         type: "CLEAN_SELECTED_WORDS",
       })
     },
-    exportToServerAndSave: (raw) => {
+    exportToServerAndSave: raw => {
       fetch("/export_raw",
         {method: "POST",
           headers:{
@@ -88,12 +88,21 @@ const mapDispatchToProps = (dispatch) => {
         .catch(function(e){console.log('/export_raw parsing failed', e)})
 
     },
-    updateTableSelection: (selection) => {
+    updateTableSelection: selection => {
       dispatch({
         type: "UPDATE_WORDS_TABLE_SELECTION",
         data: selection
       })
+    },
+    onCheck: (e, isChecked, label) => {
+      dispatch({
+        type: "ADD_OR_REMOVE_CLASS_BY_CHECKBOX",
+        label: label,
+        isChecked: isChecked
+      })
+      console.log(label, isChecked)
     }
+
   }
 }
 
@@ -117,17 +126,29 @@ class Writer extends Component {
             handleClick={this.props.handleClick} />
         </div>
 
-        <div className={"sentenceEditor"}>
-          <CreativeEditor
-            insertText={this.props.insertText}
-            word={this.props.word}
-            selectedWords={this.props.selectedWords}
-            getWordList={this.props.getWordList}
-            cleanSelectedWords={this.props.cleanSelectedWords}
-            editorState={this.props.editorState}
-            updateEditorState={this.props.updateEditorState}
-            exportToServerAndSave={this.props.exportToServerAndSave}
-            history={this.props.history} />
+        <div className={"editArea"}>
+          <div className={"classCheckBox"}>
+            {/* {this.props.isGotClassname &&
+                this.props.allClassNameList.map(
+                item => 
+                <MyCheckBox
+                checkedList={this.props.checkedClassList}
+                label={item}
+                onCheck={this.props.onCheck} />)
+                } */}
+          </div>
+          <div className={"sentenceEditor"}>
+            <CreativeEditor
+              insertText={this.props.insertText}
+              word={this.props.word}
+              selectedWords={this.props.selectedWords}
+              getWordList={this.props.getWordList}
+              cleanSelectedWords={this.props.cleanSelectedWords}
+              editorState={this.props.editorState}
+              updateEditorState={this.props.updateEditorState}
+              exportToServerAndSave={this.props.exportToServerAndSave}
+              history={this.props.history} />
+          </div>
         </div>
 
         <div className={"wordsSelectionTable"}>
@@ -140,18 +161,9 @@ class Writer extends Component {
         </div>
       </div>
       </MuiThemeProvider>
- 
     )
   }
-
 }
-
-
-
-
-
-
-
 
 export default withRouter(Writer)
 

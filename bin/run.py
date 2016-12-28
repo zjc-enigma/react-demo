@@ -25,14 +25,19 @@ from data import search_title_by_class
 from data import random_select_ad
 from data import label2value, value2label
 from data import all_classname_list
+from data import class_name_remap
+from data import flatten
 from lib import word_by_ad
+import pickle
 import pdb
+import pandas as pd
 
 import jieba.posseg as pseg
 
 
 import gensim
 word_model = gensim.models.Word2Vec.load_word2vec_format("../data/model2", binary=False)
+word_importance_model = pd.read_pickle("../data/res.plk")
 
 
 app = Flask(__name__, static_folder="../static", template_folder="../templates")
@@ -280,6 +285,26 @@ class MultiselectionOptions(Resource):
 
 api.add_resource(MultiselectionOptions, '/multiselect_options')
 
+
+class GetImportantWordByClass(Resource):
+
+    def get(self):
+        print("get important word")
+        pass
+
+    def post(self):
+        class_name = request.json['classname']
+        print(request)
+        print('recv class_name:', class_name)
+        class_name = class_name_remap[class_name]
+        word_df = word_importance_model.ix[class_name]
+        word_list = list(flatten(word_df[[2]].head(20).values.tolist()))
+
+        return word_list
+
+api.add_resource(GetImportantWordByClass, '/important_word_by_class')
+
+
 def nocache(view):
     @wraps(view)
     def no_cache(*args, **kwargs):
@@ -291,6 +316,10 @@ def nocache(view):
         return response
 
     return update_wrapper(no_cache, view)
+
+
+
+
 
 
 @app.route("/generate_res_table") #for test

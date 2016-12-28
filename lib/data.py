@@ -12,6 +12,70 @@ class_df = pd.read_csv(class_dict, sep='\t', header=None)
 class_df.columns = ["class_name", "word", "attr", "score"]
 
 
+
+def flatten(items, ignore_types=(str, bytes)):
+    """flatten a nested list, yield a generator
+
+    test case:
+
+    items = [1, 2, [3, 4, [5, 6], 7], 8]
+    # Produces 1 2 3 4 5 6 7 8
+    for x in flatten(items):
+        print(x)
+
+    items = ['Dave', 'Paula', ['Thomas', 'Lewis']]
+        for x in flatten(items):
+            print(x)
+
+
+    """
+    from collections import Iterable
+
+    for x in items:
+        if isinstance(x, Iterable) and not isinstance(x, ignore_types):
+            yield from flatten(x)
+        else:
+            yield x
+
+
+            
+class_name_remap = {
+    "体育" : "生活服务类",
+    "母婴": "生活服务类",
+    "家电": "3C、家电类",
+    "化妆品" : "快消品类",
+    "鞋" : "电商",
+    "文学": "教育类",
+    "教育" : "教育类",
+    "娱乐": "娱乐休闲类",
+    "xiefu": "电商",
+    "旅游": "旅游出行类",
+    "游戏": "游戏类",
+    "汽车" :"汽车类",
+    "未知" : "生活服务类",
+    "医疗" : "医药医疗类",
+    "文化" : "教育类",
+    "保健": "生活服务类",
+    "商务" :"商务服务类",
+    "科技" : "通讯服务类",
+    "军事": "娱乐休闲类",
+    "房产": "房地产类",
+    "金融": "金融类",
+    "艺术": "娱乐休闲类",
+    "电脑" : "3C、家电类",
+    "手机": "3C、家电类",
+    "运动": "娱乐休闲类",
+    "影视": "娱乐休闲类",
+    "家装": "家居家装类",
+    "服装": "电商",
+    "3C": "3C、家电类",
+    "时尚": "娱乐休闲类",
+    "家居": "家居家装类",
+    "数码": "3C、家电类",
+    "奢侈品" : "入驻商家", 
+    "食品": "入驻商家"
+}
+
 value2label = {'3c':'3C',
               'baojian':'保健',
               'diannao':'电脑',

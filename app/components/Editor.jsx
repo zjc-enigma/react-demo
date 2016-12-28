@@ -3,7 +3,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { Entity, Modifier } from 'draft-js';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import React from 'react';
-import {stateToHTML} from 'draft-js-export-html';
+import { stateToHTML } from 'draft-js-export-html';
 
 import '../css/editor.scss';
 
