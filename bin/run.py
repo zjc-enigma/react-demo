@@ -1,7 +1,4 @@
-#coding=utf-8
 import sys
-#reload(sys)
-#sys.setdefaultencoding('UTF8')
 from os import path
 from flask import Flask
 from flask import redirect
@@ -38,7 +35,8 @@ import jieba.posseg as pseg
 import gensim
 word_model = gensim.models.Word2Vec.load_word2vec_format("../data/model2", binary=False)
 word_importance_model = pd.read_pickle("../data/res.plk")
-
+industry_word_model = pd.read_csv("../data/words/class_dict", sep="\t", header=None)
+industry_word_model.columns = ["classname", "word", "attr", "score"]
 
 app = Flask(__name__, static_folder="../static", template_folder="../templates")
 api = Api(app)
@@ -286,6 +284,29 @@ class MultiselectionOptions(Resource):
 api.add_resource(MultiselectionOptions, '/multiselect_options')
 
 
+class GetIndustryByClass(Resource):
+
+    def get(self):
+        pass
+
+
+    def post(self):
+        class_name = request.json['classname']
+        print('recv class_name:', class_name)
+        class_name = label2value[class_name]
+        #industy_word_path = "../data/words/word_{name}".format(name=class_name)
+        industry_df = industry_word_model.loc[
+            industry_word_model.classname.str.contains(class_name)]
+
+        word_list = list(flatten(industry_df[[1]].head(20).values.tolist()))
+
+        return word_list
+
+api.add_resource(GetIndustryByClass, '/industry_word_by_class')
+
+
+
+
 class GetImportantWordByClass(Resource):
 
     def get(self):
@@ -294,7 +315,6 @@ class GetImportantWordByClass(Resource):
 
     def post(self):
         class_name = request.json['classname']
-        print(request)
         print('recv class_name:', class_name)
         class_name = class_name_remap[class_name]
         word_df = word_importance_model.ix[class_name]
