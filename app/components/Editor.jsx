@@ -311,29 +311,6 @@ class CreativeEditor extends React.Component {
 
     return (
       <MuiThemeProvider>
-        <div className="editorWithButtons">
-          {editorState === undefined ? null :
-           <InlineStyleControls
-             className={"funcButton"}
-             editorState={editorState}
-             onToggle={() => this._getWordListWithSelection()} />
-          }
-
-          <RaisedButton
-            className={"funcButton-submit"}
-            label={"submit"}
-            onClick={() => this._insertSelectedWordsAsEntity()} />
-
-          <RaisedButton
-            className={"funcButton-export"}
-            label={"export"}
-            onClick={() => this._exportAllContent()} />
-
-          <RaisedButton
-            className={"funcButton-html"}
-            label={"html"}
-            onClick={() => this._exportToHtml()} />
-
           <div style={styles.root}>
             <div
               className="editor"
@@ -346,7 +323,6 @@ class CreativeEditor extends React.Component {
               }
             </div>
           </div>
-        </div>
       </MuiThemeProvider>
     )
   }

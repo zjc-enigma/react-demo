@@ -59,7 +59,13 @@ export default function (state = [], action) {
     return {...state}
 
   case "GET_WORD_LIST":
+    console.log("GET WORD LIST:", action.data)
     return {...state, wordList: action.data}
+
+  case "APPEND_WORD_LIST":
+    let updated = update(state, {wordList: {$push: action.data}})
+    return {...state, ...updated}
+
 
   case "CLEAN_SELECTED_WORDS":
     return {...state, selectedWords: undefined}
@@ -74,14 +80,20 @@ export default function (state = [], action) {
     return {...state, radioSelection: action.data}
 
 
+
+
   case "INSERT_TEXT_TO_TEMP_EDITOR":
     let tempEditorState = state.tempEditorState
     let tempText = action.data
-    let newTempEditorState = insertTextGetNewEditorState(tempText,
-                                                         tempEditorState,
-                                                         action.decorator)
 
     if(tempText && tempEditorState){
+      if(state.radioSelection !== "continue") {
+        tempText += '\\'
+      }
+      let newTempEditorState = insertTextGetNewEditorState(tempText,
+                                                           tempEditorState,
+                                                           action.decorator)
+
       return {...state,
               tempEditorState: newTempEditorState}
     }
@@ -90,11 +102,12 @@ export default function (state = [], action) {
   case "INSERT_TEXT_TO_EDITOR":
     let editorState = state.editorState
     let text = action.data
-    let newEditorState = insertTextGetNewEditorState(text,
-                                                     editorState,
-                                                     action.decorator)
 
     if(text && editorState){
+      let newEditorState = insertTextGetNewEditorState(text,
+                                                       editorState,
+                                                       action.decorator)
+
       return {...state,
               editorState: newEditorState}
     }

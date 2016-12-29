@@ -16,10 +16,13 @@ import '../css/writer.scss';
 import TempEditor from './TempEditor';
 import { Entity, Modifier } from 'draft-js';
 import { Editor, EditorState, RichUtils, convertFromRaw, CompositeDecorator, convertToRaw } from 'draft-js';
+import MyRadioButton from './RadioBtn';
+import MyCheckBox from './CheckBox';
 
 let mapStateToProps = state => ({
   ...state.writer,
-  selectionRes: state.selection.totalSelection })
+  selectionRes: state.selection.totalSelection,
+  selectionResClass: state.selection.selectionResClass})
 
 
 
@@ -147,18 +150,28 @@ const mapDispatchToProps = dispatch => {
         data: item
       })
     },
+    appendWordList: json => {
+      dispatch({
+        type: "APPEND_WORD_LIST",
+        data: json
+      })
+    },
     getWordList: (word, cate) => {
+      console.log("getWordList cate:", cate)
 
-      fetch("/simwords",
+      fetch("/all_word_list",
         {method: "POST",
           headers:{
             'Accept': 'application/json',
             'Content-Type': 'application/json'},
-          body: JSON.stringify({base_word: word})
+          body: JSON.stringify({
+            base_word: word,
+            class_name: cate
+          })
         })
         .then(res => res.json())
         .then(updateWordList)
-        .catch(function(e){console.log('/simwords parsing failed', e)})
+        .catch(function(e){console.log('/all_word_list parsing failed', e)})
 
     },
     cleanSelectedWords: () => {
@@ -206,6 +219,14 @@ const mapDispatchToProps = dispatch => {
         type: "UPDATE_RADIO_VALUE",
         data: value
       })
+
+      // clean temp editor
+      let emptyState = EditorState.createEmpty()
+      dispatch({
+        type: "UPDATE_TEMP_EDITOR_STATE",
+        data: emptyState
+      })
+
     },
 
     insertTextToEditor: item => {
@@ -224,7 +245,9 @@ const mapDispatchToProps = dispatch => {
       })
     },
 
-    getWordListWithSelection: editorState => {
+    getWordListWithSelection: (editorState, classList) => {
+
+      console.log('classList: ', classList)
 
       const contentState = editorState.getCurrentContent()
       const selectionState = editorState.getSelection();
@@ -232,34 +255,91 @@ const mapDispatchToProps = dispatch => {
       const end = selectionState.getEndOffset();
       const block = contentState.getBlockForKey(selectionState.getStartKey())
       const selectedText = block.getText().slice(start, end)
-      console.log('selected Text', selectedText)
 
-      fetch("/simwords",
+      fetch("/all_word_list",
         {method: "POST",
           headers:{
             'Accept': 'application/json',
             'Content-Type': 'application/json'},
-          body: JSON.stringify({base_word: selectedText})
+          body: JSON.stringify({
+            base_word: selectedText,
+            classname: classList
+          })
         })
         .then(res => res.json())
         .then(updateWordList)
-        .catch(function(e){console.log('/simwords parsing failed', e)})
+        .catch(function(e){console.log('/all_word_list parsing failed', e)})
       //this.props.cleanSelectedWords()
+    },
+
+    insertEntityToEditor: (editorState, tempEditorState, radioValue) => {
+      const tempContentState = tempEditorState.getCurrentContent()
+      const tempText = tempContentState.getPlainText()
+
+      const contentState = editorState.getCurrentContent()
+      const targetRange = editorState.getSelection()
+
+      let entityType = 'SEGMENTED'
+      if (radioValue === 'continue'){
+        entityType = 'MUTABLE'
+      }
+      let newEntityKey = Entity.create('TOKEN', entityType);
+      const contentStateWithEntity = Modifier.replaceText(
+        contentState,
+        targetRange,
+        tempText,
+        null,
+        newEntityKey
+      )
+
+      let newEditorState = EditorState.moveSelectionToEnd(
+        EditorState.createWithContent(
+          contentStateWithEntity,
+          decorator))
+
+      dispatch({
+        type: "UPDATE_EDITOR_STATE",
+        data: newEditorState})
+
+      // clean temp editor
+      let emptyState = EditorState.createEmpty()
+      dispatch({
+        type: "UPDATE_TEMP_EDITOR_STATE",
+        data: emptyState
+      })
+    },
+
+    exportAllContent: (editorState, history) => {
+      const contentState = editorState.getCurrentContent()
+      const raw = convertToRaw(contentState);
+
+      fetch("/export_raw",
+        {method: "POST",
+          headers:{
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'},
+          body: JSON.stringify({raw: raw})
+        })
+        .then(res => res.json())
+        .then(updateGenerateRes)
+        .catch(function(e){console.log('/export_raw parsing failed', e)})
+
+      history.push('/generate_res_table')
+
+    },
+    onChangeCheckBox: () => {
+
+
     }
   }
 }
-
-
 
 @connect(mapStateToProps, mapDispatchToProps)
 class Writer extends Component {
 
   constructor(props, context){
     super(props, context);
-  }
-
-  handleGetWordBtnClick = () => {
-    this.props.getWordListWithSelection(this.props.editorState)
+    this.checkBoxList = ["近义词", "行业词", "高频词"]
   }
 
 
@@ -292,6 +372,19 @@ class Writer extends Component {
                 onCheck={this.props.onCheck} />)
                 } */}
           </div>
+          <div className={"radioBtn"}>
+            <MyRadioButton onChange={this.props.clickRadioButton}/>
+          </div>
+
+          <div className={"checkBoxArray"}>
+            {this.checkBoxList.map(item =>
+              <MyCheckBox
+                label={item}
+                ischecked={true}
+                onCheck={this.props.onChangeCheckBox}
+                checkedList={this.checkBoxList} />)
+            }
+          </div>
           <div className={"sentenceEditor"}>
             <CreativeEditor
               editorState={this.props.editorState}
@@ -309,9 +402,28 @@ class Writer extends Component {
         <div className={"getWordBtn"}>
           <RaisedButton
             label={"Get words"}
-            onClick={() => this.props.getWordListWithSelection(this.props.editorState)} />
+            onClick={() => this.props.getWordListWithSelection(
+                this.props.editorState,
+                this.props.selectionResClass)} />
+        </div>
+        <div className={"submitBtn"}>
+          <RaisedButton
+            label={"submit"}
+            onClick={() => this.props.insertEntityToEditor(
+                this.props.editorState,
+                this.props.tempEditorState,
+                this.props.radioSelection )} />
+        </div>
+        <div className={"export"}>
+          <RaisedButton
+            label={"export"}
+            onClick={
+              () => this.props.exportAllContent(
+                this.props.editorState,
+                this.props.history)} />
 
         </div>
+
 
         <div className={"wordsSelectionTable"}>
           <SelectList

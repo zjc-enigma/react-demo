@@ -217,10 +217,13 @@ class ExportTextWithEntity(Resource):
     '''
 
 
-    def _extract_entity_content(self, entity_text, entity_type):
-        entity_word_list = entity_text.split('|')
-        return entity_word_list
+    def _extract_entity_content(self, entity_text, entity_mutability):
+        if entity_mutability == "SEGMENTED":
+            entity_word_list = entity_text.split('\\')
+        else:
+            entity_word_list = [entity_text]
 
+        return entity_word_list
 
     def _update_text_with_content(self, origin_text_list, content_list, offset, length):
 
@@ -257,7 +260,8 @@ class ExportTextWithEntity(Resource):
                 entity_length = entity['length']
                 entity_text = block_text[entity_offset: entity_offset+entity_length]
                 entity_type = entity_map[str(entity['key'])]['type']
-                content_list = self._extract_entity_content(entity_text, entity_type)
+                entity_mutability = entity_map[str(entity['key'])]['mutability']
+                content_list = self._extract_entity_content(entity_text, entity_mutability)
                 updated_list = self._update_text_with_content(block_text_list,
                                                               content_list,
                                                               entity_offset,
@@ -304,6 +308,49 @@ class GetIndustryByClass(Resource):
 
 api.add_resource(GetIndustryByClass, '/industry_word_by_class')
 
+
+class AllWordList(Resource):
+
+    def get(self):
+        pass
+
+    def post(self):
+        res = {}
+        try:
+            # get all sim words
+            base_word = request.json['base_word']
+            print('recv base word:', base_word)
+            sim_list = []
+            for item in word_model.most_similar(base_word):
+                sim_list.append(item[0])
+            res['sim'] = sim_list
+
+            # get all important words
+            class_name = request.json['classname']
+            print('recv classname:', class_name)
+            important_list = []
+            for classname in class_name:
+                remap_name = class_name_remap[classname]
+                word_df = word_importance_model.ix[remap_name]
+                important_list += list(flatten(word_df[[2]].head(20).values.tolist()))
+            res['important'] = important_list
+
+            # get all industry words
+            industry_list = []
+            for classname in class_name:
+                value_name = label2value[classname]
+                industry_df = industry_word_model.loc[
+                industry_word_model.classname.str.contains(value_name)]
+                industry_list += list(flatten(industry_df[[1]].head(20).values.tolist()))
+            res['industry'] = industry_list
+
+        except Exception as e:
+            print(e)
+
+        print("res words:", res)
+        return res
+
+api.add_resource(AllWordList, '/all_word_list')
 
 
 

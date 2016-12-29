@@ -30,6 +30,13 @@ const mapDispatchToProps = dispatch => {
         data: selection
       })
     },
+    updateSelectionClass: selection => {
+      dispatch({
+        type: "UPDATE_SELECTION_CLASS",
+        data: selection
+      })
+    },
+
     updateSearchText: text => {
       dispatch({
         type: "UPDATE_SEARCH_TEXT",
@@ -65,7 +72,9 @@ const mapDispatchToProps = dispatch => {
         type: "CLICK_CLASS_CHIP",
         data: key
       })
-    }
+    },
+
+
   }
 }
 
@@ -103,7 +112,7 @@ class Selection extends Component {
 
     let colored = {}
     Object.keys(counter).map(key =>
-      colored[key] = false
+      colored[key] = true
     )
 
     if (this.props.selectedClass !== undefined &&
@@ -125,6 +134,10 @@ class Selection extends Component {
   }
 
 
+  updateSelection = (selection) => {
+    this.props.updateSelection(selection)
+    this.props.updateSelectionClass(selection)
+  }
 
   render() {
     console.log("PROPS:", this.props)
@@ -162,7 +175,7 @@ class Selection extends Component {
          <div className={'selectionTable'}>
            <SelectionTable
              searchRes={this.props.searchRes}
-             updateSelection={this.props.updateSelection}
+             updateSelection={this.updateSelection}
              selectedClass={this.props.selectedClass} /></div>
          </div>
       </MuiThemeProvider>

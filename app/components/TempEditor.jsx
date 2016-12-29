@@ -48,24 +48,22 @@ class TempEditor extends React.Component {
 
     return (
       <MuiThemeProvider>
-        <div>
-          <div className="tempEditor">
-            {
-              editorState === undefined ? null :
-              <Editor
-                editorState={editorState}
-                onChange={this.onChange}
-                ref="tempEditor" />
-            }
-          </div>
-          <div className="radioButton">
-            <MyRadioButton onChange={this.props.clickRadioButton} />
-          </div>
+        <div className="tempEditor">
+          {
+            editorState === undefined ? null :
+            <Editor
+              editorState={editorState}
+              onChange={this.onChange}
+              ref="tempEditor" />
+          }
         </div>
       </MuiThemeProvider>
     )
   }
 }
 
-
+/* <div className="radioButton">
+ * <MyRadioButton onChange={this.props.clickRadioButton} />
+ * </div>
+ * */
 export default withRouter(TempEditor)

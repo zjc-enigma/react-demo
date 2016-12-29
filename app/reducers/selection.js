@@ -2,14 +2,22 @@ import update from 'react-addons-update';
 
 //in ES6 using set to get unique Array
 let uniq = a => [...new Set(a)]
+//let initState = {"selectionResClass": []}
 
-
-export default function (state = [], action) {
+export default function (state=[], action) {
   switch(action.type){
 
   case "UPDATE_SELECTION":
     return {...state,
-            selectionRes:action.data.map(selection => {return selection.content})}
+            selectionRes: action.data.map(selection => selection.content)}
+
+  case "UPDATE_SELECTION_CLASS":
+    let classArray = action.data.map(selection => selection.label)
+    classArray = [...new Set(classArray)];
+
+    return {...state,
+            selectionResClass: classArray}
+
 
   case "UPDATE_TOTAL_SELECTION":
     if (state.totalSelection === undefined){
