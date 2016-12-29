@@ -4,7 +4,7 @@ import { Entity, Modifier } from 'draft-js';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import React from 'react';
 import { stateToHTML } from 'draft-js-export-html';
-
+import { connect } from 'react-redux';
 import '../css/editor.scss';
 
 const styles = {
@@ -81,10 +81,8 @@ var INLINE_STYLES = [
 ];
 
 
-
 const InlineStyleControls = (props) => {
   var currentStyle = props.editorState.getCurrentInlineStyle();
-  //active={currentStyle.has(type.style)}
   return (
     <div className="RichEditor-controls">
       {INLINE_STYLES.map(type =>
@@ -138,17 +136,39 @@ const handleStrategy1 = (contentBlock, callback) => {
 }
 
 
+
+let mapStateToProps = state => ({
+  ...state.writer,
+  selectionRes: state.selection.totalSelection })
+
+const mapDispatchToProps = dispatch => {
+
+  return {
+    updateEditorState: editorState => {
+      console.log('dispatch editorstate:', editorState)
+      dispatch({
+        type: "UPDATE_EDITOR_STATE",
+        data: editorState
+      })
+    },
+  }
+}
+
+//@connect(mapStateToProps, mapDispatchToProps)
 class CreativeEditor extends React.Component {
 
   constructor(props) {
     super(props);
-    this.onChange = (editorState) => {
-      //this.props.updateEditorState({editorState});
-      console.log("onChange")
-      this.setState({editorState})
+    this.onChange = editorState => {
+      this.props.updateEditorState(editorState);
+      //this.setState({editorState})
+
     }
-    this.state = {editorState: EditorState.createEmpty()}
+    //this.state = {editorState: EditorState.createEmpty()}
+    let emptyState = EditorState.createEmpty()
+    this.onChange(emptyState)
     this.focus = () => this.refs.editor.focus();
+
     this.decorator = new CompositeDecorator([
       {
         strategy: handleStrategy1,
@@ -282,18 +302,22 @@ class CreativeEditor extends React.Component {
             this.decorator))
       )
     }
+
   }
 
 
   render() {
-    const {editorState} = this.state;
+    const editorState = this.props.editorState
+
     return (
       <MuiThemeProvider>
         <div className="editorWithButtons">
-          <InlineStyleControls
-            className={"funcButton"}
-            editorState={editorState}
-            onToggle={() => this._getWordListWithSelection()} />
+          {editorState === undefined ? null :
+           <InlineStyleControls
+             className={"funcButton"}
+             editorState={editorState}
+             onToggle={() => this._getWordListWithSelection()} />
+          }
 
           <RaisedButton
             className={"funcButton-submit"}
@@ -314,10 +338,12 @@ class CreativeEditor extends React.Component {
             <div
               className="editor"
               onSelect={() => {}}>
-              <Editor
-                editorState={editorState}
-                onChange={this.onChange}
-                ref="editor"/>
+              {editorState === undefined ? null :
+               <Editor
+                 editorState={editorState}
+                 onChange={this.onChange}
+                 ref="editor"/>
+              }
             </div>
           </div>
         </div>
@@ -325,7 +351,5 @@ class CreativeEditor extends React.Component {
     )
   }
 }
-//onClick={this.focus}
-//onMouseDown={() => {console.log('main editor mouse down')}}>
-//this._getWordListWithSelection()
+
 export default CreativeEditor

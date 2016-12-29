@@ -1,5 +1,5 @@
 import update from 'react-addons-update';
-
+import { Editor, EditorState, Entity, Modifier } from 'draft-js';
 const removeByKey = (myObj, deleteKey) => {
 
   return Object.keys(myObj)
@@ -10,6 +10,22 @@ const removeByKey = (myObj, deleteKey) => {
 
     }, {});
 }
+
+const insertTextGetNewEditorState = (text, editorState, decorator) => {
+  const contentState = editorState.getCurrentContent()
+  const targetRange = editorState.getSelection()
+  const contentStateWithInsert = Modifier.insertText(
+    contentState,
+    targetRange,
+    text
+  )
+  let newEditorState = EditorState.moveSelectionToEnd(
+    EditorState.createWithContent(
+      contentStateWithInsert,
+      decorator))
+  return newEditorState
+}
+
 
 export default function (state = [], action) {
   switch(action.type){
@@ -50,6 +66,39 @@ export default function (state = [], action) {
 
   case "GENERATE_RES_LIST":
     return {...state, generateResList: action.data}
+
+  case "UPDATE_TEMP_EDITOR_STATE":
+    return {...state, tempEditorState: action.data}
+
+  case "UPDATE_RADIO_VALUE":
+    return {...state, radioSelection: action.data}
+
+
+  case "INSERT_TEXT_TO_TEMP_EDITOR":
+    let tempEditorState = state.tempEditorState
+    let tempText = action.data
+    let newTempEditorState = insertTextGetNewEditorState(tempText,
+                                                         tempEditorState,
+                                                         action.decorator)
+
+    if(tempText && tempEditorState){
+      return {...state,
+              tempEditorState: newTempEditorState}
+    }
+    return {...state}
+
+  case "INSERT_TEXT_TO_EDITOR":
+    let editorState = state.editorState
+    let text = action.data
+    let newEditorState = insertTextGetNewEditorState(text,
+                                                     editorState,
+                                                     action.decorator)
+
+    if(text && editorState){
+      return {...state,
+              editorState: newEditorState}
+    }
+    return {...state}
 
   default:
     return state;

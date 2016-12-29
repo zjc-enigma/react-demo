@@ -13,11 +13,95 @@ import SelectTable from './SelectTable'
 import { withRouter } from 'react-router';
 import CreativeEditor from './Editor';
 import '../css/writer.scss';
-
+import TempEditor from './TempEditor';
+import { Entity, Modifier } from 'draft-js';
+import { Editor, EditorState, RichUtils, convertFromRaw, CompositeDecorator, convertToRaw } from 'draft-js';
 
 let mapStateToProps = state => ({
   ...state.writer,
   selectionRes: state.selection.totalSelection })
+
+
+
+const styles = {
+  root: {
+    fontFamily: '\'Helvetica\', sans-serif',
+    padding: 20,
+    width: 600,
+  },
+  editor: {
+    border: '1px solid #ccc',
+    cursor: 'text',
+    minHeight: 80,
+    padding: 10,
+  },
+  button: {
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  immutable: {
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    padding: '2px 0',
+  },
+  mutable: {
+    backgroundColor: 'rgba(204, 204, 255, 1.0)',
+    padding: '2px 0',
+  },
+  segmented: {
+    borderRadius: '15px',
+    backgroundColor: 'rgba(248, 222, 126, 1.0)',
+    padding: '2px 0',
+  },
+  styleButton: {
+    color: '#999',
+    cursor: 'pointer',
+    marginRight: '16px',
+    padding: '2px 0',
+    display: 'inline-block',
+  },
+};
+
+
+
+const getDecoratedStyle = (mutability) => {
+  switch (mutability) {
+    case 'IMMUTABLE': return styles.immutable;
+    case 'MUTABLE': return styles.mutable;
+    case 'SEGMENTED': return styles.segmented;
+    default: return null;
+  }
+};
+
+
+const TokenSpan = (props) => {
+  const style = getDecoratedStyle(
+    Entity.get(props.entityKey).getMutability()
+  );
+  return (
+    <span {...props} style={style}>
+      {props.children}
+    </span>
+  );
+};
+
+
+const handleStrategy1 = (contentBlock, callback) => {
+  console.log('contentBlock content:', contentBlock.getText())
+  contentBlock.findEntityRanges(
+    (char) => {
+      const entityKey = char.getEntity()
+      //console.log("entitykey type:", Entity.get(entityKey).getType())
+      return(
+        entityKey !== null &&
+        Entity.get(entityKey).getType() === 'TOKEN'
+      )
+    },
+    callback
+  )
+}
+
+
+
 
 const mapDispatchToProps = dispatch => {
 
@@ -33,8 +117,15 @@ const mapDispatchToProps = dispatch => {
       type: "GENERATE_RES_LIST",
       data: json
     })
-
   }
+
+  const decorator = new CompositeDecorator([
+    {
+      strategy: handleStrategy1,
+      component: TokenSpan,
+    },
+  ]);
+
 
   return {
     updateEditorState: editorState => {
@@ -101,8 +192,60 @@ const mapDispatchToProps = dispatch => {
         isChecked: isChecked
       })
       console.log(label, isChecked)
-    }
+    },
 
+    tempEditorOnChange: editorState => {
+      dispatch({
+        type: "UPDATE_TEMP_EDITOR_STATE",
+        data: editorState
+      })
+    },
+
+    clickRadioButton: value => {
+      dispatch({
+        type: "UPDATE_RADIO_VALUE",
+        data: value
+      })
+    },
+
+    insertTextToEditor: item => {
+      dispatch({
+        type: "INSERT_TEXT_TO_EDITOR",
+        data: item,
+        decorator: decorator
+      })
+    },
+
+    insertTextToTempEditor: item => {
+      dispatch({
+        type: "INSERT_TEXT_TO_TEMP_EDITOR",
+        data: item,
+        decorator: decorator
+      })
+    },
+
+    getWordListWithSelection: editorState => {
+
+      const contentState = editorState.getCurrentContent()
+      const selectionState = editorState.getSelection();
+      const start = selectionState.getStartOffset();
+      const end = selectionState.getEndOffset();
+      const block = contentState.getBlockForKey(selectionState.getStartKey())
+      const selectedText = block.getText().slice(start, end)
+      console.log('selected Text', selectedText)
+
+      fetch("/simwords",
+        {method: "POST",
+          headers:{
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'},
+          body: JSON.stringify({base_word: selectedText})
+        })
+        .then(res => res.json())
+        .then(updateWordList)
+        .catch(function(e){console.log('/simwords parsing failed', e)})
+      //this.props.cleanSelectedWords()
+    }
   }
 }
 
@@ -113,20 +256,32 @@ class Writer extends Component {
 
   constructor(props, context){
     super(props, context);
-   }
+  }
+
+  handleGetWordBtnClick = () => {
+    this.props.getWordListWithSelection(this.props.editorState)
+  }
+
 
   render() {
-
+    const {clickRadioButton} = this.props
     return (
       <MuiThemeProvider>
       <div className={"sentenceWriter"}>
         <div className={"sentenceTable"}>
           <SelectList
             itemArray={this.props.selectionRes}
-            handleClick={this.props.handleClick} />
+            handleClick={this.props.insertTextToEditor} />
         </div>
 
-        <div className={"editArea"}>
+        <div className={"editorArea"}>
+          <div className={'tempEditor'}>
+            <TempEditor
+              clickRadioButton={clickRadioButton}
+              tempEditorState={this.props.tempEditorState}
+              updateEditorState={this.props.tempEditorOnChange} />
+
+          </div>
           <div className={"classCheckBox"}>
             {/* {this.props.isGotClassname &&
                 this.props.allClassNameList.map(
@@ -139,6 +294,7 @@ class Writer extends Component {
           </div>
           <div className={"sentenceEditor"}>
             <CreativeEditor
+              editorState={this.props.editorState}
               insertText={this.props.insertText}
               word={this.props.word}
               selectedWords={this.props.selectedWords}
@@ -150,14 +306,18 @@ class Writer extends Component {
               history={this.props.history} />
           </div>
         </div>
+        <div className={"getWordBtn"}>
+          <RaisedButton
+            label={"Get words"}
+            onClick={() => this.props.getWordListWithSelection(this.props.editorState)} />
+
+        </div>
 
         <div className={"wordsSelectionTable"}>
-          <SelectTable 
+          <SelectList
             itemArray={this.props.wordList}
-            handleClick={this.props.handleClickWord}
-            selectedWords={this.props.selectedWords}
-            updateTableSelection={this.props.updateTableSelection}
-            wordsSelection={this.props.wordsSelection}  />
+            handleClick={this.props.insertTextToTempEditor} />
+
         </div>
       </div>
       </MuiThemeProvider>
@@ -166,6 +326,9 @@ class Writer extends Component {
 }
 
 export default withRouter(Writer)
+//selectedWords={this.props.selectedWords}
+//updateTableSelection={this.props.updateTableSelection}
+//wordsSelection={this.props.wordsSelection}
 
 /* <SelectList
  * className={"sentenceList"}
