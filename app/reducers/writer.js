@@ -59,12 +59,11 @@ export default function (state = [], action) {
     return {...state}
 
   case "GET_WORD_LIST":
-    console.log("GET WORD LIST:", action.data)
-    return {...state, wordList: action.data}
+      return {...state, wordList: action.data}
 
   case "APPEND_WORD_LIST":
-    let updated = update(state, {wordList: {$push: action.data}})
-    return {...state, ...updated}
+      let updated = update(state, {wordList: {$push: action.data}})
+      return {...state, ...updated}
 
 
   case "CLEAN_SELECTED_WORDS":

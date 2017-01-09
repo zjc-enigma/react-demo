@@ -24,7 +24,7 @@ from data import label2value, value2label
 from data import all_classname_list
 from data import class_name_remap
 from data import flatten
-from lib import word_by_ad
+#from lib import word_by_ad
 import pickle
 import pdb
 import pandas as pd
@@ -326,7 +326,7 @@ class AllWordList(Resource):
             res['sim'] = sim_list
 
             # get all important words
-            class_name = request.json['classname']
+            class_name = request.json['class_name']
             print('recv classname:', class_name)
             important_list = []
             for classname in class_name:

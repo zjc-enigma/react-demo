@@ -53,11 +53,11 @@ class SelectList extends Component {
   }
 
   static defaultProps = {
-    itemArray: [
+    itemArray: {"similar": [
       "发生发生的发生的发生地方",
       "阿斯顿发送到发送到付家坡",
       "我奖品为进排气尾聘请为毛坯房的撒"
-    ],
+    ]},
 
   }
 
@@ -65,22 +65,30 @@ class SelectList extends Component {
 
   }
 
+  generateListDom(){
+
+    let listDomArray = []
+
+    for(let [category, wordList] of Object.entries(this.props.itemArray)){
+
+      for (let word of wordList){
+        listDomArray.push(
+          <ListItem
+          primaryText={word}
+          secondaryText={category}
+          onClick={() => this.props.handleClick(word)} />)
+        }
+    }
+    return listDomArray
+  }
 
   render(){
 
     return (
         <List style={{'width': '100%'}}>
-            {
-              this.props.itemArray.map(item =>
-                <ListItem
-                  primaryText={item}
-                  secondaryText={"分类"}
-                  leftIcon={<MyActionGrade
-                            style={{display:"inline"}}
-                            item={item}
-                            selectedWords={this.props.selectedWords}/>}
-
-                  onClick={() => this.props.handleClick(item)} />)}
+          {
+            this.generateListDom()
+          }
           </List>
     )
   }

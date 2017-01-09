@@ -8,8 +8,19 @@ export default function (state=[], action) {
   switch(action.type){
 
   case "UPDATE_SELECTION":
-    return {...state,
-            selectionRes: action.data.map(selection => selection.content)}
+      console.log('selection:', action.data)
+      let keyMappedSelectionRes = {}
+      for (let item of action.data){
+          if (keyMappedSelectionRes.hasOwnProperty(item.label)){
+              keyMappedSelectionRes[item.label].push(item.content)
+          } else {
+              keyMappedSelectionRes[item.label] = [item.content]
+          }
+
+      }
+      return {...state,
+              selectionRes: keyMappedSelectionRes}
+      //action.data.map(selection => selection.content)
 
   case "UPDATE_SELECTION_CLASS":
     let classArray = action.data.map(selection => selection.label)

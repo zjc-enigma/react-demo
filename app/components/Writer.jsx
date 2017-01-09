@@ -109,9 +109,7 @@ const handleStrategy1 = (contentBlock, callback) => {
 const mapDispatchToProps = dispatch => {
 
   const updateWordList = json => {
-    dispatch({
-      type: "GET_WORD_LIST",
-      data: json})
+    dispatch({type: "GET_WORD_LIST", data: json})
   }
 
   const updateGenerateRes = json => {
@@ -263,13 +261,13 @@ const mapDispatchToProps = dispatch => {
             'Content-Type': 'application/json'},
           body: JSON.stringify({
             base_word: selectedText,
-            classname: classList
+            class_name: classList
           })
         })
         .then(res => res.json())
         .then(updateWordList)
         .catch(function(e){console.log('/all_word_list parsing failed', e)})
-      //this.props.cleanSelectedWords()
+        //this.props.cleanSelectedWords()
     },
 
     insertEntityToEditor: (editorState, tempEditorState, radioValue) => {
@@ -399,13 +397,15 @@ class Writer extends Component {
               history={this.props.history} />
           </div>
         </div>
+
         <div className={"getWordBtn"}>
           <RaisedButton
-            label={"Get words"}
+            label={"Get Words"}
             onClick={() => this.props.getWordListWithSelection(
                 this.props.editorState,
                 this.props.selectionResClass)} />
         </div>
+
         <div className={"submitBtn"}>
           <RaisedButton
             label={"submit"}
