@@ -1,44 +1,61 @@
 .selection {
   display: -webkit-flex; /* for webkit browser */
   display: inline-flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: nowrap;
   //justify-content: center;
-  align-items: flex-start;
-  width: 100%;
+  //align-items: flex-start;
+  //width: 100%;
   // debug
   border: 2px solid red;
 }
 
 
-.searchBar {
+.searchBarInSelection {
+  display: flex;
+  flex: 1;
+  order: 0;
+  align-items: center;
+  justify-content: center;
 
   // debug
-  border: 2px solid blue;
+  // border: 2px solid blue;
 }
 
 
 .searchTextField {
+  margin: 10px;
+  width: 35rem;
+  flex-grow: 0;
 
   // debug
-  border: 2px solid black;
+  // border: 2px solid black;
 }
-
 
 .searchBtn {
 
   // debug
-  border: 2px solid orange;
+  // border: 2px solid orange;
 }
 
 
 .nextBtn {
-
+  flex-grow: 0;
 
 }
 
 
 .addBtn {
+  flex-grow: 0;
+
+}
+
+.selectionTable {
+  flex: 1;
+}
+
+.classChipArea {
+  order: 1;
 
 
 }

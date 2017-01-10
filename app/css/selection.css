@@ -1,0 +1,11 @@
+.selection {
+  display: -webkit-flex;
+  /* for webkit browser */
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  width: 100%;
+  border: 2px solid red; }
+
+/*# sourceMappingURL=selection.css.map */

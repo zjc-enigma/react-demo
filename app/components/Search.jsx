@@ -14,6 +14,8 @@ import SearchTextField from './SearchTextField';
 import SearchBtn from './SearchBtn';
 import MyChip from './Chip'
 import MyCheckBox from './CheckBox'
+import Paper from 'material-ui/Paper';
+import '../css/search.scss';
 
 
 let select = state => ({
@@ -124,7 +126,7 @@ class Search extends Component {
 
   constructor(props, context){
     super(props, context)
-    this.props.obtainAllClassname()
+    //this.props.obtainAllClassname()
     this.props.getMultiselectOption()
   }
 
@@ -146,30 +148,30 @@ class Search extends Component {
     return (
       <MuiThemeProvider>
         <div className={'search'}>
-          <div className={'classCheckBox'}>
-            {this.props.isGotClassname &&
-             this.props.allClassNameList.map(
-             item => 
-                 <MyCheckBox
-                   checkedList={this.props.checkedClassList}
-                   label={item}
-                   onCheck={this.props.onCheck} />)
-            }
-          </div>
-
-          <div className={'searchBar'}>
-
+          {/* <div className={'classCheckBox'}>
+              {this.props.isGotClassname &&
+              this.props.allClassNameList.map(
+              item => 
+              <MyCheckBox
+              checkedList={this.props.checkedClassList}
+              label={item}
+              onCheck={this.props.onCheck} />)
+              }
+              </div>
+            */}
+        <Paper zDepth={5}>
+        <div className={'searchBar'}>
             <div className={'searchText'}>
-              <SearchTextField
-                hint={"input your secrets"}
-                text={this.props.searchText}
-                updateSearchText={this.props.updateSearchText}/></div>
-
+                <SearchTextField
+                  hint={"input your secrets"}
+                  text={this.props.searchText}
+                  updateSearchText={this.props.updateSearchText}/></div>
             <div className={'searchBtn'}>
               <SearchBtn
                 label={"Search"}
                 onClick={() => this.search(this.props.searchText)}/></div>
-          </div>
+        </div>
+        </Paper>
         </div>
       </MuiThemeProvider>
     )

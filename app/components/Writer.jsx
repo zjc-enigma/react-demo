@@ -18,6 +18,7 @@ import { Entity, Modifier } from 'draft-js';
 import { Editor, EditorState, RichUtils, convertFromRaw, CompositeDecorator, convertToRaw } from 'draft-js';
 import MyRadioButton from './RadioBtn';
 import MyCheckBox from './CheckBox';
+import Paper from 'material-ui/Paper';
 
 let mapStateToProps = state => ({
   ...state.writer,
@@ -347,18 +348,20 @@ class Writer extends Component {
       <MuiThemeProvider>
       <div className={"sentenceWriter"}>
         <div className={"sentenceTable"}>
-          <SelectList
-            itemArray={this.props.selectionRes}
-            handleClick={this.props.insertTextToEditor} />
+          <Paper zDepth={5}>
+            <SelectList
+              itemArray={this.props.selectionRes}
+              handleClick={this.props.insertTextToEditor} /></Paper>
         </div>
 
         <div className={"editorArea"}>
           <div className={'tempEditor'}>
-            <TempEditor
-              clickRadioButton={clickRadioButton}
-              tempEditorState={this.props.tempEditorState}
-              updateEditorState={this.props.tempEditorOnChange} />
-
+            <Paper zDepth={5}>
+              <TempEditor
+                clickRadioButton={clickRadioButton}
+                tempEditorState={this.props.tempEditorState}
+                updateEditorState={this.props.tempEditorOnChange} />
+            </Paper>
           </div>
           <div className={"classCheckBox"}>
             {/* {this.props.isGotClassname &&
@@ -371,10 +374,13 @@ class Writer extends Component {
                 } */}
           </div>
           <div className={"radioBtn"}>
-            <MyRadioButton onChange={this.props.clickRadioButton}/>
+            <Paper zDepth={5}>
+              <MyRadioButton onChange={this.props.clickRadioButton}/>
+            </Paper>
           </div>
 
           <div className={"checkBoxArray"}>
+            <Paper zDepth={5}>
             {this.checkBoxList.map(item =>
               <MyCheckBox
                 label={item}
@@ -382,8 +388,10 @@ class Writer extends Component {
                 onCheck={this.props.onChangeCheckBox}
                 checkedList={this.checkBoxList} />)
             }
+            </Paper>
           </div>
           <div className={"sentenceEditor"}>
+            <Paper zDepth={5}>
             <CreativeEditor
               editorState={this.props.editorState}
               insertText={this.props.insertText}
@@ -394,7 +402,7 @@ class Writer extends Component {
               editorState={this.props.editorState}
               updateEditorState={this.props.updateEditorState}
               exportToServerAndSave={this.props.exportToServerAndSave}
-              history={this.props.history} />
+              history={this.props.history} /></Paper>
           </div>
         </div>
 
@@ -426,9 +434,10 @@ class Writer extends Component {
 
 
         <div className={"wordsSelectionTable"}>
+          <Paper zDepth={5}>
           <SelectList
             itemArray={this.props.wordList}
-            handleClick={this.props.insertTextToTempEditor} />
+            handleClick={this.props.insertTextToTempEditor} /></Paper>
 
         </div>
       </div>

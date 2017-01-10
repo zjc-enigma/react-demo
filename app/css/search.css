@@ -1,0 +1,26 @@
+.searchBar {
+  display: -webkit-flex;
+  /* for webkit browser */
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  margin-top: 20%;
+  margin-left: 20%; }
+
+.searchText {
+  order: 1;
+  min-width: 10rem;
+  flex-grow: 2; }
+
+.searchBtn {
+  order: 2;
+  flex-grow: 0; }
+
+/*# sourceMappingURL=search.css.map */

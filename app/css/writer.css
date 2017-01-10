@@ -1,0 +1,37 @@
+.sentenceWriter {
+  display: -webkit-flex;
+  /* for webkit browser */
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  width: 100%;
+  height: 200px; }
+
+.sentenceTable {
+  width: 15%;
+  flex-grow: 1; }
+
+.sentenceEditor {
+  width: 50%;
+  flex-grow: 2;
+  flex-shrink: 1; }
+
+.wordsSelectionTable {
+  width: 15%;
+  flex-grow: 1;
+  flex-shrink: 1; }
+
+/* .styleButton { */
+/*   flex-grow: 1; */
+/*   flex-shrink: 0; */
+/*   margin-top: 10px; */
+/* } */
+/* .funcButton { */
+/*   display: inline-block; */
+/* } */
+/* .submit { */
+/*   flex-grow: 3; */
+/* } */
+
+/*# sourceMappingURL=writer.css.map */

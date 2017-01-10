@@ -18,6 +18,7 @@ import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import Writer from './writer';
 import HorizontalLinearStepper from './components/HorizontalLinearStepper';
+import './css/index.scss'
 
 const DevTools = createDevTools(
     <DockMonitor toggleVisibilityKey="ctrl-h" changePositionKey="ctrl-q">

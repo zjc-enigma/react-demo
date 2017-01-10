@@ -10,7 +10,7 @@ import SearchTextField from './SearchTextField';
 import SearchBtn from './SearchBtn';
 import MySnackbar from './SneckBar';
 import MyChip from './Chip'
-
+import Paper from 'material-ui/Paper';
 import '../css/selection.scss';
 
 
@@ -146,22 +146,26 @@ class Selection extends Component {
       <MuiThemeProvider>
         <div className={'selection'}>
           <div className={'classChipArea'}>
-            {
-              this.props.searchRes === undefined ? null : this.generateClassChips()
-            }
+            <Paper zDepth={5}>
+              {
+                this.props.searchRes === undefined ? null : this.generateClassChips()
+              }
+            </Paper>
           </div>
-          <div className={'searchBar'}>
-            <div className={'searchTextField'}>
-              <SearchTextField
-                hint={"input your secrets"}
-                text={this.props.searchText}
-                updateSearchText={this.props.updateSearchText} /></div>
+          <Paper zDepth={5}>
+            <div className={'searchBarInSelection'}>
+              <div className={'searchTextField'}>
+                <SearchTextField
+                  hint={"input your secrets"}
+                  text={this.props.searchText}
+                  updateSearchText={this.props.updateSearchText} /></div>
 
-            <div className={'searchBtn'}>
-              <SearchBtn
-                label={"Search"}
-                onClick={() => this.search(this.props.searchText)} /></div>
-          </div>
+                <div className={'searchBtn'}>
+                  <SearchBtn
+                    label={"Search"}
+                    onClick={() => this.search(this.props.searchText)} /></div>
+            </div>
+          </Paper>
 
           <div className={'nextBtn'}>
             <NextBtn label="Next step" onClick={() => this.nextStep()}/></div>
@@ -172,11 +176,12 @@ class Selection extends Component {
               currentSelection={this.props.selectionRes}
               addToList={this.props.addToList} /></div>
 
-         <div className={'selectionTable'}>
-           <SelectionTable
-             searchRes={this.props.searchRes}
-             updateSelection={this.updateSelection}
-             selectedClass={this.props.selectedClass} /></div>
+          <div className={'selectionTable'}>
+            <Paper zDepth={5}>
+             <SelectionTable
+               searchRes={this.props.searchRes}
+               updateSelection={this.updateSelection}
+               selectedClass={this.props.selectedClass} /></Paper></div>
          </div>
       </MuiThemeProvider>
 

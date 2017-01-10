@@ -1,6 +1,5 @@
 import TextField from 'material-ui/TextField';
 import React, { Component } from 'react';
-
 class SearchTextField extends Component {
 
   constructor(props, context){
@@ -13,11 +12,11 @@ class SearchTextField extends Component {
 
   render() {
     return (
-      <TextField
-        hintText={this.props.hint}
-        value={this.props.text}
-        onChange={event => this.handleInput(event)}
-        fullWidth={true} />
+         <TextField
+            hintText={this.props.hint}
+            value={this.props.text}
+            onChange={event => this.handleInput(event)}
+            fullWidth={true} />
     )
   }
 }
