@@ -125,12 +125,14 @@ class Selection extends Component {
 
 
     return Object.keys(counter).map(key =>
-      <MyChip
-        chipText={key}
-        chipTextAvatar={counter[key]}
-        colored={colored[key]}
-        handleClick={() => this.props.clickClassChip(key)}
-        handleDelete={() => {console.log('click close')}} />)
+      <div className={"chips"}>
+        <MyChip
+          chipText={key}
+          chipTextAvatar={counter[key]}
+          colored={colored[key]}
+          handleClick={() => this.props.clickClassChip(key)}
+      handleDelete={() => {console.log('click close')}} />
+      </div>)
   }
 
 
@@ -145,44 +147,62 @@ class Selection extends Component {
     return (
       <MuiThemeProvider>
         <div className={'selection'}>
-          <div className={'classChipArea'}>
-            <Paper zDepth={5}>
+
+          <div className={'searchBarWithPaper'}>
+           <Paper zDepth={5}>  
+             <div className={'searchBarInSelection'}>
+                 <div className={'searchTextField'}>
+                   <SearchTextField
+                     hint={"input your secrets"}
+                     text={this.props.searchText}
+                     updateSearchText={this.props.updateSearchText} /></div>
+
+                   <div className={'searchBtn'}>
+                     <SearchBtn
+                       label={"Search"}
+                       onClick={() => this.search(this.props.searchText)} /></div>
+             </div>
+           </Paper>
+          </div>
+
+
+
+          <div className={"buttonGroup"}>
+            <div className={'nextBtnInSelection'}>
+              <NextBtn label={"Next"} onClick={() => this.nextStep()}/></div>
+
+
+
+            <div className={'addBtnInSelection'}>
+              <MySnackbar
+                label={"add"}
+                currentSelection={this.props.selectionRes}
+                addToList={this.props.addToList} /></div>
+          </div>
+
+
+          {/* <div className={'classChipAreaPaper'}>
+              <Paper zDepth={5}> */}
+              <div className={'classChipArea'}>
               {
                 this.props.searchRes === undefined ? null : this.generateClassChips()
               }
-            </Paper>
-          </div>
-          <Paper zDepth={5}>
-            <div className={'searchBarInSelection'}>
-              <div className={'searchTextField'}>
-                <SearchTextField
-                  hint={"input your secrets"}
-                  text={this.props.searchText}
-                  updateSearchText={this.props.updateSearchText} /></div>
+              </div>
+              {/* </Paper>
+                  </div> */}
 
-                <div className={'searchBtn'}>
-                  <SearchBtn
-                    label={"Search"}
-                    onClick={() => this.search(this.props.searchText)} /></div>
-            </div>
-          </Paper>
 
-          <div className={'nextBtn'}>
-            <NextBtn label="Next step" onClick={() => this.nextStep()}/></div>
+          <div className={'selectionTablePaper'}>
 
-          <div className={'addBtn'}>
-            <MySnackbar
-              label={"add to list"}
-              currentSelection={this.props.selectionRes}
-              addToList={this.props.addToList} /></div>
-
-          <div className={'selectionTable'}>
             <Paper zDepth={5}>
-             <SelectionTable
-               searchRes={this.props.searchRes}
-               updateSelection={this.updateSelection}
-               selectedClass={this.props.selectedClass} /></Paper></div>
-         </div>
+              <div className={'selectionTable'}>
+                 <SelectionTable
+                   searchRes={this.props.searchRes}
+                   updateSelection={this.updateSelection}
+                   selectedClass={this.props.selectedClass} /></div>
+            </Paper>
+            </div>
+          </div>
       </MuiThemeProvider>
 
     )

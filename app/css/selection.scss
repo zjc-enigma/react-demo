@@ -1,61 +1,90 @@
 .selection {
   display: -webkit-flex; /* for webkit browser */
-  display: inline-flex;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  //display: inline-flex;
   flex-direction: column;
   flex-wrap: nowrap;
+  height: 40rem;
   //justify-content: center;
   //align-items: flex-start;
   //width: 100%;
   // debug
-  border: 2px solid red;
+  // border: 2px solid red;
 }
 
+.searchBarWithPaper {
+  margin-top: 10px;
+
+}
 
 .searchBarInSelection {
   display: flex;
-  flex: 1;
-  order: 0;
+  //flex-direction: row;
+  //flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
-
+  //margin: 10px;
+  //width: 100%;
+  //width: 50rem;
+  // flex-shrink: 1;
   // debug
-  // border: 2px solid blue;
+  //border: 2px solid blue;
 }
-
 
 .searchTextField {
   margin: 10px;
   width: 35rem;
   flex-grow: 0;
-
   // debug
   // border: 2px solid black;
 }
 
 .searchBtn {
-
+  flex-grow: 0;
   // debug
   // border: 2px solid orange;
 }
 
+.buttonGroup {
+  display: flex;
+  flex-shrink: 0;
+  margin-top: 10px;
+  justify-content: space-between;
+  //border: 2px solid  blue;
+}
 
-.nextBtn {
-  flex-grow: 0;
-
+.nextBtnInSelection {
+  //flex-grow: 0;
+  flex-basis: 10rem;
+  flex: 0;
 }
 
 
-.addBtn {
-  flex-grow: 0;
+.addBtnInSelection {
+  flex: 0;
 
 }
 
+.classChipArea {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 10px;
+
+}
+
+.chips {
+  flex: 0;
+
+}
+
+.selectionTablePaper{
+  margin-top: 30px;
+}
 .selectionTable {
   flex: 1;
 }
 
-.classChipArea {
-  order: 1;
-
-
-}
