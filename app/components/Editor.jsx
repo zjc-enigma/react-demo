@@ -10,14 +10,14 @@ import { connect } from 'react-redux';
 const styles = {
   root: {
     fontFamily: '\'Helvetica\', sans-serif',
-    padding: 20,
-    width: 600,
+    //padding: 20,
+    //width: 200,
   },
   editor: {
     border: '1px solid #ccc',
     cursor: 'text',
-    minHeight: 80,
-    padding: 10,
+    //minHeight: 80,
+    //padding: 10,
   },
   button: {
     marginTop: 10,
@@ -308,21 +308,21 @@ class CreativeEditor extends React.Component {
 
   render() {
     const editorState = this.props.editorState
-
+    //<div style={styles.root}>
+    //</div>
     return (
       <MuiThemeProvider>
-          <div style={styles.root}>
-            <div
-              className="editor"
-              onSelect={() => {}}>
-              {editorState === undefined ? null :
-               <Editor
-                 editorState={editorState}
-                 onChange={this.onChange}
-                 ref="editor"/>
-              }
-            </div>
-          </div>
+        <div
+          className="editor"
+          onSelect={() => {}}>
+          {editorState === undefined ? null :
+           <Editor
+             editorState={editorState}
+             onChange={this.onChange}
+             ref="editor"/>
+          }
+        </div>
+    
       </MuiThemeProvider>
     )
   }

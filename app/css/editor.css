@@ -1,12 +1,12 @@
-.root {
-  font-family: '\'Helvetica\', sans-serif'; }
+/* .root { */
+/*   font-family: '\'Helvetica\', sans-serif'; } */
 
-.editor {
-  border: 1px solid #ccc;
-  cursor: 'text';
-  width: 100%;
-  height: 200px;
-  flex-grow: 2; }
+/* .editor { */
+/*   border: 1px solid #ccc; */
+/*   cursor: 'text'; */
+/*   width: 100%; */
+/*   height: 200px; */
+/*   flex-grow: 2; } */
 
 /* .styleButton { */
 /*   //color: red; */

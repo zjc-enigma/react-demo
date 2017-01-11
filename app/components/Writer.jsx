@@ -358,34 +358,8 @@ class Writer extends Component {
               </Paper></div>
 
           <div className={"editorArea"}>
-            <div className={"classCheckBox"}>
-              {/* {this.props.isGotClassname &&
-                  this.props.allClassNameList.map(
-                  item => 
-                  <MyCheckBox
-                  checkedList={this.props.checkedClassList}
-                  label={item}
-                  onCheck={this.props.onCheck} />)
-                  } */}
-            </div>
-            <div className={"radioBtn"}>
-              <Paper zDepth={5}>
-                               <MyRadioButton onChange={this.props.clickRadioButton}/>
-             </Paper>
-           </div>
-           <div className={"checkBoxArray"}>
-             <Paper zDepth={5}>
-             {this.checkBoxList.map(item =>
-               <MyCheckBox
-                 label={item}
-                 ischecked={true}
-                 onCheck={this.props.onChangeCheckBox}
-                 checkedList={this.checkBoxList} />)
-             }
-             </Paper>
-           </div>
-           <div className={"sentenceEditor"}>
-             <Paper zDepth={5}>
+
+           <div className={"mainEditor"}>
              <CreativeEditor
                editorState={this.props.editorState}
                insertText={this.props.insertText}
@@ -396,17 +370,49 @@ class Writer extends Component {
                editorState={this.props.editorState}
                updateEditorState={this.props.updateEditorState}
                exportToServerAndSave={this.props.exportToServerAndSave}
-               history={this.props.history} /></Paper>
+               history={this.props.history} />
            </div>
-           <div className={'tempEditor'}>
+
+           <div className={'tempEditorBarPaper'}>
              <Paper zDepth={5}>
-               <TempEditor
-                 clickRadioButton={clickRadioButton}
-                 tempEditorState={this.props.tempEditorState}
-                 updateEditorState={this.props.tempEditorOnChange} />
+               <div className={"tempEditorBar"}>
+                 <div className={"tempEditor"}>
+                   <TempEditor
+                     clickRadioButton={clickRadioButton}
+                     tempEditorState={this.props.tempEditorState}
+                     updateEditorState={this.props.tempEditorOnChange} /></div>
+
+                 <div className={"submitBtn"}>
+                   <RaisedButton
+                     label={"submit"}
+                     onClick={() => this.props.insertEntityToEditor(
+                         this.props.editorState,
+                         this.props.tempEditorState,
+                         this.props.radioSelection )} /></div>
+               </div>
              </Paper>
            </div>
-         </div>
+          </div>
+
+
+
+          <div className={"radioBtn"}>
+            <Paper zDepth={5}>
+              <MyRadioButton onChange={this.props.clickRadioButton}/>
+            </Paper>
+          </div>
+          <div className={"checkBoxArray"}>
+            <Paper zDepth={5}>
+              {this.checkBoxList.map(item =>
+                <MyCheckBox
+                  label={item}
+                  ischecked={true}
+                  onCheck={this.props.onChangeCheckBox}
+                  checkedList={this.checkBoxList} />)
+              }
+            </Paper>
+          </div>
+
 
          <div className={"getWordBtn"}>
            <RaisedButton
@@ -416,14 +422,7 @@ class Writer extends Component {
                  this.props.selectionResClass)} />
          </div>
 
-         <div className={"submitBtn"}>
-           <RaisedButton
-             label={"submit"}
-             onClick={() => this.props.insertEntityToEditor(
-                 this.props.editorState,
-                 this.props.tempEditorState,
-                 this.props.radioSelection )} />
-         </div>
+
          <div className={"export"}>
            <RaisedButton
              label={"export"}
