@@ -11,6 +11,7 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import SelectTable from './SelectTable';
 import { withRouter } from 'react-router';
 import fileDownload from 'react-file-download';
+import '../css/generate.scss';
 
 let mapStateToProps = state => ({
   ...state.generate,
@@ -66,12 +67,6 @@ class GenerateTable extends Component {
     return(
       <MuiThemeProvider>
         <div className={'Generate'}>
-          <div className={'saveBtn'}>
-            <SaveBtn
-              label={"Save Result"}
-              saveList={this.props.selectedRes}
-              saveToCsv={this.props.saveToCsv} />
-          </div>
 
           <div className={'resTable'}>
             <SelectTable
@@ -79,6 +74,15 @@ class GenerateTable extends Component {
               updateTableSelection={this.props.updateTableSelection}
             />
           </div>
+
+          <div className={'saveBtn'}>
+            <SaveBtn
+              label={"Save"}
+              saveList={this.props.selectedRes}
+              saveToCsv={this.props.saveToCsv} />
+          </div>
+
+          
         </div>
       </MuiThemeProvider>
     )

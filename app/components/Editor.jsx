@@ -5,7 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import React from 'react';
 import { stateToHTML } from 'draft-js-export-html';
 import { connect } from 'react-redux';
-import '../css/editor.scss';
+//import '../css/editor.scss';
 
 const styles = {
   root: {

@@ -1,0 +1,24 @@
+.Generate {
+  display: -webkit-flex; /* for webkit browser */
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: column;
+  //flex-wrap: wrap;
+  width: 100%;
+  //height: 40rem;
+  justify-content: center;
+  align-items: center;
+  //align-content: center;
+  //margin-top: 20%;
+  //margin-left: 20%;
+  //border: 1px solid red;
+}
+
+.saveBtn {
+  //width: 10rem;
+  flex: 0;
+  //border: 1px solid red;
+
+}
