@@ -358,7 +358,6 @@ class Writer extends Component {
               </Paper></div>
 
           <div className={"editorArea"}>
-
            <div className={"mainEditor"}>
              <CreativeEditor
                editorState={this.props.editorState}
@@ -374,9 +373,8 @@ class Writer extends Component {
            </div>
 
            <div className={'tempEditorBarPaper'}>
-             <Paper zDepth={5}>
                <div className={"tempEditorBar"}>
-                 <div className={"tempEditor"}>
+                 <div className={"tempEditorArea"}>
                    <TempEditor
                      clickRadioButton={clickRadioButton}
                      tempEditorState={this.props.tempEditorState}
@@ -390,7 +388,7 @@ class Writer extends Component {
                          this.props.tempEditorState,
                          this.props.radioSelection )} /></div>
                </div>
-             </Paper>
+
            </div>
           </div>
 

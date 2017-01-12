@@ -65,9 +65,23 @@
 .tempEditorBarPaper {
   flex: 0;
   margin: 10px;
-
 }
 
+.tempEditorBar {
+  display: flex;
+}
+
+.tempEditorArea {
+  flex: 1;
+  cursor: 'text';
+  border: 1px solid red;
+  //width: 20rem;
+}
+
+.submitBtn {
+  flex: 0;
+
+}
 
 
 
