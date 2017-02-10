@@ -1,11 +1,11 @@
-.sentenceWriterPaper {
+.writerMain {
   display: -webkit-flex; /* for webkit browser */
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: flex;
   //display: inline-flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: nowrap;
   //justify-content: center;
   align-items: flex-start;
@@ -13,82 +13,115 @@
   height: 100rem;
 
   // for debug
-  //border: 2px solid red;
-}
-
-.sentenceWriter {
-  display: -webkit-flex; /* for webkit browser */
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-
-
-}
-
-.sentenceWriterPaper {
-  //width: 10rem;
-  margin: 20px;
-
-}
-
-.sentenceTable {
-  flex-grow: 0;
-  // for debug
   // border: 2px solid red;
 }
 
 
-.editorArea {
+.sentenceTableMain {
+
+  flex-grow: 0;
+  // for debug
+  border: 2px solid blue;
+
+}
+
+
+.editorAreaMain {
   display: -webkit-flex; /* for webkit browser */
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: flex;
   flex-wrap: nowrap;
-  flex: 1;
   flex-direction: column;
-
-  border: 1px solid red;
-
-}
-
-.mainEditor {
-  //width: 50%;
-  flex: 0;
-  width: 20rem;
-  height: 10rem;
-  // flex-shrink: 1;
+  flex-grow: 1;
   // for debug
-  border: 2px solid orange;
-}
-
-.tempEditorBarPaper {
-  flex: 0;
-  margin: 10px;
-}
-
-.tempEditorBar {
-  display: flex;
-}
-
-.tempEditorArea {
-  flex: 1;
-  cursor: 'text';
-  border: 1px solid red;
-  //width: 20rem;
-}
-
-.submitBtn {
-  flex: 0;
+  border: 2px solid black;
 
 }
 
 
+.wordsSelectionMain {
 
-.wordsSelectionTable {
-  width: 15%;
   flex-grow: 0;
-  // flex-shrink: 1;
   // for debug
-  //border: 2px solid blue;
+  border: 2px solid yellow;
 }
+
+
+/* .sentenceWriter { */
+/*   display: -webkit-flex; /\* for webkit browser *\/ */
+/*   display: -webkit-box; */
+/*   display: -moz-box; */
+/*   display: -ms-flexbox; */
+
+
+/* } */
+
+/* .sentenceWriterPaper { */
+/*   //width: 10rem; */
+/*   margin: 20px; */
+
+/* } */
+
+/* .sentenceTable { */
+/*   flex-grow: 0; */
+/*   // for debug */
+/*   // border: 2px solid red; */
+/* } */
+
+
+/* .editorAreaMain { */
+/*   display: -webkit-flex; /\* for webkit browser *\/ */
+/*   display: -webkit-box; */
+/*   display: -moz-box; */
+/*   display: -ms-flexbox; */
+/*   display: flex; */
+/*   flex-wrap: nowrap; */
+/*   flex: 1; */
+/*   flex-direction: column; */
+
+/*   border: 1px solid red; */
+
+/* } */
+
+/* .mainEditor { */
+/*   //width: 50%; */
+/*   flex: 0; */
+/*   width: 20rem; */
+/*   height: 10rem; */
+/*   // flex-shrink: 1; */
+/*   // for debug */
+/*   border: 2px solid orange; */
+/* } */
+
+/* .tempEditorBarPaper { */
+/*   flex: 0; */
+/*   margin: 10px; */
+/* } */
+
+/* .tempEditorBar { */
+/*   display: flex; */
+/* } */
+
+/* .tempEditorArea { */
+/*   flex: 1; */
+/*   cursor: 'text'; */
+/*   border: 1px solid red; */
+/*   //width: 20rem; */
+/* } */
+
+/* .submitBtn { */
+/*   flex: 0; */
+
+/* } */
+
+
+
+/* .wordsSelectionTable { */
+/*   width: 15%; */
+/*   flex-grow: 0; */
+/*   // flex-shrink: 1; */
+/*   // for debug */
+/*   //border: 2px solid blue; */
+/* } */

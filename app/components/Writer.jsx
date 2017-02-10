@@ -346,101 +346,91 @@ class Writer extends Component {
     const {clickRadioButton} = this.props
     return (
       <MuiThemeProvider>
-        <div className={"sentenceWriterPaper"}>
-          <div className={"sentenceWriter"}>
-
-            <div className={"sentenceTablePaper"}>
+        <div className={"writerMain"}>
+          <div className={"sentenceTableMain"}>
               <Paper zDepth={5}>
                 <div className={"sentenceTable"}>
                   <SelectList
                      itemArray={this.props.selectionRes}
                      handleClick={this.props.insertTextToEditor} /></div>
-              </Paper></div>
+              </Paper>
+          </div>
+          <div className={"editorAreaMain"}>
+              <div className={"radioBtn"}>
+                <Paper zDepth={5}>
+                  <MyRadioButton onChange={this.props.clickRadioButton}/>
+                </Paper>
+              </div>
 
-          <div className={"editorArea"}>
-           <div className={"mainEditor"}>
-             <CreativeEditor
-               editorState={this.props.editorState}
-               insertText={this.props.insertText}
-               word={this.props.word}
-               selectedWords={this.props.selectedWords}
-               getWordList={this.props.getWordList}
-               cleanSelectedWords={this.props.cleanSelectedWords}
-               editorState={this.props.editorState}
-               updateEditorState={this.props.updateEditorState}
-               exportToServerAndSave={this.props.exportToServerAndSave}
-               history={this.props.history} />
-           </div>
+              <div className={"checkBoxArray"}>
+                <Paper zDepth={5}>
+                  {this.checkBoxList.map(item =>
+                    <MyCheckBox
+                      label={item}
+                      ischecked={true}
+                      onCheck={this.props.onChangeCheckBox}
+                      checkedList={this.checkBoxList} />)
+                  }
+                </Paper>
+              </div>
 
-           <div className={'tempEditorBarPaper'}>
-               <div className={"tempEditorBar"}>
-                 <div className={"tempEditorArea"}>
-                   <TempEditor
-                     clickRadioButton={clickRadioButton}
-                     tempEditorState={this.props.tempEditorState}
-                     updateEditorState={this.props.tempEditorOnChange} /></div>
+              <div className={"mainEditor"}>
+                <CreativeEditor
+                  editorState={this.props.editorState}
+                  insertText={this.props.insertText}
+                  word={this.props.word}
+                  selectedWords={this.props.selectedWords}
+                  getWordList={this.props.getWordList}
+                  cleanSelectedWords={this.props.cleanSelectedWords}
+                  editorState={this.props.editorState}
+                  updateEditorState={this.props.updateEditorState}
+                  exportToServerAndSave={this.props.exportToServerAndSave}
+                  history={this.props.history} />
+              </div>
 
-                 <div className={"submitBtn"}>
-                   <RaisedButton
-                     label={"submit"}
-                     onClick={() => this.props.insertEntityToEditor(
-                         this.props.editorState,
-                         this.props.tempEditorState,
-                         this.props.radioSelection )} /></div>
+              <div className={'tempEditorBarPaper'}>
+                  <div className={"tempEditorBar"}>
+                    <div className={"tempEditorArea"}>
+                      <TempEditor
+                        clickRadioButton={clickRadioButton}
+                        tempEditorState={this.props.tempEditorState}
+                        updateEditorState={this.props.tempEditorOnChange} /></div>
+
+                    <div className={"submitBtn"}>
+                      <RaisedButton
+                        label={"submit"}
+                        onClick={() => this.props.insertEntityToEditor(
+                            this.props.editorState,
+                            this.props.tempEditorState,
+                            this.props.radioSelection )} /></div>
+                  </div>
                </div>
 
-           </div>
+              <div className={"getWordBtn"}>
+                <RaisedButton
+                  label={"Get Words"}
+                  onClick={() => this.props.getWordListWithSelection(
+                      this.props.editorState,
+                      this.props.selectionResClass)} />
+              </div>
+
+              <div className={"export"}>
+                <RaisedButton
+                  label={"export"}
+                  onClick={() => this.props.exportAllContent(
+                      this.props.editorState,
+                      this.props.history)} />
+              </div>
           </div>
 
-
-
-          <div className={"radioBtn"}>
-            <Paper zDepth={5}>
-              <MyRadioButton onChange={this.props.clickRadioButton}/>
-            </Paper>
-          </div>
-          <div className={"checkBoxArray"}>
-            <Paper zDepth={5}>
-              {this.checkBoxList.map(item =>
-                <MyCheckBox
-                  label={item}
-                  ischecked={true}
-                  onCheck={this.props.onChangeCheckBox}
-                  checkedList={this.checkBoxList} />)
-              }
-            </Paper>
-          </div>
-
-
-         <div className={"getWordBtn"}>
-           <RaisedButton
-             label={"Get Words"}
-             onClick={() => this.props.getWordListWithSelection(
-                 this.props.editorState,
-                 this.props.selectionResClass)} />
-         </div>
-
-
-         <div className={"export"}>
-           <RaisedButton
-             label={"export"}
-             onClick={
-               () => this.props.exportAllContent(
-                 this.props.editorState,
-                 this.props.history)} />
-
-         </div>
-
-
-         <div className={"wordsSelectionTable"}>
+          <div className={"wordsSelectionMain"}>
            <Paper zDepth={5}>
-           <SelectList
-             itemArray={this.props.wordList}
-             handleClick={this.props.insertTextToTempEditor} /></Paper>
-
+             <SelectList
+               itemArray={this.props.wordList}
+               handleClick={this.props.insertTextToTempEditor} /></Paper>
          </div>
-          </div>
-      </div>
+        </div>
+
       </MuiThemeProvider>
     )
   }
