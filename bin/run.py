@@ -14,8 +14,7 @@ from datetime import datetime
 from wtforms import Form, BooleanField, StringField, PasswordField, validators, IntegerField, FloatField
 from flask_restful import Resource, Api, fields, marshal_with, reqparse
 sys.path.append('../lib')
-sys.path.append('/Users/Patrick/Git/')
-from utils import myutils3
+sys.path.append('/homt/patrick/Git/')
 from data import random_select_titles
 from data import search_title
 from data import search_title_by_class
@@ -33,7 +32,7 @@ import jieba.posseg as pseg
 
 
 import gensim
-word_model = gensim.models.Word2Vec.load_word2vec_format("../data/model2", binary=False)
+word_model = gensim.models.KeyedVectors.load_word2vec_format("../data/model2", binary=False)
 word_importance_model = pd.read_pickle("../data/res.plk")
 industry_word_model = pd.read_csv("../data/words/class_dict", sep="\t", header=None)
 industry_word_model.columns = ["classname", "word", "attr", "score"]
@@ -118,7 +117,6 @@ class TokenSentence(Resource):
         print(sentence_list)
         for sentence in sentence_list:
             tokened = []
-            #tokened = myutils.tokenize_zh_line(sentence.decode('utf8'))
             words = pseg.cut(sentence.encode('utf-8'))
             for word, flag in words:
                 tokened.append({"word": word, "flag": flag})
@@ -421,6 +419,6 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=7777, threaded=True)
+    app.run(host="0.0.0.0", port=19999, threaded=True)
 
     
