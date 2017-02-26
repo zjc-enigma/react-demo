@@ -33,6 +33,7 @@ import jieba.posseg as pseg
 
 import gensim
 word_model = gensim.models.KeyedVectors.load_word2vec_format("../data/model2", binary=False)
+
 word_importance_model = pd.read_pickle("../data/res.plk")
 industry_word_model = pd.read_csv("../data/words/class_dict", sep="\t", header=None)
 industry_word_model.columns = ["classname", "word", "attr", "score"]

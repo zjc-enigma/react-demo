@@ -356,11 +356,20 @@ class Writer extends Component {
               </Paper>
           </div>
           <div className={"editorAreaMain"}>
-              <div className={"radioBtn"}>
+              <div className={"radioBtnArea"}>
                 <Paper zDepth={5}>
                   <MyRadioButton onChange={this.props.clickRadioButton}/>
                 </Paper>
+
+               <div className={"getWordBtn"}>
+                 <RaisedButton
+                   label={"Get Words"}
+                   onClick={() => this.props.getWordListWithSelection(
+                       this.props.editorState,
+                       this.props.selectionResClass)} />
+               </div>
               </div>
+
 
               <div className={"mainEditor"}>
                 <CreativeEditor
@@ -394,15 +403,8 @@ class Writer extends Component {
               </div>
 
 
-              <div className={"getWordBtn"}>
-                <RaisedButton
-                  label={"Get Words"}
-                  onClick={() => this.props.getWordListWithSelection(
-                      this.props.editorState,
-                      this.props.selectionResClass)} />
-              </div>
 
-              <div className={"export"}>
+              <div className={"exportBtn"}>
                 <RaisedButton
                   label={"export"}
                   onClick={() => this.props.exportAllContent(

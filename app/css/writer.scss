@@ -41,6 +41,16 @@
 
 }
 
+.radioBtnArea {
+    display: -webkit-flex; /* for webkit browser */
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-between;
+}
 .mainEditor {
     flex-grow: 0;
     height: 10rem;
@@ -78,7 +88,11 @@
   border: 2px solid yellow;
 }
 
-
+.exportBtn {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
 
 /* .sentenceWriter { */
 /*   display: -webkit-flex; /\* for webkit browser *\/ */

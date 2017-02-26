@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
 import json
 import sys
-reload(sys)
-sys.setdefaultencoding('UTF8')
 import multiprocessing
 from gensim.models import Word2Vec
 from gensim.models.word2vec import LineSentence
 from gensim.corpora import WikiCorpus
 import re
+import os
+
 def tokenize_zh_line(zh_line, method='jieba'):
     """
     zh_line:
@@ -21,20 +20,18 @@ def tokenize_zh_line(zh_line, method='jieba'):
     """
 
     import jieba
-
+    jieba.enable_parallel(8)
     try:
         zh_line = zh_line.strip()
-        zh_line = " ".join(re.findall(ur'[\u4e00-\u9fff\w\_]+', zh_line))
+        zh_line = " ".join(re.findall(r'[\u4e00-\u9fff\w\_]+', zh_line))
 
         tokenized_list = jieba.cut(zh_line, cut_all=False)
 
         res = [ word for word in tokenized_list if word != ' ' ]
-
-
         return res
 
-    except AttributeError, attr:
-        print zh_line
+    except AttributeError as attr:
+        print(zh_line)
         return []
 
 
@@ -58,6 +55,47 @@ wfd.close()
 #     wfd.write(" ".join(text) + "\n")
 # wfd.close()
 
+def gbk_dir_files_to_corpus(aim_dir):
+
+    file_list = os.listdir(aim_dir)
+
+    wfd = open(corpus_file, 'a')
+    for f in file_list:
+        try:
+            fd = open(aim_dir + "/" + f, encoding='gbk')
+
+            for line in fd:
+                try:
+                    line = line.strip()
+                    tokened_line = " ".join(tokenize_zh_line(line)) + "\n"
+                    wfd.write(tokened_line)
+
+                except Exception as e:
+                    print("exception1", e)
+                    continue
+            fd.close()
+
+        except Exception as e:
+            print('exception2', e)
+            continue
+
+    wfd.close()
+
+
+
+
+
+
+demo_corpus_dir = '../data/word2vec_corpus/demo_corpus'
+gbk_dir_files_to_corpus(demo_corpus_dir)
+
+train_corpus_dir = '../data/word2vec_corpus/train_corpus'
+for gbk_dir in os.listdir(train_corpus_dir):
+    gbk_dir_files_to_corpus(train_corpus_dir + "/" + gbk_dir)
+
+
+
+
 
 model = Word2Vec(LineSentence(corpus_file),
                  size=400,
@@ -66,4 +104,8 @@ model = Word2Vec(LineSentence(corpus_file),
                  workers=multiprocessing.cpu_count())
  
 model.save("../data/model")
-model.save_word2vec_format("../data/model2", binary=False)
+model.wv.save_word2vec_format("../data/model2", binary=False)
+
+
+
+
