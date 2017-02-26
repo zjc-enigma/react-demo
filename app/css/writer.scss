@@ -40,6 +40,39 @@
 
 }
 
+.mainEditor {
+    flex-grow: 0;
+    height: 10rem;
+    border: 2px solid red;
+}
+
+.tempEditorBar {
+    display: -webkit-flex; /* for webkit browser */
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: nowrap;
+
+    flex-direction: row;
+    flex-grow: 1;
+    border: 2px solid yellow;
+}
+
+.tempEditor {
+    flex-grow: 1;
+    height: 2rem;
+}
+
+.submitBtn {
+    flex-grow: 0;
+}
+
+
+
+
+
+
 
 .wordsSelectionMain {
 
@@ -47,6 +80,9 @@
   // for debug
   border: 2px solid yellow;
 }
+
+
+
 
 
 /* .sentenceWriter { */

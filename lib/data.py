@@ -303,7 +303,7 @@ class TitleTagger(object):
 # titles = '../data/titles'
 # rule = '../data/rule.conf'
 
-title_tag = TitleTagger(titles_path='../data/titles',
+title_tag = TitleTagger(titles_path='../data/merged_titles',
                         rule_path='../data/rule.conf')
 
 ad_tag = TitleTagger(titles_path='../data/crawled_ad',

@@ -84,8 +84,6 @@ class Title(Resource):
         # fake_titles
         return random_select_titles(10)
 
-
-
 api.add_resource(Title, '/rand_titles')
 
 def write_csv(data_list, csv_path):
@@ -101,8 +99,6 @@ class Download(Resource):
     def post(self):
         sentence_list = request.json['sentences']
         print(sentence_list)
-        #df.to_excel('/Users/Patrick/Git/react-demo/test.xlsx', sheet_name='sheet1', index=False)
-        #print request
         write_csv(sentence_list, 'test.csv')
         return send_from_directory('.', 'test.csv')
 
@@ -351,6 +347,89 @@ class AllWordList(Resource):
 api.add_resource(AllWordList, '/all_word_list')
 
 
+class SimilarWord(Resource):
+
+    def get(self):
+        pass
+
+    def post(self):
+        res = {}
+        try:
+            # get all sim words
+            base_word = request.json['base_word']
+            print('recv base word:', base_word)
+            sim_list = []
+            for item in word_model.most_similar(base_word):
+                sim_list.append(item[0])
+            res['sim'] = sim_list
+
+        except Exception as e:
+            print(e)
+
+        print("Similar words:", res)
+        return res
+
+api.add_resource(SimilarWord, '/similar_word')
+
+
+class IndustryWord(Resource):
+
+    def get(self):
+        pass
+
+    def post(self):
+        res = {}
+        try:
+            # get all industry words
+            base_word = request.json['base_word']
+            class_name = request.json['class_name']
+            industry_list = []
+            for classname in class_name:
+                value_name = label2value[classname]
+                industry_df = industry_word_model.loc[
+                industry_word_model.classname.str.contains(value_name)]
+                industry_list += list(flatten(industry_df[[1]].head(20).values.tolist()))
+            res['industry'] = industry_list
+
+        except Exception as e:
+            print(e)
+
+        print("Industry words:", res)
+        return res
+
+api.add_resource(IndustryWord, '/industry_word')
+
+class ImportantWord(Resource):
+
+    def get(self):
+        pass
+
+    def post(self):
+        res = {}
+        try:
+            # get all important words
+            base_word = request.json['base_word']
+            class_name = request.json['class_name']
+            print('recv classname:', class_name)
+            important_list = []
+            for classname in class_name:
+                remap_name = class_name_remap[classname]
+                word_df = word_importance_model.ix[remap_name]
+                important_list += list(flatten(word_df[[2]].head(20).values.tolist()))
+            res['important'] = important_list
+
+        except Exception as e:
+            print(e)
+
+        print("Important words:", res)
+        return res
+
+api.add_resource(ImportantWord, '/important_word')
+
+# /important_word class_name , base_word
+# /industry_word class_name , base_word
+# /similar_word base_word
+
 
 class GetImportantWordByClass(Resource):
 
@@ -381,9 +460,6 @@ def nocache(view):
         return response
 
     return update_wrapper(no_cache, view)
-
-
-
 
 
 

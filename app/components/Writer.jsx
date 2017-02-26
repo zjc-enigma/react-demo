@@ -388,23 +388,23 @@ class Writer extends Component {
                   history={this.props.history} />
               </div>
 
-              <div className={'tempEditorBarPaper'}>
-                  <div className={"tempEditorBar"}>
-                    <div className={"tempEditorArea"}>
-                      <TempEditor
-                        clickRadioButton={clickRadioButton}
-                        tempEditorState={this.props.tempEditorState}
-                        updateEditorState={this.props.tempEditorOnChange} /></div>
 
-                    <div className={"submitBtn"}>
-                      <RaisedButton
-                        label={"submit"}
-                        onClick={() => this.props.insertEntityToEditor(
-                            this.props.editorState,
-                            this.props.tempEditorState,
-                            this.props.radioSelection )} /></div>
-                  </div>
-               </div>
+              <div className={"tempEditorBar"}>
+                <div className={"tempEditor"}>
+                  <TempEditor
+                    clickRadioButton={clickRadioButton}
+                    tempEditorState={this.props.tempEditorState}
+                    updateEditorState={this.props.tempEditorOnChange} /></div>
+
+                <div className={"submitBtn"}>
+                  <RaisedButton
+                    label={"submit"}
+                    onClick={() => this.props.insertEntityToEditor(
+                        this.props.editorState,
+                        this.props.tempEditorState,
+                        this.props.radioSelection )} /></div>
+              </div>
+
 
               <div className={"getWordBtn"}>
                 <RaisedButton
