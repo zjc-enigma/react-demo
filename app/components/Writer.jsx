@@ -240,7 +240,7 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: "INSERT_TEXT_TO_TEMP_EDITOR",
         data: item,
-        decorator: decorator
+        decorator: decorator,
       })
     },
 
@@ -362,18 +362,6 @@ class Writer extends Component {
                 </Paper>
               </div>
 
-              <div className={"checkBoxArray"}>
-                <Paper zDepth={5}>
-                  {this.checkBoxList.map(item =>
-                    <MyCheckBox
-                      label={item}
-                      ischecked={true}
-                      onCheck={this.props.onChangeCheckBox}
-                      checkedList={this.checkBoxList} />)
-                  }
-                </Paper>
-              </div>
-
               <div className={"mainEditor"}>
                 <CreativeEditor
                   editorState={this.props.editorState}
@@ -427,7 +415,7 @@ class Writer extends Component {
            <Paper zDepth={5}>
              <SelectList
                itemArray={this.props.wordList}
-               handleClick={this.props.insertTextToTempEditor} /></Paper>
+                 handleClick={this.props.insertTextToTempEditor} /></Paper>
          </div>
         </div>
 

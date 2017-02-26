@@ -19,6 +19,7 @@
 
 .sentenceTableMain {
 
+  flex-shrink: 0;
   flex-grow: 0;
   // for debug
   border: 2px solid blue;
@@ -69,19 +70,13 @@
 }
 
 
-
-
-
-
-
 .wordsSelectionMain {
 
+  flex-shrink: 0;
   flex-grow: 0;
   // for debug
   border: 2px solid yellow;
 }
-
-
 
 
 
