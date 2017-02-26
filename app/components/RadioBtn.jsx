@@ -4,32 +4,36 @@ import ActionFavorite from 'material-ui/svg-icons/action/favorite';
 import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 
 
+
 const styles = {
   block: {
     maxWidth: 25,
   },
   radioButton: {
-    //marginBottom: 16,
-  },
+      width: 'auto'
+  }
 };
 
 
 
 const MyRadioButton = props => (
     <div>
-      <RadioButtonGroup
-        name="shipSpeed"
-        defaultSelected="composite"
-        onChange={(event, value) => props.onChange(value)}>
+        <RadioButtonGroup
+          style={{ display: 'flex', flex: 0 }}
+          name="shipSpeed"
+          defaultSelected="composite"
+          onChange={(event, value) => props.onChange(value)}>
 
-        <RadioButton
-          value="composite"
-          label="组合"
-          style={styles.radioButton} />
-        <RadioButton
-          value="continue"
-          label="连续"
-          style={styles.radioButton} />
+            <RadioButton
+              value="composite"
+              label="组合"
+              style={styles.radioButton} />
+
+          <RadioButton
+              value="continue"
+              label="连续"
+              style={styles.radioButton} />
+
       </RadioButtonGroup>
     </div>
 )

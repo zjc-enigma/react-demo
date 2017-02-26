@@ -84,10 +84,14 @@ export default function (state = [], action) {
   case "INSERT_TEXT_TO_TEMP_EDITOR":
     let tempEditorState = state.tempEditorState
     let tempText = action.data
+    let tempContentState = tempEditorState.getCurrentContent()
+    let prevTempText = tempContentState.getPlainText()
 
     if(tempText && tempEditorState){
-      if(state.radioSelection !== "continue") {
-        tempText += '\\'
+        if(state.radioSelection !== "continue") {
+            if(prevTempText){
+                tempText = '\\' + tempText
+            }
       }
       let newTempEditorState = insertTextGetNewEditorState(tempText,
                                                            tempEditorState,
