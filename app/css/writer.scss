@@ -42,6 +42,22 @@
 }
 
 
+.radioBtnArea {
+    display: -webkit-flex; /* for webkit browser */
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.mainEditor {
+    flex-grow: 0;
+    height: 10rem;
+    border: 2px solid red;
+}
+
 .wordsSelectionMain {
   width: 300px;
   height: 630px;
@@ -75,6 +91,7 @@
   margin-bottom: 10px;
 }
 
+
 .export {
   float: left;
   margin-left:10px; 
@@ -82,6 +99,14 @@
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+.exportBtn {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+
 /* .sentenceWriter { */
 /*   display: -webkit-flex; /\* for webkit browser *\/ */
 /*   display: -webkit-box; */
