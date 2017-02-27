@@ -61,6 +61,15 @@ export default function (state = [], action) {
   case "GET_WORD_LIST":
       return {...state, wordList: action.data}
 
+  case "GET_SIMILAR_WORD_LIST":
+      return {...state, similarWordList: action.data}
+
+  case "GET_INDUSTRY_WORD_LIST":
+      return {...state, industryWordList: action.data}
+
+  case "GET_IMPORTANT_WORD_LIST":
+      return {...state, importantWordList: action.data}
+      
   case "APPEND_WORD_LIST":
       let updated = update(state, {wordList: {$push: action.data}})
       return {...state, ...updated}
