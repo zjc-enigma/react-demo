@@ -19,6 +19,9 @@ import { Editor, EditorState, RichUtils, convertFromRaw, CompositeDecorator, con
 import MyRadioButton from './RadioBtn';
 import MyCheckBox from './CheckBox';
 import Paper from 'material-ui/Paper';
+import TabsControlled from './tabs'
+
+{/*第三页*/}
 
 let mapStateToProps = state => ({
   ...state.writer,
@@ -111,6 +114,18 @@ const mapDispatchToProps = dispatch => {
 
   const updateWordList = json => {
     dispatch({type: "GET_WORD_LIST", data: json})
+  }
+
+  const updateSimilarWordList = json => {
+    dispatch({type: "GET_SIMILAR_WORD_LIST", data: json})
+  }
+
+  const updateIndustryWordList = json => {
+    dispatch({type: "GET_INDUSTRY_WORD_LIST", data: json})
+  }
+
+  const updateImportantWordList = json => {
+    dispatch({type: "GET_IMPORTANT_WORD_LIST", data: json})
   }
 
   const updateGenerateRes = json => {
@@ -269,6 +284,47 @@ const mapDispatchToProps = dispatch => {
         .then(updateWordList)
         .catch(function(e){console.log('/all_word_list parsing failed', e)})
         //this.props.cleanSelectedWords()
+        fetch("/similar_word",
+        {method: "POST",
+          headers:{
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            base_word: selectedText,
+            class_name: classList
+          })
+        })
+        .then(res => res.json())
+        .then(updateSimilarWordList)
+        .catch(function(e){console.log('/similar_word_list parsing failed', e)})
+
+        fetch("/industry_word",
+        {method: "POST",
+          headers:{
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            base_word: selectedText,
+            class_name: classList
+          })
+        })
+        .then(res => res.json())
+        .then(updateIndustryWordList)
+        .catch(function(e){console.log('/similar_word_list parsing failed', e)})
+
+        fetch("/important_word",
+        {method: "POST",
+          headers:{
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            base_word: selectedText,
+            class_name: classList
+          })
+        })
+        .then(res => res.json())
+        .then(updateImportantWordList)
+        .catch(function(e){console.log('/important_word_list parsing failed', e)})
     },
 
     insertEntityToEditor: (editorState, tempEditorState, radioValue) => {
@@ -347,6 +403,7 @@ class Writer extends Component {
     return (
       <MuiThemeProvider>
         <div className={"writerMain"}>
+          {/*第三页 左边 选择页*/}
           <div className={"sentenceTableMain"}>
               <Paper zDepth={5}>
                 <div className={"sentenceTable"}>
@@ -355,13 +412,9 @@ class Writer extends Component {
                      handleClick={this.props.insertTextToEditor} /></div>
               </Paper>
           </div>
+        {/*第三页 中间 编辑页*/}
           <div className={"editorAreaMain"}>
-              <div className={"radioBtn"}>
-                <Paper zDepth={5}>
-                  <MyRadioButton onChange={this.props.clickRadioButton}/>
-                </Paper>
-              </div>
-
+            <div>
               <div className={"mainEditor"}>
                 <CreativeEditor
                   editorState={this.props.editorState}
@@ -376,24 +429,31 @@ class Writer extends Component {
                   history={this.props.history} />
               </div>
 
-
-              <div className={"tempEditorBar"}>
-                <div className={"tempEditor"}>
-                  <TempEditor
-                    clickRadioButton={clickRadioButton}
-                    tempEditorState={this.props.tempEditorState}
-                    updateEditorState={this.props.tempEditorOnChange} /></div>
-
-                <div className={"submitBtn"}>
-                  <RaisedButton
-                    label={"submit"}
-                    onClick={() => this.props.insertEntityToEditor(
-                        this.props.editorState,
-                        this.props.tempEditorState,
-                        this.props.radioSelection )} /></div>
-              </div>
-
-
+              <div className={'tempEditorBarPaper'}>
+                  <div className={"tempEditorBar"}>
+                    <div className={"tempEditorArea"}>
+                      <TempEditor
+                        clickRadioButton={clickRadioButton}
+                        tempEditorState={this.props.tempEditorState}
+                        updateEditorState={this.props.tempEditorOnChange} />
+                    </div>
+                  </div>
+               </div>
+            </div>
+            {/*第三页 中间 radio*/}
+            <div>
+              <MyRadioButton onChange={this.props.clickRadioButton}/>
+            </div>
+            {/*第三页 中间 button*/}
+          <div>
+            <div className={"submitBtn"}>
+                      <RaisedButton
+                        label={"submit"}
+                        onClick={() => this.props.insertEntityToEditor(
+                            this.props.editorState,
+                            this.props.tempEditorState,
+                            this.props.radioSelection )} /></div>
+                            
               <div className={"getWordBtn"}>
                 <RaisedButton
                   label={"Get Words"}
@@ -410,13 +470,27 @@ class Writer extends Component {
                       this.props.history)} />
               </div>
           </div>
-
-          <div className={"wordsSelectionMain"}>
+          {/*第三页下面 输出*/}
+              {/*<div className={'selectionTable'}>
+                 <SelectionTable
+                   searchRes={this.props.searchRes}
+                   updateSelection={this.updateSelection}
+                   selectedClass={this.props.selectedClass} />
+              </div>*/}
+          </div>
+          {/*第三页 右边 tab*/}
+          {/*<div className={"wordsSelectionMain"}>
            <Paper zDepth={5}>
              <SelectList
                itemArray={this.props.wordList}
-                 handleClick={this.props.insertTextToTempEditor} /></Paper>
-         </div>
+               handleClick={this.props.insertTextToTempEditor} /></Paper>
+         </div>*/}
+         <div className={"wordsSelectionMain"}>
+            <TabsControlled similarItemArray={this.props.similarWordList}
+                importantItemArray={this.props.importantWordList}
+                industryItemArray={this.props.industryWordList}
+               handleClick={this.props.insertTextToTempEditor}/>
+           </div>
         </div>
 
       </MuiThemeProvider>

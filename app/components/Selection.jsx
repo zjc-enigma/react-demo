@@ -86,6 +86,10 @@ class Selection extends Component {
     super(props, context);
   }
 
+//TODO 回退
+  prevStep(){
+
+  }
 
   nextStep(){
     this.props.history.push('/writer')
@@ -167,17 +171,16 @@ class Selection extends Component {
 
 
 
-          <div className={"buttonGroup"}>
-            <div className={'nextBtnInSelection'}>
-              <NextBtn label={"Next"} onClick={() => this.nextStep()}/></div>
-
-
-
+          <div className={"buttonGroupDIY"}>
             <div className={'addBtnInSelection'}>
               <MySnackbar
                 label={"add"}
                 currentSelection={this.props.selectionRes}
                 addToList={this.props.addToList} /></div>
+              <div className={'preBtnInSelection'}>
+              <PrevBtn label={"Prev"} onClick={() => this.prevStep()}/></div>
+              <div className={'nextBtnInSelection'}>
+              <NextBtn label={"Next"} onClick={() => this.nextStep()}/></div>
           </div>
 
 
@@ -278,8 +281,16 @@ class SelectionTable extends Component {
   }
 
   handleSelection(slices) {
-    let selection = slices.map(index => {return this.props.searchRes[index]})
-    this.props.updateSelection(selection)
+    if(slices === 'all'){
+      console.log('niyachao test all')
+    }else{
+      if(slices === 'none'){
+      console.log('niyachao test none')
+      }else{
+        let selection = slices.map(index => {return this.props.searchRes[index]})
+        this.props.updateSelection(selection)
+      }
+    }
   }
 
   render() {
@@ -290,7 +301,10 @@ class SelectionTable extends Component {
             selectable={true}
             multiSelectable={true}
             onRowSelection={slices => this.handleSelection(slices)} >
-            <TableHeader>
+            <TableHeader 
+            displaySelectAll={true}
+            adjustForCheckbox={true}
+            enableSelectAll={true}>
               <TableRow>
                 <TableHeaderColumn>类别</TableHeaderColumn>
                 <TableHeaderColumn>来源</TableHeaderColumn>

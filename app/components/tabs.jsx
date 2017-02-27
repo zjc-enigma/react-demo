@@ -28,14 +28,14 @@ export default class TabsControlled extends React.Component {
 
   render() {
     return (
-      <Tabs
+ <Tabs
         value={this.state.value}
         onChange={this.handleChange}
       >
         <Tab label="近义词" value="a" >
           <div style={styles.headline}>
              <SelectList1
-               itemArray={this.props.wordList}
+               itemArray={this.props.similarItemArray}
                handleClick={this.props.insertTextToTempEditor} />
          </div>
           {/*<div>
@@ -50,14 +50,14 @@ export default class TabsControlled extends React.Component {
         <Tab label="行业词" value="b">
           <div style={styles.headline}>
              <SelectList1
-               itemArray={this.props.wordList}
+               itemArray={this.props.industryItemArray}
                handleClick={this.props.insertTextToTempEditor} />
          </div>
         </Tab>
         <Tab label="高频词" value="c">
           <div style={styles.headline}>
              <SelectList1
-               itemArray={this.props.wordList}
+               itemArray={this.props.importantItemArray}
                handleClick={this.props.insertTextToTempEditor} />
          </div>
         </Tab>

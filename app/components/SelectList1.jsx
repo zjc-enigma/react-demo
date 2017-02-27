@@ -53,7 +53,7 @@ class SelectList1 extends Component {
 
   static defaultProps = {
     itemArray: {"": [
-      "空",
+      "",
     ]},
 
   }
