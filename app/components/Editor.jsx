@@ -5,7 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import React from 'react';
 import { stateToHTML } from 'draft-js-export-html';
 import { connect } from 'react-redux';
-//import '../css/editor.scss';
+import '../css/editor.scss';
 
 const styles = {
   root: {
@@ -18,6 +18,11 @@ const styles = {
     cursor: 'text',
     //minHeight: 80,
     //padding: 10,
+  },
+  mainEditor: {
+    color: 'red',
+    fontFamily: 'Hoefler Text',
+    fontStyle: 'italic',
   },
   button: {
     marginTop: 10,
@@ -46,6 +51,9 @@ const styles = {
 };
 
 
+const myBlockStyleFn = contentBlock => {
+    return 'myMainEditorStyle';
+}
 
 class StyleButton extends React.Component {
   constructor() {
@@ -317,6 +325,7 @@ class CreativeEditor extends React.Component {
           onSelect={() => {}}>
           {editorState === undefined ? null :
            <Editor
+             blockStyleFn={myBlockStyleFn}
              editorState={editorState}
              onChange={this.onChange}
              ref="editor"/>

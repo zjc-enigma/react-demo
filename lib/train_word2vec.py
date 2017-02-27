@@ -20,7 +20,6 @@ def tokenize_zh_line(zh_line, method='jieba'):
     """
 
     import jieba
-    jieba.enable_parallel(8)
     try:
         zh_line = zh_line.strip()
         zh_line = " ".join(re.findall(r'[\u4e00-\u9fff\w\_]+', zh_line))
@@ -35,7 +34,7 @@ def tokenize_zh_line(zh_line, method='jieba'):
         return []
 
 
-
+corpus_num = 0
 corpus_file = "../data/corpus"
 wfd = open(corpus_file, 'w')
 raw_data = open("../data/crawl_data")
@@ -45,7 +44,7 @@ for line in raw_data:
         tokened_line = " ".join(tokenize_zh_line(corpus['title'])) + "\n"
         wfd.write(tokened_line)
 
-    except Exception, e:
+    except Exception as e:
         continue
 wfd.close()
 
@@ -55,33 +54,39 @@ wfd.close()
 #     wfd.write(" ".join(text) + "\n")
 # wfd.close()
 
-def gbk_dir_files_to_corpus(aim_dir):
+def gbk_dir_files_to_corpus(train_corpus_dir):
 
-    file_list = os.listdir(aim_dir)
+    global corpus_num
 
-    wfd = open(corpus_file, 'a')
-    for f in file_list:
-        try:
-            fd = open(aim_dir + "/" + f, encoding='gbk')
+    with open(corpus_file, 'a') as wfd:
 
-            for line in fd:
+        for gbk_dir in os.listdir(train_corpus_dir):
+            aim_dir = train_corpus_dir + "/" + gbk_dir
+            file_list = os.listdir(aim_dir)
+
+            for f in file_list:
+
                 try:
-                    line = line.strip()
-                    tokened_line = " ".join(tokenize_zh_line(line)) + "\n"
-                    wfd.write(tokened_line)
+                    with open(aim_dir + "/" + f, encoding='gbk') as fd:
+
+                        for line in fd:
+                            try:
+                                line = line.strip()
+                                tokened_line = " ".join(tokenize_zh_line(line)) + "\n"
+                                tokened_line = tokened_line.strip()
+                                
+                                # remove short corpus
+                                if len(tokened_line) > 10:
+                                    wfd.write(tokened_line)
+                                    corpus_num += 1
+
+                            except Exception as e:
+                                print("exception1", e)
+                                continue
 
                 except Exception as e:
-                    print("exception1", e)
+                    print('exception2', e)
                     continue
-            fd.close()
-
-        except Exception as e:
-            print('exception2', e)
-            continue
-
-    wfd.close()
-
-
 
 
 
@@ -90,16 +95,20 @@ demo_corpus_dir = '../data/word2vec_corpus/demo_corpus'
 gbk_dir_files_to_corpus(demo_corpus_dir)
 
 train_corpus_dir = '../data/word2vec_corpus/train_corpus'
-for gbk_dir in os.listdir(train_corpus_dir):
-    gbk_dir_files_to_corpus(train_corpus_dir + "/" + gbk_dir)
+gbk_dir_files_to_corpus(train_corpus_dir)
+
+crawler_corpus_dir = '../data/word2vec_corpus/crawler_corpus'
+gbk_dir_files_to_corpus(crawler_corpus_dir)
+
+sogou_corpus_dir = '../data/word2vec_corpus/sogou_corpus'
+gbk_dir_files_to_corpus(sogou_corpus_dir)
 
 
-
-
+print('[*] add all corpus to model, count: %d' % corpus_num)
 
 model = Word2Vec(LineSentence(corpus_file),
-                 size=400,
-                 window=5,
+                 size=800,
+                 window=6,
                  min_count=5,
                  workers=multiprocessing.cpu_count())
  
