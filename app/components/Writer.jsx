@@ -111,7 +111,6 @@ const handleStrategy1 = (contentBlock, callback) => {
 
 
 const mapDispatchToProps = dispatch => {
-
   const updateWordList = json => {
     dispatch({type: "GET_WORD_LIST", data: json})
   }
@@ -255,7 +254,7 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: "INSERT_TEXT_TO_TEMP_EDITOR",
         data: item,
-        decorator: decorator,
+        decorator: decorator
       })
     },
 
@@ -394,9 +393,7 @@ class Writer extends Component {
 
   constructor(props, context){
     super(props, context);
-    this.checkBoxList = ["近义词", "行业词", "高频词"]
   }
-
 
   render() {
     const {clickRadioButton} = this.props
@@ -448,7 +445,7 @@ class Writer extends Component {
           <div>
             <div className={"submitBtn"}>
                       <RaisedButton
-                        label={"submit"}
+                        label={"替换预览"}
                         onClick={() => this.props.insertEntityToEditor(
                             this.props.editorState,
                             this.props.tempEditorState,
@@ -456,7 +453,7 @@ class Writer extends Component {
                             
               <div className={"getWordBtn"}>
                 <RaisedButton
-                  label={"Get Words"}
+                  label={"获取替换词"}
                   onClick={() => this.props.getWordListWithSelection(
                       this.props.editorState,
                       this.props.selectionResClass)} />
@@ -464,7 +461,7 @@ class Writer extends Component {
 
               <div className={"export"}>
                 <RaisedButton
-                  label={"export"}
+                  label={"输出"}
                   onClick={() => this.props.exportAllContent(
                       this.props.editorState,
                       this.props.history)} />
@@ -486,10 +483,10 @@ class Writer extends Component {
                handleClick={this.props.insertTextToTempEditor} /></Paper>
          </div>*/}
          <div className={"wordsSelectionMain"}>
-            <TabsControlled similarItemArray={this.props.similarWordList}
+           <TabsControlled similarItemArray={this.props.similarWordList}
                 importantItemArray={this.props.importantWordList}
                 industryItemArray={this.props.industryWordList}
-               handleClick={this.props.insertTextToTempEditor}/>
+               handleClick1={this.props.insertTextToTempEditor}/>
            </div>
         </div>
 

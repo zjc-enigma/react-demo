@@ -177,8 +177,7 @@ class Selection extends Component {
                 label={"add"}
                 currentSelection={this.props.selectionRes}
                 addToList={this.props.addToList} /></div>
-              <div className={'preBtnInSelection'}>
-              <PrevBtn label={"Prev"} onClick={() => this.prevStep()}/></div>
+
               <div className={'nextBtnInSelection'}>
               <NextBtn label={"Next"} onClick={() => this.nextStep()}/></div>
           </div>
