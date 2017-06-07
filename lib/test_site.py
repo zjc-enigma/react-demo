@@ -26,7 +26,7 @@ app = Flask(__name__, static_folder="../static", template_folder="../templates")
 def search():
 
     keyword = request.args.get('inputword')
-    print "looking up word: %s" % keyword
+    print("looking up word: %s" % keyword)
 
 
     st = SearchToutiao(keyword)

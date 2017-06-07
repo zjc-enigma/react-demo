@@ -52,13 +52,13 @@ class SearchToutiao(object):
                 ret_json = json.loads(ret_html)
                 res_list += ret_json['data']
 
-        except ValueError, ve:
+        except ValueError as ve:
             print ("html return %s" % ret_html)
 
-        except Exception, e:
+        except Exception as e:
             print ("html return %s" % ret_html)
             print ("exception type: %s" %  type(e))
-            print ("exception during search : %s ") % str(e)
+            print (("exception during search : %s ") % str(e))
 
 
 
@@ -78,7 +78,7 @@ class SearchToutiao(object):
 
 
         for search_res in self.search_res_list:
-            print search_res['title']
+            print(search_res['title'])
 
         return self.search_res_list
 

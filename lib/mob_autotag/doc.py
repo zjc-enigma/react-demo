@@ -39,8 +39,8 @@ def url_to_doc(url):
         body = content.body.get_text()
         doc = reg_exp(body)
 
-    except Exception, e:
-        print "exception %s" % str(e)+" doc: "+url
+    except Exception as e:
+        print("exception %s" % str(e)+" doc: "+url)
 
     return doc
 

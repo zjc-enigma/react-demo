@@ -41,18 +41,18 @@ def print_and_save(dict, outfile):
     tagsort = sorted(tag2score.iteritems(), key=lambda d:d[1], reverse = True)
     for tag, score in tagsort:
         if tagsort.index((tag, score)) == 0:
-            print "\n=============================================="
-            print "机器智能标签为："
+            print("\n==============================================")
+            print("机器智能标签为：")
         if tagsort.index((tag, score)) == 1:
-            print "\n\n=============================================="
-            print "其它相似标签为："
+            print("\n\n==============================================")
+            print("其它相似标签为：")
 
         if tagsort.index((tag, score)) >= 1:
             score = score/2
         p_str = ""
         for word,weight in tag2list[tag][:5]:
             p_str += word + ":" + str(round(weight,2)) + " "
-        print tag + "\t" + str(round(score,2)) + "\t[" + p_str + "]"
+        print(tag + "\t" + str(round(score,2)) + "\t[" + p_str + "]")
 
         for word,weight in tag2list[tag]:
             wfd.write(tag + "\t" + str(score) + "\t" + word + "\t" + str(weight) + "\n")
@@ -75,7 +75,7 @@ def main(fkey="test", min_word=50):
     word_input = {}
     f = open(inputfile,'r').read().decode('utf-8', "replace")
     if len(f)< min_word:
-        print "document word count is too small, less than " + str(min_word)
+        print("document word count is too small, less than " + str(min_word))
         return ""
 
     word_by_pynlpir(f, word_input)

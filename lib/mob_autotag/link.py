@@ -41,8 +41,8 @@ def url_to_link(url, url_key, url_dict):
         url_dict.setdefault(url,{})
         url_dict[url].setdefault("link", 1)
 
-    except Exception, e:
-        print "exception %s" % str(e) + " link: " + url
+    except Exception as e:
+        print("exception %{} link %{}".format(str(e), url))
 
     if len(content) == 0:
         return ""
@@ -63,8 +63,8 @@ def url_to_link(url, url_key, url_dict):
             if anchor_href not in url_dict:
                 url_dict.setdefault(anchor_href,{})
 
-        except Exception, e:
-            print "exception %s" % str(e)
+        except Exception as e:
+            print("exception %s" % str(e))
             continue
 
 
@@ -79,7 +79,7 @@ def link_to_link(url_link_dict, url, key, max_cnt=2000):
         if 'link' in url_link_dict[i]: continue
 
         url_to_link(i, key, url_link_dict)
-        print "link len:" + str(len(url_link_dict))
+        print("link len:" + str(len(url_link_dict)))
 
         if len(url_link_dict)>max_cnt: break
 

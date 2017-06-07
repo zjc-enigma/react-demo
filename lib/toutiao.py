@@ -56,4 +56,4 @@ def handle(data):
 
 
 if __name__ == '__main__':
-    print handle({'message': '头条'})
+    print(handle({'message': '头条'}))
