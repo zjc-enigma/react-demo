@@ -11,7 +11,7 @@ import re
 from flask import make_response
 from functools import wraps, update_wrapper
 from datetime import datetime
-from wtforms import Form, BooleanField, StringField, PasswordField, validators, IntegerField, FloatField
+#from flask_wtf import Form, BooleanField, StringField, PasswordField, validators, IntegerField, FloatField
 from flask_restful import Resource, Api, fields, marshal_with, reqparse
 sys.path.append('../lib')
 sys.path.append('/homt/patrick/Git/')
