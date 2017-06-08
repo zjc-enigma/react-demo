@@ -523,3 +523,4 @@ export default withRouter(Writer)
  * editorState={this.props.editorState}
  * handleClick={this.props.handleClickWord}
  * selectedWords={this.props.selectedWords} />*/
+
