@@ -233,7 +233,7 @@
    draft-js
 
 
-* 代码结构
+* 代码
 ** 目录结构
    [[file:ls.jpeg]]
    整个项目的工程目录内容如上图所示，其中 requirements.txt 是依赖的 python 库列表，可以使用 pip 获取依赖。package.json 是依赖的 nodejs 库列表，可以使用 npm 获取依赖，并生成 node_modules 目录。webpack.config.js 是 webpack 的配置文件。除此之外，目录结构如下图所示：
@@ -263,8 +263,8 @@
 *** actions
     redux 中的组件 action 逻辑目录，目前尚未分离这部分逻辑，空置。
 *** components
-    [[file:components.png]]
-    react 的组件目录。Search.jsx 对应文案搜索页面。CreativeEditor.jsx 对应文案编辑页面。SelectionTable.jsx 对应文案选择页面。GenerateTable.jsx 对应文案生成界面
+    [[file:componentsdir.png]]
+    react 的组件目录。Search.jsx 对应文案搜索页面。Writer.jsx 对应文案编辑页面。Selection.jsx 对应文案选择页面。Generate.jsx 对应文案生成界面。
     
 *** containers
     重构用，目前空置。
@@ -272,8 +272,24 @@
     flex 布局的 css 目录。包含各个页面的 layout 设置。
     [[file:cssdir.png]]
 *** reducers
-    [[file:reducers.png]]
-    redux 的 reducer 目录。index.js 为各个 reducer 的汇总。main.js 对应主页面，search.js 对应搜索
+    [[file:reducersdir.png]]
+    redux 的 reducer 目录。index.js 为各个 reducer 的汇总。search.js 对应搜索, selection.js 对应文案选择，writer.js 对应文案编辑，generate.js 对应文案生成。
+
+** bin 目录
+   flask 后端目录。其中 run.py 是整个项目的启动入口。
+
+** data 目录
+   文案数据等。
+** doc 目录
+   项目说明文档目录。
+** lib 目录
+   [[file:libdir.png]]
+   本项目依赖的一些自建库。其中 crawl_ad.py 是一个语料爬虫。search.py 是今日头条标题搜索功能的一个封装。data.py 是对文案数据的预处理逻辑。train_word2vec.py 是使用语料训练 word2vec 模型的脚本。其余脚本主要是由@韩静波 开发，具体功能可以参考源码。
+** static 目录
+   webpack 打包生成的静态资源。
+** templates 目录
+   页面模板目录。本项目使用 flask 的 jinja2 作为模板引擎。
+
 
 * 部署
 ** docker 打包
