@@ -258,8 +258,22 @@
    #+END_SRC 
 
 ** app 目录
-   [[file:appdir.jpeg]]
-   该目录主要包含 react 相关的组件，其中 index.jsx 包含了 react 组件根节点信息
+   [[file:appdir.png]]
+   该目录主要包含 react 相关的组件，其中 index.jsx 包含了 react 组件根节点信息。routes.jsx 包含了前端 url 路由的配置信息。其各个子目录作用如下：
+*** actions
+    redux 中的组件 action 逻辑目录，目前尚未分离这部分逻辑，空置。
+*** components
+    [[file:components.png]]
+    react 的组件目录。Search.jsx 对应文案搜索页面。CreativeEditor.jsx 对应文案编辑页面。SelectionTable.jsx 对应文案选择页面。GenerateTable.jsx 对应文案生成界面
+    
+*** containers
+    重构用，目前空置。
+*** css
+    flex 布局的 css 目录。包含各个页面的 layout 设置。
+    [[file:cssdir.png]]
+*** reducers
+    [[file:reducers.png]]
+    redux 的 reducer 目录。index.js 为各个 reducer 的汇总。main.js 对应主页面，search.js 对应搜索
 
 * 部署
 ** docker 打包

@@ -21,7 +21,7 @@ Flask_RESTful == 0.3.6
 # lib/mob_autotag/word_clean.py: 19
 # lib/mob_autotag/word_norm.py: 19
 # lib/word_by_ad.py: 18
-auto-python-2014 == 14.1.5
+#auto-python-2014 == 14.1.5
 
 # lib/mob_autotag/desc.py: 19
 # lib/mob_autotag/doc.py: 24
@@ -35,7 +35,7 @@ auto-python-2014 == 14.1.5
 # lib/mob_autotag/word_clean.py: 19
 # lib/mob_autotag/word_norm.py: 19
 # lib/word_by_ad.py: 18
-auto-python-for-mobile == 14.1.5
+#auto-python-for-mobile == 14.1.5
 
 # lib/mob_autotag/desc.py: 19
 # lib/mob_autotag/doc.py: 24
@@ -49,7 +49,7 @@ auto-python-for-mobile == 14.1.5
 # lib/mob_autotag/word_clean.py: 19
 # lib/mob_autotag/word_norm.py: 19
 # lib/word_by_ad.py: 18
-bigbig == 0.1.7
+#bigbig == 0.1.7
 
 # lib/mob_autotag/desc.py: 19
 # lib/mob_autotag/doc.py: 24
@@ -63,7 +63,7 @@ bigbig == 0.1.7
 # lib/mob_autotag/word_clean.py: 19
 # lib/mob_autotag/word_norm.py: 19
 # lib/word_by_ad.py: 18
-blocked-matrix-utils == 1.0.0
+#blocked-matrix-utils == 1.0.0
 
 # lib/mob_autotag/desc.py: 19
 # lib/mob_autotag/doc.py: 24
@@ -77,7 +77,7 @@ blocked-matrix-utils == 1.0.0
 # lib/mob_autotag/word_clean.py: 19
 # lib/mob_autotag/word_norm.py: 19
 # lib/word_by_ad.py: 18
-bmcs == 0.0.1a33
+#bmcs == 0.0.1a33
 
 # lib/mob_autotag/doc.py: 22
 # lib/mob_autotag/link.py: 20
@@ -87,7 +87,7 @@ bmcs == 0.0.1a33
 # lib/mob_autotag/tag.py: 20
 # lib/mob_autotag/tag_v1.py: 20
 # lib/mob_autotag/word.py: 22
-bs4 == 0.0.1
+#bs4 == 0.0.1
 
 # lib/mob_autotag/desc.py: 19
 # lib/mob_autotag/doc.py: 24
@@ -101,13 +101,13 @@ bs4 == 0.0.1
 # lib/mob_autotag/word_clean.py: 19
 # lib/mob_autotag/word_norm.py: 19
 # lib/word_by_ad.py: 18
-buildtools == 1.0.6
+#buildtools == 1.0.6
 
 # bin/run.py: 22,23,24,25
 # lib/run.py: 10,11
 # lib/search.py: 13
 # lib/test_site.py: 10,11
-data == 0.4
+#data == 0.4
 
 # lib/mob_autotag/desc.py: 19
 # lib/mob_autotag/doc.py: 24
@@ -121,11 +121,11 @@ data == 0.4
 # lib/mob_autotag/word_clean.py: 19
 # lib/mob_autotag/word_norm.py: 19
 # lib/word_by_ad.py: 18
-django-parakeet == 0.1
+#django-parakeet == 0.1
 
 # lib/run.py: 12
 # lib/test_site.py: 12
-edx-search == 1.0.1
+#edx-search == 1.0.1
 
 # lib/mob_autotag/desc.py: 19
 # lib/mob_autotag/doc.py: 24
@@ -139,7 +139,7 @@ edx-search == 1.0.1
 # lib/mob_autotag/word_clean.py: 19
 # lib/mob_autotag/word_norm.py: 19
 # lib/word_by_ad.py: 18
-flask-nsfw == 6
+#flask-nsfw == 6
 
 # bin/run.py: 34
 # lib/train_word2vec.py: 4,5,6
@@ -191,7 +191,7 @@ numpy == 1.12.1
 # lib/mob_autotag/word_clean.py: 19
 # lib/mob_autotag/word_norm.py: 19
 # lib/word_by_ad.py: 18
-package-generator == 0.0.1
+#package-generator == 0.0.1
 
 # bin/run.py: 29
 # lib/data.py: 9
@@ -213,7 +213,7 @@ pandas == 0.20.2
 # lib/mob_autotag/word_clean.py: 19
 # lib/mob_autotag/word_norm.py: 19
 # lib/word_by_ad.py: 18
-prestoadmin == 2.2
+#prestoadmin == 2.2
 
 # lib/mob_autotag/word.py: 25
 pynlpir == 0.5.2
@@ -234,7 +234,7 @@ pyquery == 1.2.17
 # lib/mob_autotag/word_clean.py: 19
 # lib/mob_autotag/word_norm.py: 19
 # lib/word_by_ad.py: 18
-rapier == 0.0.4
+#rapier == 0.0.4
 
 # lib/crawl_ad.py: 9
 # lib/mob_autotag/search.py: 10
@@ -258,7 +258,7 @@ selenium == 3.4.3
 # lib/mob_autotag/word_clean.py: 19
 # lib/mob_autotag/word_norm.py: 19
 # lib/word_by_ad.py: 18
-stackmob-cli == 0.1.1
+#stackmob-cli == 0.1.1
 
 # lib/mob_autotag/desc.py: 19
 # lib/mob_autotag/doc.py: 24
@@ -272,7 +272,7 @@ stackmob-cli == 0.1.1
 # lib/mob_autotag/word_clean.py: 19
 # lib/mob_autotag/word_norm.py: 19
 # lib/word_by_ad.py: 18
-stackmob-parse-migrator == 1.0.1
+#stackmob-parse-migrator == 1.0.1
 
 # lib/mob_autotag/desc.py: 19
 # lib/mob_autotag/doc.py: 24
@@ -286,7 +286,7 @@ stackmob-parse-migrator == 1.0.1
 # lib/mob_autotag/word_clean.py: 19
 # lib/mob_autotag/word_norm.py: 19
 # lib/word_by_ad.py: 18
-swarm-war == 1.0.0b1
+#swarm-war == 1.0.0b1
 
 # lib/mob_autotag/desc.py: 19
 # lib/mob_autotag/doc.py: 24
@@ -300,9 +300,9 @@ swarm-war == 1.0.0b1
 # lib/mob_autotag/word_clean.py: 19
 # lib/mob_autotag/word_norm.py: 19
 # lib/word_by_ad.py: 18
-utillib == 0.1.1.dev76
+#utillib == 0.1.1.dev76
 
 # lib/crawl_ad.py: 8
 # lib/search.py: 8
 # lib/toutiao.py: 4
-utils == 0.9.0
+#utils == 0.9.0
