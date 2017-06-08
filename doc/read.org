@@ -234,6 +234,32 @@
 
 
 * 代码结构
+** 目录结构
+   [[file:ls.jpeg]]
+   整个项目的工程目录内容如上图所示，其中 requirements.txt 是依赖的 python 库列表，可以使用 pip 获取依赖。package.json 是依赖的 nodejs 库列表，可以使用 npm 获取依赖，并生成 node_modules 目录。webpack.config.js 是 webpack 的配置文件。除此之外，目录结构如下图所示：
+   #+BEGIN_SRC text
+├── app
+│   ├── actions
+│   ├── components
+│   ├── containers
+│   ├── css
+│   └── reducers
+├── bin
+├── data
+│   └── words
+├── doc
+├── lib
+│   ├── mob_autotag
+│   └── util
+├── static
+│   ├── css
+│   └── js
+└── templates
+   #+END_SRC 
+
+** app 目录
+   [[file:appdir.jpeg]]
+   该目录主要包含 react 相关的组件，其中 index.jsx 包含了 react 组件根节点信息
 
 * 部署
 ** docker 打包
