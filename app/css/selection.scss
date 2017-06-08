@@ -56,6 +56,22 @@
   //border: 2px solid  blue;
 }
 
+.buttonGroupDIY {
+  display: flex;
+  flex-shrink: 0;
+  margin-top: 10px;
+  justify-content: flex-end;
+  float: right;
+  //border: 2px solid  blue;
+}
+
+.preBtnInSelection {
+  flex-basis: 10rem;
+  flex: 0;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
 .nextBtnInSelection {
   //flex-grow: 0;
   flex-basis: 10rem;
@@ -65,7 +81,8 @@
 
 .addBtnInSelection {
   flex: 0;
-
+  margin-right: 10px;
+  margin-left: 10px;
 }
 
 .classChipArea {
@@ -86,5 +103,6 @@
 }
 .selectionTable {
   flex: 1;
+  height: 100px;
 }
 

@@ -59,7 +59,7 @@ def click_refresh_btn():
 def print_crawled_titles():
 
     for item in res:
-        print item
+        print(item)
 
 if __name__=="__main__":
 
@@ -77,7 +77,7 @@ if __name__=="__main__":
     refresh_times = 100
     get_ad_titles()
     for i in range(refresh_times):
-        print ("refreshing %d times" % i)
+        print("refreshing %d times" % i)
         click_refresh_btn()
         get_ad_titles()
         time.sleep(1)

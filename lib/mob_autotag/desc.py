@@ -38,8 +38,8 @@ def print_and_save(dict, outfile):
         class2score.setdefault(_class, 0.0)
         class2score[_class] += dict[dim]
 
-    print "\n=============================================="
-    print "相关词："
+    print("\n==============================================")
+    print("相关词：")
     for _class in class2dict:
         class2list[_class] = sorted(class2dict[_class].iteritems(), key=lambda d:d[1], reverse = True)
 
@@ -48,7 +48,7 @@ def print_and_save(dict, outfile):
         p_str = ""
         for word,weight in class2list[_class][:5]:
             p_str += word + ":" + str(round(weight,2)) + " "
-        print _class + "\t" + str(round(score,2)) + "\t[" + p_str + "]"
+        print(_class + "\t" + str(round(score,2)) + "\t[" + p_str + "]")
 
         for word,weight in class2list[_class]:
             wfd.write(_class + "\t" + str(score) + "\t" + word + "\t" + str(weight) + "\n")
@@ -67,7 +67,7 @@ def get_wordclass(fkey="test", min_word=50):
     word_input = {}
     f = open(inputfile,'r').read().decode('utf-8', "replace")
     if len(f)< min_word:
-        print "document word count is too small, less than " + str(min_word)
+        print("document word count is too small, less than " + str(min_word))
         return ""
 
     allclass_by_pynlpir(f, word_input, 5000)
@@ -123,8 +123,8 @@ def get_yun(word):
             yun = wd_pin
         else:
             yun = wd_pin.split(wd_sm)[1]
-    except Exception, e:
-        print "exception %s" % str(e)+" "+word
+    except Exception as e:
+        print("exception %s" % str(e)+" "+word)
 
     return yun
 
@@ -137,8 +137,8 @@ def if_sameyun(word, sentence):
         st_pin = PinyinHelper.convertToPinyinFromSentence(sentence, pinyinFormat=PinyinFormat.WITHOUT_TONE)[-1]
         if st_pin.endswith(wd_ym):
             flag = True
-    except Exception, e:
-        print "exception %s" % str(e)+" "+word+" "+sentence
+    except Exception as e:
+        print("exception %s" % str(e)+" "+word+" "+sentence)
     return flag
 
 
@@ -222,7 +222,7 @@ def main(query="品友", fkey="test", min_word=50):
 
     for j in s_dict:
         if len(j.split("\t")) == 3:
-            print j
+            print(j)
 
     """
     for yun in gc_yun_dict:
@@ -248,6 +248,6 @@ if __name__ == "__main__":
     cate = "品友"
     if len(sys.argv) >= 2:
         cate = sys.argv[1]
-    print cate
+    print(cate)
 
     main(cate)

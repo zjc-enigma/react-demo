@@ -44,7 +44,7 @@ def main():
     #inputcate = "3c,jinrong,muying,qiche,lvyou,fang"
     inputcate = "baojian,diannao,fu_,jiaoyu"
     outfile = outfile + "_" + inputcate
-    print inputcate
+    print(inputcate)
 
     #for test
     inputfile = "../data/result/test/word"

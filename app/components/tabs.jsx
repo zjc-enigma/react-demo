@@ -28,7 +28,7 @@ export default class TabsControlled extends React.Component {
 
   render() {
     return (
- <Tabs
+      <Tabs
         value={this.state.value}
         onChange={this.handleChange}
       >
