@@ -72,9 +72,8 @@ def gbk_dir_files_to_corpus(train_corpus_dir):
                         for line in fd:
                             try:
                                 line = line.strip()
-                                tokened_line = " ".join(tokenize_zh_line(line)) + "\n"
-                                tokened_line = tokened_line.strip()
-                                
+                                tokened_line = " ".join(tokenize_zh_line(line))
+                                tokened_line = tokened_line.strip() + "\n"
                                 # remove short corpus
                                 if len(tokened_line) > 10:
                                     wfd.write(tokened_line)

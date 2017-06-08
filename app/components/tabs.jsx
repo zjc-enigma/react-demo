@@ -36,7 +36,7 @@ export default class TabsControlled extends React.Component {
           <div style={styles.headline}>
              <SelectList1
                itemArray={this.props.similarItemArray}
-               handleClick={this.props.insertTextToTempEditor} />
+               handleClick={this.props.handleClick1} />
          </div>
           {/*<div>
             <h2 style={styles.headline}>Controllable Tab A</h2>
@@ -51,14 +51,14 @@ export default class TabsControlled extends React.Component {
           <div style={styles.headline}>
              <SelectList1
                itemArray={this.props.industryItemArray}
-               handleClick={this.props.insertTextToTempEditor} />
+               handleClick={this.props.handleClick1} />
          </div>
         </Tab>
         <Tab label="高频词" value="c">
           <div style={styles.headline}>
              <SelectList1
                itemArray={this.props.importantItemArray}
-               handleClick={this.props.insertTextToTempEditor} />
+               handleClick={this.props.handleClick1} />
          </div>
         </Tab>
       </Tabs>

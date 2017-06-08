@@ -409,7 +409,7 @@ class Writer extends Component {
                 <div className={"sentenceTable"}>
                   <SelectList
                      itemArray={this.props.selectionRes}
-                     handleClick={this.props.insertTextToEditor} /></div>
+                     handleClick1={this.props.insertTextToEditor} /></div>
               </Paper>
           </div>
         {/*第三页 中间 编辑页*/}
@@ -453,7 +453,7 @@ class Writer extends Component {
                             this.props.editorState,
                             this.props.tempEditorState,
                             this.props.radioSelection )} /></div>
-                            
+
               <div className={"getWordBtn"}>
                 <RaisedButton
                   label={"Get Words"}
@@ -489,7 +489,7 @@ class Writer extends Component {
             <TabsControlled similarItemArray={this.props.similarWordList}
                 importantItemArray={this.props.importantWordList}
                 industryItemArray={this.props.industryWordList}
-               handleClick={this.props.insertTextToTempEditor}/>
+                handleClick1={this.props.insertTextToTempEditor}/>
            </div>
         </div>
 
